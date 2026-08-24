@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+         <meta charset="UTF-8" />
+         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+         <meta name="theme-color" content="#060812" />
+         <meta name="description" content="NEBULON spacecraft search and research intelligence prototype." />
+         <title>NEBULON — Spacecraft Intelligence</title>
+         <link rel="preconnect" href="https://fonts.googleapis.com" />
+         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+         <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+                  rel="stylesheet" />
+         <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+         <canvas id="starfield" aria-hidden="true"></canvas>
+         <div class="noise" aria-hidden="true"></div>
+         <div class="aurora aurora-one" aria-hidden="true"></div>
+         <div class="aurora aurora-two" aria-hidden="true"></div>
+
+         <div class="app-shell">
+                  <aside class="sidebar" aria-label="Primary navigation">
+                           <div class="brand-lockup">
+                                    <div class="brand-orbit" aria-hidden="true"><span></span><i></i></div>
+                                    <div>
+                                             <div class="brand-name">NEBULON</div>
+                                             <div class="brand-subtitle">Spacecraft intelligence</div>
+                                    </div>
+                           </div>
+
+                           <div class="mission-status">
+                                    <span class="status-dot"></span>
+                                    <div>
+                                             <span class="eyebrow">Mission network</span>
+                                             <strong>All systems nominal</strong>
+                                    </div>
+                                    <span class="status-pulse"></span>
+                           </div>
+
+                           <nav class="nav-stack">
+                                    <button class="nav-item active" data-view="overview" type="button"><span
+                                                      class="nav-icon">⌁</span><span>Overview</span><span
+                                                      class="nav-count">01</span></button>
+                                    <button class="nav-item" data-view="catalog" type="button"><span
+                                                      class="nav-icon">◈</span><span>Craft catalog</span><span
+                                                      class="nav-count">248</span></button>
+                                    <button class="nav-item" data-view="orbits" type="button"><span
+                                                      class="nav-icon">◎</span><span>Orbit watch</span><span
+                                                      class="nav-count">36</span></button>
+                                    <button class="nav-item" data-view="signals" type="button"><span
+                                                      class="nav-icon">⌁</span><span>Signal lab</span><span
+                                                      class="nav-count">08</span></button>
+                                    <button class="nav-item" data-view="briefings" type="button"><span
+                                                      class="nav-icon">▤</span><span>Briefings</span><span
+                                                      class="nav-count">12</span></button>
+                           </nav>
+
+                           <div class="sidebar-spacer"></div>
+
+                           <div class="network-card">
+                                    <div class="network-card-top"><span>Deep-space relay</span><span
+                                                      class="live-label"><i></i> LIVE</span></div>
+                                    <div class="relay-route"><span>EARTH</span>
+                                             <div class="route-line"><b></b></div><span>NR-07</span>
+                                    </div>
+                                    <div class="network-meta"><span>Latency</span><strong id="latencyValue">1.42
+                                                      s</strong></div>
+                                    <div class="mini-progress"><span id="relayProgress"></span></div>
+                           </div>
+
+                           <div class="user-lockup">
+                                    <div class="avatar">AR</div>
+                                    <div><strong>Ada Reyes</strong><span>Research operator</span></div>
+                                    <button class="icon-button" type="button"
+                                             aria-label="Open operator menu">•••</button>
+                           </div>
+                  </aside>
+
+                  <main class="main-content">
+                           <header class="topbar">
+                                    <div class="breadcrumb"><span>NEBULON /</span><strong>Mission overview</strong>
+                                    </div>
+                                    <div class="topbar-actions">
+                                             <div class="system-time"><span class="live-dot"></span><span
+                                                               id="utcClock">00:00:00 UTC</span></div>
+                                             <button class="square-button" type="button"
+                                                      aria-label="Notifications"><span
+                                                               class="notification-dot"></span>♧</button>
+                                             <button class="operator-button" type="button"><span
+                                                               class="avatar avatar-small">AR</span><span>Operator</span><span
+                                                               class="chevron">⌄</span></button>
+                                    </div>
+                           </header>
+
+                           <section class="hero-section">
+                                    <div class="hero-copy">
+                                             <div class="section-kicker"><span></span> SEARCH / IDENTIFY / UNDERSTAND
+                                             </div>
+                                             <h1>Find the craft<br /><em>between the stars.</em></h1>
+                                             <p>Search 248 spacecraft profiles, orbital signatures, telemetry streams,
+                                                      and mission archives from one intelligent command layer.</p>
+                                    </div>
+
+                                    <div class="hero-orbit-visual"
+                                             aria-label="Orbital visualization showing tracked spacecraft">
+                                             <div class="orbit orbit-large"><span class="orbit-node node-one"></span>
+                                             </div>
+                                             <div class="orbit orbit-medium"><span class="orbit-node node-two"></span>
+                                             </div>
+                                             <div class="orbit orbit-small"><span class="orbit-node node-three"></span>
+                                             </div>
+                                             <div class="planet">
+                                                      <div class="planet-glow"></div><span>⊙</span>
+                                             </div>
+                                             <div class="visual-caption"><span class="caption-line"></span><span>LIVE
+                                                               ORBITAL FIELD</span></div>
+                                    </div>
+                           </section>
+
+                           <section class="search-panel glass-panel" aria-label="Spacecraft search">
+                                    <div class="search-main">
+                                             <span class="search-glyph">⌕</span>
+                                             <input id="craftSearch" type="search" autocomplete="off"
+                                                      placeholder="Search craft, mission, operator, orbit, or signal ID..."
+                                                      aria-label="Search spacecraft, mission, operator, orbit, or signal ID" />
+                                             <span class="search-shortcut">⌘ K</span>
+                                             <button class="search-submit" id="searchSubmit" type="button">Search
+                                                      <span>↗</span></button>
+                                    </div>
+                                    <div class="search-footer">
+                                             <div class="suggestion-label">Try exploring</div>
+                                             <div class="suggestion-chips">
+                                                      <button class="suggestion-chip" type="button"
+                                                               data-query="Europa Clipper">Europa Clipper
+                                                               <span>↗</span></button>
+                                                      <button class="suggestion-chip" type="button"
+                                                               data-query="near-earth objects">Near-earth objects
+                                                               <span>↗</span></button>
+                                                      <button class="suggestion-chip" type="button"
+                                                               data-query="ion propulsion">Ion propulsion
+                                                               <span>↗</span></button>
+                                                      <button class="suggestion-chip" type="button"
+                                                               data-query="active signals">Active signals
+                                                               <span>↗</span></button>
+                                             </div>
+                                             <span class="index-status"><i></i> Index synced <strong id="syncTime">12
+                                                               sec ago</strong></span>
+                                    </div>
+                           </section>
+
+                           <section class="metrics-grid" aria-label="Live research metrics">
+                                    <article class="metric-card glass-panel accent-cyan">
+                                             <div class="metric-head"><span class="metric-label">Objects
+                                                               tracked</span><span class="metric-icon">◈</span></div>
+                                             <div class="metric-value" id="objectsMetric">1,842,906</div>
+                                             <div class="metric-foot"><span class="trend up">↑ 2.8%</span><span>vs. last
+                                                               24h</span>
+                                                      <div class="sparkline" id="sparkObjects"></div>
+                                             </div>
+                                    </article>
+                                    <article class="metric-card glass-panel accent-violet">
+                                             <div class="metric-head"><span class="metric-label">Signal
+                                                               coherence</span><span class="metric-icon">⌁</span></div>
+                                             <div class="metric-value"><span
+                                                               id="coherenceMetric">98.7</span><small>%</small></div>
+                                             <div class="metric-foot"><span class="trend up">↑
+                                                               0.4%</span><span>confidence index</span>
+                                                      <div class="sparkline violet" id="sparkCoherence"></div>
+                                             </div>
+                                    </article>
+                                    <article class="metric-card glass-panel accent-lime">
+                                             <div class="metric-head"><span class="metric-label">Propulsion
+                                                               events</span><span class="metric-icon">✦</span></div>
+                                             <div class="metric-value" id="propulsionMetric">64,219</div>
+                                             <div class="metric-foot"><span class="trend neutral">•
+                                                               stable</span><span>last 60 minutes</span>
+                                                      <div class="sparkline lime" id="sparkPropulsion"></div>
+                                             </div>
+                                    </article>
+                                    <article class="metric-card glass-panel accent-orange">
+                                             <div class="metric-head"><span class="metric-label">Telemetry
+                                                               freshness</span><span class="metric-icon">◷</span></div>
+                                             <div class="metric-value"><span
+                                                               id="freshnessMetric">0.84</span><small>s</small></div>
+                                             <div class="metric-foot"><span class="trend up">↑ 12 ms</span><span>median
+                                                               ingest lag</span>
+                                                      <div class="sparkline orange" id="sparkFreshness"></div>
+                                             </div>
+                                    </article>
+                           </section>
+
+                           <section class="dashboard-grid">
+                                    <article class="panel glass-panel orbit-panel">
+                                             <div class="panel-heading">
+                                                      <div><span class="eyebrow">01 / ORBITAL INTELLIGENCE</span>
+                                                               <h2>Active search field</h2>
+                                                      </div>
+                                                      <button class="ghost-button" id="fieldMode" type="button">3D field
+                                                               <span>⌄</span></button>
+                                             </div>
+                                             <div class="field-map">
+                                                      <div class="field-grid"></div>
+                                                      <div class="field-axis axis-x"></div>
+                                                      <div class="field-axis axis-y"></div>
+                                                      <div class="field-ring ring-a"></div>
+                                                      <div class="field-ring ring-b"></div>
+                                                      <div class="field-ring ring-c"></div>
+                                                      <div class="field-star star-a"></div>
+                                                      <div class="field-star star-b"></div>
+                                                      <div class="field-star star-c"></div>
+                                                      <div class="field-star star-d"></div>
+                                                      <div class="craft craft-a"><span></span><label>NB-042</label>
+                                                      </div>
+                                                      <div class="craft craft-b"><span></span><label>VOYAGER-1</label>
+                                                      </div>
+                                                      <div class="craft craft-c"><span></span><label>KEPLER-90i</label>
+                                                      </div>
+                                                      <div class="field-center"><span class="center-core"></span>
+                                                               <div class="center-radar"></div><small>SEARCH
+                                                                        ORIGIN</small>
+                                                      </div>
+                                                      <div class="field-legend"><span><i class="legend-cyan"></i>
+                                                                        Spacecraft</span><span><i
+                                                                                 class="legend-violet"></i> Deep-space
+                                                                        object</span><span><i class="legend-lime"></i>
+                                                                        New signal</span></div>
+                                                      <div class="map-readout"><span>RA 18h 36m 56s</span><span>DEC −23°
+                                                                        23′ 24″</span><span>ZOOM 1.08×</span></div>
+                                             </div>
+                                    </article>
+
+                                    <article class="panel glass-panel telemetry-panel">
+                                             <div class="panel-heading">
+                                                      <div><span class="eyebrow">02 / RESEARCH TELEMETRY</span>
+                                                               <h2>Live parametrics</h2>
+                                                      </div>
+                                                      <span class="stream-status"><i></i> streaming</span>
+                                             </div>
+                                             <div class="telemetry-chart">
+                                                      <div class="chart-y">
+                                                               <span>100</span><span>75</span><span>50</span><span>25</span><span>0</span>
+                                                      </div>
+                                                      <div class="chart-area">
+                                                               <div class="chart-lines"></div><svg viewBox="0 0 560 180"
+                                                                        preserveAspectRatio="none"
+                                                                        aria-label="Telemetry waveform">
+                                                                        <defs>
+                                                                                 <linearGradient id="chartGradient"
+                                                                                          x1="0" x2="0" y1="0" y2="1">
+                                                                                          <stop offset="0%"
+                                                                                                   stop-color="#9c7cff"
+                                                                                                   stop-opacity=".34" />
+                                                                                          <stop offset="100%"
+                                                                                                   stop-color="#9c7cff"
+                                                                                                   stop-opacity="0" />
+                                                                                 </linearGradient>
+                                                                        </defs>
+                                                                        <path id="telemetryFill"
+                                                                                 d="M0,140 C35,125 40,75 72,91 S110,158 142,111 S181,71 212,104 S244,146 275,92 S315,44 345,72 S376,129 410,84 S447,63 480,95 S530,118 560,41 L560,180 L0,180 Z"
+                                                                                 fill="url(#chartGradient)" />
+                                                                        <path id="telemetryLine"
+                                                                                 d="M0,140 C35,125 40,75 72,91 S110,158 142,111 S181,71 212,104 S244,146 275,92 S315,44 345,72 S376,129 410,84 S447,63 480,95 S530,118 560,41"
+                                                                                 fill="none" stroke="#b79cff"
+                                                                                 stroke-width="2.5"
+                                                                                 vector-effect="non-scaling-stroke" />
+                                                                        <circle id="telemetryPoint" cx="560" cy="41"
+                                                                                 r="5" fill="#caff4a" stroke="#10131f"
+                                                                                 stroke-width="4"
+                                                                                 vector-effect="non-scaling-stroke" />
+                                                               </svg>
+                                                               <div class="chart-x">
+                                                                        <span>−60m</span><span>−45m</span><span>−30m</span><span>−15m</span><span>now</span>
+                                                               </div>
+                                                      </div>
+                                             </div>
+                                             <div class="telemetry-readouts">
+                                                      <div><span>Thermal load</span><strong id="thermalValue">42.8
+                                                                        <small>°C</small></strong><i
+                                                                        class="readout-bar"><b
+                                                                                 style="width:42%"></b></i></div>
+                                                      <div><span>Delta-v reserve</span><strong id="deltaValue">87.4
+                                                                        <small>%</small></strong><i
+                                                                        class="readout-bar"><b
+                                                                                 style="width:87%"></b></i></div>
+                                                      <div><span>Signal-to-noise</span><strong id="snrValue">24.6
+                                                                        <small>dB</small></strong><i
+                                                                        class="readout-bar"><b
+                                                                                 style="width:68%"></b></i></div>
+                                             </div>
+                                    </article>
+
+                                    <article class="panel glass-panel targets-panel">
+                                             <div class="panel-heading">
+                                                      <div><span class="eyebrow">03 / PRIORITY CONTACTS</span>
+                                                               <h2>Tracked spacecraft</h2>
+                                                      </div><button class="text-button" id="viewAllTargets"
+                                                               type="button">View all <span>↗</span></button>
+                                             </div>
+                                             <div class="target-list" id="targetList">
+                                                      <button class="target-row" data-target="Asteria-4"
+                                                               type="button"><span
+                                                                        class="target-mark cyan">A4</span><span
+                                                                        class="target-info"><strong>Asteria-4</strong><small>LEO
+                                                                                 / Earth observation</small></span><span
+                                                                        class="target-signal"><i></i> 98.2%</span><span
+                                                                        class="row-arrow">↗</span></button>
+                                                      <button class="target-row" data-target="Pioneer IX"
+                                                               type="button"><span
+                                                                        class="target-mark violet">PX</span><span
+                                                                        class="target-info"><strong>Pioneer
+                                                                                 IX</strong><small>Heliocentric /
+                                                                                 deep-space relay</small></span><span
+                                                                        class="target-signal"><i></i> 94.7%</span><span
+                                                                        class="row-arrow">↗</span></button>
+                                                      <button class="target-row" data-target="M-07 Lumen"
+                                                               type="button"><span
+                                                                        class="target-mark lime">M7</span><span
+                                                                        class="target-info"><strong>M-07
+                                                                                 Lumen</strong><small>GEO / materials
+                                                                                 research</small></span><span
+                                                                        class="target-signal"><i></i> 91.3%</span><span
+                                                                        class="row-arrow">↗</span></button>
+                                                      <button class="target-row" data-target="Orion Surveyor"
+                                                               type="button"><span
+                                                                        class="target-mark orange">OS</span><span
+                                                                        class="target-info"><strong>Orion
+                                                                                 Surveyor</strong><small>L2 / exoplanet
+                                                                                 survey</small></span><span
+                                                                        class="target-signal warning"><i></i>
+                                                                        86.9%</span><span
+                                                                        class="row-arrow">↗</span></button>
+                                             </div>
+                                    </article>
+
+                                    <article class="panel glass-panel activity-panel">
+                                             <div class="panel-heading">
+                                                      <div><span class="eyebrow">04 / EVENT STREAM</span>
+                                                               <h2>Recent discoveries</h2>
+                                                      </div><span class="stream-filter">ALL EVENTS <span>⌄</span></span>
+                                             </div>
+                                             <div class="activity-list" id="activityList">
+                                                      <div class="activity-item"><span
+                                                                        class="activity-time">08:42:16</span><span
+                                                                        class="activity-icon cyan">⌁</span>
+                                                               <div><strong>Coherence anomaly
+                                                                                 isolated</strong><small>Signal cluster
+                                                                                 / 12.4 ly baseline</small></div><span
+                                                                        class="activity-tag">SIGNAL</span>
+                                                      </div>
+                                                      <div class="activity-item"><span
+                                                                        class="activity-time">08:39:04</span><span
+                                                                        class="activity-icon violet">◈</span>
+                                                               <div><strong>Orbital solution
+                                                                                 updated</strong><small>Asteria-4 /
+                                                                                 ephemeris revision 3.8</small></div>
+                                                               <span class="activity-tag">ORBIT</span>
+                                                      </div>
+                                                      <div class="activity-item"><span
+                                                                        class="activity-time">08:31:52</span><span
+                                                                        class="activity-icon lime">✦</span>
+                                                               <div><strong>Propulsion signature
+                                                                                 confirmed</strong><small>M-07 Lumen /
+                                                                                 ion profile match</small></div><span
+                                                                        class="activity-tag">CRAFT</span>
+                                                      </div>
+                                                      <div class="activity-item"><span
+                                                                        class="activity-time">08:26:17</span><span
+                                                                        class="activity-icon orange">◷</span>
+                                                               <div><strong>Telemetry packet
+                                                                                 recovered</strong><small>Deep-space
+                                                                                 relay / NR-07 uplink</small></div><span
+                                                                        class="activity-tag">DATA</span>
+                                                      </div>
+                                             </div>
+                                    </article>
+                           </section>
+
+                           <footer class="page-footer"><span>NEBULON INTELLIGENCE PLATFORM
+                                             <b>v2.4.8</b></span><span>Telemetry is simulated for prototype
+                                             demonstration</span><span><i class="footer-dot"></i> SYSTEM HEALTH
+                                             99.98%</span></footer>
+                  </main>
+         </div>
+
+         <div class="toast" id="toast" role="status" aria-live="polite"><span class="toast-mark">✦</span>
+                  <div><strong id="toastTitle">Search initialized</strong><small id="toastMessage">Scanning the Nebulon
+                                    index...</small></div><button id="toastClose" type="button"
+                           aria-label="Close notification">×</button>
+         </div>
+         <script src="script.js"></script>
+</body>
+
+</html>
