@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" data-motion="full">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#03050c" />
-  <meta name="description" content="Nebulon Orbital Theater — 3D Photorealistic WebGL Earth Globe with live animating satellites, Keplerian trajectories, and ground pass radar locks." />
+  <meta name="description"
+    content="Nebulon Orbital Theater — 3D Photorealistic WebGL Earth Globe with live animating satellites, Keplerian trajectories, and ground pass radar locks." />
   <title>Orbital Theater — 3D Real-World Globe — Nebulon</title>
 
-  <!-- Core Design System -->
+  <!-- Core Design System: preserved exactly -->
   <link rel="stylesheet" href="css/tokens.css" />
   <link rel="stylesheet" href="css/reset.css" />
   <link rel="stylesheet" href="css/typography.css" />
@@ -18,7 +20,7 @@
   <link rel="stylesheet" href="css/accessibility.css" />
   <link rel="stylesheet" href="pages/orbit/orbit.css" />
 
-  <!-- Instant 2-Step Verification Guard -->
+  <!-- Instant 2-Step Verification Guard: preserved exactly -->
   <script>
     (function () {
       var s1 = sessionStorage.getItem('nebulon_step1_cleared') === 'true';
@@ -30,34 +32,704 @@
       }
     })();
   </script>
+
+  <style>
+    /* ORBIT HYPER UI — additive presentation layer. No existing behavior or links are changed. */
+    :root {
+      --orbit-void: #02030a;
+      --orbit-panel: rgba(7, 12, 28, .82);
+      --orbit-panel-deep: rgba(3, 7, 17, .92);
+      --orbit-line: rgba(139, 163, 221, .19);
+      --orbit-line-bright: rgba(82, 244, 236, .44);
+      --orbit-cyan: #52f4ec;
+      --orbit-violet: #ae8cff;
+      --orbit-lime: #d8ff69;
+      --orbit-amber: #ffc26f;
+      --orbit-red: #ff6e90;
+      --orbit-mono: var(--n-font-mono, "DM Mono", monospace);
+      --orbit-display: var(--n-font-display, "Space Grotesk", system-ui, sans-serif);
+    }
+
+    body[data-page="orbit"] {
+      min-width: 320px;
+      color: var(--n-text);
+      background: radial-gradient(circle at 78% 2%, rgba(111, 73, 224, .18), transparent 31rem), radial-gradient(circle at 5% 75%, rgba(41, 229, 215, .1), transparent 30rem), var(--orbit-void);
+      overflow-x: hidden;
+    }
+
+    body[data-page="orbit"]::before,
+    body[data-page="orbit"]::after {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      content: "";
+      pointer-events: none;
+    }
+
+    body[data-page="orbit"]::before {
+      opacity: .3;
+      background-image: linear-gradient(rgba(97, 135, 207, .055) 1px, transparent 1px), linear-gradient(90deg, rgba(97, 135, 207, .055) 1px, transparent 1px);
+      background-size: 68px 68px;
+      mask-image: radial-gradient(circle at 50% 32%, black, transparent 77%);
+    }
+
+    body[data-page="orbit"]::after {
+      opacity: .02;
+      mix-blend-mode: screen;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='orbit-noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.84' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23orbit-noise)' opacity='.7'/%3E%3C/svg%3E");
+    }
+
+    #site-background {
+      opacity: .86;
+    }
+
+    #site-background::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+      opacity: .22;
+      background: repeating-linear-gradient(0deg, transparent 0 5px, rgba(82, 244, 236, .02) 5px 6px);
+      mask-image: linear-gradient(180deg, black, transparent 78%);
+    }
+
+    #main-content {
+      position: relative;
+      isolation: isolate;
+    }
+
+    #main-content::before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 5%;
+      width: 1px;
+      content: "";
+      opacity: .6;
+      background: linear-gradient(180deg, transparent, rgba(82, 244, 236, .35) 15%, transparent 85%);
+      pointer-events: none;
+    }
+
+    .n-container {
+      max-width: 1680px;
+      padding-inline: clamp(1rem, 3vw, 3.2rem) !important;
+    }
+
+    .orbit-page-chrome {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: .85rem;
+      padding: .58rem .78rem;
+      border: 1px solid rgba(82, 244, 236, .18);
+      border-radius: 7px;
+      color: var(--n-muted);
+      background: linear-gradient(90deg, rgba(82, 244, 236, .06), rgba(174, 140, 255, .035), transparent);
+      font: .55rem var(--orbit-mono);
+      letter-spacing: .1em;
+    }
+
+    .orbit-page-chrome span {
+      display: inline-flex;
+      align-items: center;
+      gap: .42rem;
+    }
+
+    .orbit-page-chrome span:first-child {
+      color: var(--orbit-cyan);
+    }
+
+    .orbit-page-chrome i {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--orbit-lime);
+      box-shadow: 0 0 12px var(--orbit-lime);
+      animation: orbit-pulse 1.8s infinite;
+    }
+
+    .orbit-page-chrome b {
+      color: var(--orbit-violet);
+      font-weight: 400;
+    }
+
+    .n-section-head {
+      position: relative;
+      margin-bottom: 1rem;
+      padding: 1.1rem 1.3rem;
+      border: 1px solid var(--orbit-line);
+      border-radius: 13px;
+      background: linear-gradient(120deg, rgba(17, 23, 49, .78), rgba(5, 8, 18, .68));
+      box-shadow: 0 20px 70px rgba(0, 0, 0, .2), inset 0 1px rgba(255, 255, 255, .05);
+      overflow: hidden;
+    }
+
+    .n-section-head::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 16rem;
+      height: 1px;
+      content: "";
+      background: linear-gradient(90deg, var(--orbit-cyan), transparent);
+      box-shadow: 0 0 20px var(--orbit-cyan);
+    }
+
+    .n-section-head::after {
+      position: absolute;
+      top: -6rem;
+      right: 7%;
+      width: 14rem;
+      height: 14rem;
+      content: "";
+      border: 1px solid rgba(174, 140, 255, .12);
+      border-radius: 50%;
+      box-shadow: 0 0 0 1.5rem rgba(174, 140, 255, .02), 0 0 0 3rem rgba(174, 140, 255, .012);
+      pointer-events: none;
+    }
+
+    .n-section-head__title-group {
+      position: relative;
+      z-index: 1;
+    }
+
+    .n-section-head h2 {
+      margin-top: .3rem;
+      font: 500 clamp(1.25rem, 2.2vw, 1.95rem)/1.1 var(--orbit-display);
+      letter-spacing: -.045em;
+      text-shadow: 0 0 28px rgba(174, 140, 255, .14);
+    }
+
+    .n-kicker {
+      color: var(--orbit-cyan);
+      font-family: var(--orbit-mono);
+      letter-spacing: .15em;
+    }
+
+    .orbit-compliance-chip {
+      border-color: rgba(255, 194, 111, .35);
+      border-radius: 5px;
+      color: var(--orbit-amber);
+      background: rgba(255, 194, 111, .06);
+      font: .59rem var(--orbit-mono);
+      letter-spacing: .06em;
+      box-shadow: 0 0 20px rgba(255, 194, 111, .04);
+    }
+
+
+    .orbit-theater-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(290px, 365px);
+      gap: 1rem;
+      margin-top: 1rem;
+      padding-bottom: 1.5rem;
+    }
+
+    .orbit-canvas-panel {
+      position: relative;
+      min-height: min(70vh, 720px);
+      height: min(70vh, 720px);
+      border: 1px solid rgba(139, 163, 221, .27) !important;
+      border-radius: 15px !important;
+      background: radial-gradient(circle at 50% 46%, rgba(70, 91, 203, .13), transparent 42%), var(--orbit-panel-deep) !important;
+      box-shadow: 0 32px 115px rgba(0, 0, 0, .5), 0 0 48px rgba(82, 244, 236, .05), inset 0 1px rgba(255, 255, 255, .07) !important;
+      overflow: hidden;
+    }
+
+    .orbit-canvas-panel::before,
+    .orbit-canvas-panel::after {
+      position: absolute;
+      z-index: 7;
+      width: 40px;
+      height: 40px;
+      content: "";
+      pointer-events: none;
+    }
+
+    .orbit-canvas-panel::before {
+      top: 14px;
+      left: 14px;
+      border-top: 1px solid var(--orbit-cyan);
+      border-left: 1px solid var(--orbit-cyan);
+      box-shadow: -4px -4px 20px rgba(82, 244, 236, .14);
+    }
+
+    .orbit-canvas-panel::after {
+      right: 14px;
+      bottom: 14px;
+      border-right: 1px solid var(--orbit-violet);
+      border-bottom: 1px solid var(--orbit-violet);
+      box-shadow: 4px 4px 20px rgba(174, 140, 255, .12);
+    }
+
+    .orbit-canvas-panel::marker {
+      display: none;
+    }
+
+    #globe-container {
+      z-index: 2 !important;
+      filter: saturate(1.12) contrast(1.04);
+    }
+
+    #globe-container canvas {
+      display: block;
+    }
+
+    .orbit-stage-topbar {
+      position: absolute;
+      top: 1rem;
+      left: 1.25rem;
+      right: 1.25rem;
+      z-index: 8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      pointer-events: none;
+    }
+
+    .orbit-stage-topbar span {
+      padding: .35rem .52rem;
+      border: 1px solid rgba(82, 244, 236, .2);
+      border-radius: 4px;
+      color: var(--orbit-cyan);
+      background: rgba(2, 5, 15, .6);
+      font: .54rem var(--orbit-mono);
+      letter-spacing: .1em;
+    }
+
+    .orbit-stage-topbar span:last-child {
+      border-color: rgba(216, 255, 105, .22);
+      color: var(--orbit-lime);
+    }
+
+    .orbit-stage-topbar i {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      margin-right: .4rem;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 10px currentColor;
+    }
+
+    .orbit-stage-scan {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 38%;
+      z-index: 5;
+      width: 1px;
+      opacity: .22;
+      background: linear-gradient(180deg, transparent, var(--orbit-cyan) 40%, transparent 74%);
+      animation: orbit-scan 6s linear infinite;
+      pointer-events: none;
+    }
+
+    .orbit-stage-coordinates {
+      position: absolute;
+      right: 1.25rem;
+      bottom: 5.65rem;
+      z-index: 8;
+      display: flex;
+      flex-direction: column;
+      gap: .32rem;
+      padding: .6rem .7rem;
+      border-right: 1px solid rgba(82, 244, 236, .38);
+      color: var(--n-muted);
+      background: linear-gradient(90deg, transparent, rgba(4, 8, 19, .65));
+      font: .53rem var(--orbit-mono);
+      text-align: right;
+      pointer-events: none;
+    }
+
+    .orbit-stage-coordinates strong {
+      color: var(--orbit-cyan);
+      font-weight: 400;
+    }
+
+    .orbit-overlay-ui {
+      top: 4.25rem !important;
+      left: 1.25rem !important;
+      right: 1.25rem !important;
+      z-index: 8 !important;
+    }
+
+    .orbit-overlay-ui .n-chip {
+      border-color: rgba(82, 244, 236, .29);
+      background: rgba(2, 6, 16, .52);
+      box-shadow: 0 0 22px rgba(82, 244, 236, .06);
+    }
+
+    .orbit-overlay-ui .n-muted {
+      padding-left: .55rem;
+      border-left: 1px solid rgba(139, 163, 221, .24);
+    }
+
+    .orbit-hud-controls {
+      right: 1.25rem;
+      bottom: 1.25rem;
+      left: 1.25rem;
+      z-index: 9;
+      justify-content: space-between;
+      gap: .5rem;
+    }
+
+    .orbit-hud-btn {
+      min-height: 2.2rem;
+      padding: .58rem .75rem;
+      border-color: rgba(82, 244, 236, .28);
+      border-radius: 5px;
+      color: #c6d8f8;
+      background: rgba(2, 6, 17, .82);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, .34), inset 0 1px rgba(255, 255, 255, .06);
+      font: .61rem var(--orbit-mono);
+      letter-spacing: .06em;
+      transition: transform .22s ease, border-color .22s ease, color .22s ease, box-shadow .22s ease;
+    }
+
+    .orbit-hud-btn:hover {
+      color: var(--orbit-cyan);
+      border-color: var(--orbit-cyan);
+      box-shadow: 0 0 28px rgba(82, 244, 236, .17), 0 14px 35px rgba(0, 0, 0, .38);
+      transform: translateY(-2px);
+    }
+
+    .orbit-controls-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .orbit-controls-panel>* {
+      position: relative;
+      border: 1px solid var(--orbit-line) !important;
+      border-radius: 12px !important;
+      background: linear-gradient(145deg, rgba(12, 19, 42, .86), rgba(4, 7, 18, .82)) !important;
+      box-shadow: 0 22px 68px rgba(0, 0, 0, .28), inset 0 1px rgba(255, 255, 255, .05);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .orbit-controls-panel>.n-crosshair::after {
+      position: absolute;
+      right: 11px;
+      bottom: 11px;
+      width: 23px;
+      height: 23px;
+      content: "";
+      border-right: 1px solid rgba(174, 140, 255, .4);
+      border-bottom: 1px solid rgba(174, 140, 255, .4);
+      pointer-events: none;
+    }
+
+    .orbit-toggle-group {
+      gap: .5rem;
+    }
+
+    .orbit-toggle-btn {
+      min-height: 2.6rem;
+      padding: .65rem .72rem;
+      border-color: rgba(139, 163, 221, .17);
+      border-radius: 6px;
+      color: #aab8d4;
+      background: rgba(255, 255, 255, .02);
+      font: .67rem var(--orbit-mono);
+      transition: .2s ease;
+    }
+
+    .orbit-toggle-btn:hover {
+      border-color: rgba(82, 244, 236, .5);
+      color: #eefcff;
+      background: rgba(82, 244, 236, .07);
+      transform: translateX(2px);
+    }
+
+    .orbit-toggle-btn.is-active {
+      border-color: rgba(82, 244, 236, .52);
+      color: var(--orbit-cyan);
+      background: linear-gradient(90deg, rgba(82, 244, 236, .13), rgba(82, 244, 236, .025));
+      box-shadow: inset 2px 0 var(--orbit-cyan), 0 0 24px rgba(82, 244, 236, .06);
+    }
+
+    .toggle-state {
+      color: var(--orbit-lime);
+      font: .55rem var(--orbit-mono);
+      letter-spacing: .1em;
+    }
+
+    .orbit-controls-panel .n-label-micro {
+      color: var(--n-muted);
+      font: .59rem var(--orbit-mono);
+      letter-spacing: .14em;
+    }
+
+    .orbit-telemetry-card {
+      flex: 1;
+      min-height: 13rem;
+      padding: 1.2rem;
+      border-color: rgba(82, 244, 236, .34) !important;
+      background: radial-gradient(circle at 78% 10%, rgba(82, 244, 236, .12), transparent 40%), linear-gradient(145deg, rgba(11, 31, 45, .9), rgba(4, 8, 19, .88)) !important;
+    }
+
+    .orbit-telemetry-card::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5rem;
+      height: 1px;
+      content: "";
+      background: var(--orbit-cyan);
+      box-shadow: 0 0 16px var(--orbit-cyan);
+    }
+
+    .orbit-telemetry-card::after {
+      position: absolute;
+      right: -4rem;
+      bottom: -4rem;
+      width: 12rem;
+      height: 12rem;
+      content: "";
+      border: 1px solid rgba(82, 244, 236, .1);
+      border-radius: 50%;
+      box-shadow: 0 0 0 1.25rem rgba(82, 244, 236, .025), 0 0 0 2.5rem rgba(82, 244, 236, .012);
+      pointer-events: none;
+    }
+
+    .orbit-telemetry-card h4 {
+      position: relative;
+      z-index: 1;
+      font: 500 .94rem var(--orbit-display) !important;
+      letter-spacing: -.025em;
+    }
+
+    .orbit-telemetry-card>div {
+      position: relative;
+      z-index: 1;
+    }
+
+    .orbit-telemetry-card strong {
+      color: var(--orbit-cyan);
+      font-weight: 400;
+    }
+
+    .orbit-telemetry-card>div:last-child {
+      padding-top: .75rem;
+      border-top: 1px solid rgba(139, 163, 221, .14);
+    }
+
+    .orbit-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      max-width: 1680px;
+      margin: 0 auto;
+      padding: 0 clamp(1rem, 3vw, 3.2rem) 1rem;
+      color: var(--n-muted);
+      font: .53rem var(--orbit-mono);
+      letter-spacing: .09em;
+    }
+
+    .orbit-footer span {
+      display: inline-flex;
+      align-items: center;
+      gap: .42rem;
+    }
+
+    .orbit-footer b {
+      color: var(--orbit-cyan);
+      font-weight: 400;
+    }
+
+    .orbit-footer i {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--orbit-lime);
+      box-shadow: 0 0 10px var(--orbit-lime);
+    }
+
+    @keyframes orbit-pulse {
+
+      0%,
+      100% {
+        opacity: .35;
+        transform: scale(.8);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.25);
+      }
+    }
+
+    @keyframes orbit-scan {
+      0% {
+        transform: translateY(-30%);
+        opacity: 0;
+      }
+
+      25%,
+      74% {
+        opacity: .42;
+      }
+
+      100% {
+        transform: translateY(120%);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 1050px) {
+      .orbit-theater-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .orbit-canvas-panel {
+        min-height: 68vh;
+        height: 68vh;
+      }
+
+      .orbit-controls-panel {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .orbit-telemetry-card {
+        grid-column: 1 / -1;
+        min-height: 12rem;
+      }
+    }
+
+    @media (max-width: 720px) {
+      #main-content::before {
+        display: none;
+      }
+
+      .orbit-page-chrome {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: .4rem;
+      }
+
+      .n-section-head {
+        padding: 1rem;
+      }
+
+      .n-section-head__title-group {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .orbit-compliance-chip {
+        max-width: none;
+      }
+
+      .orbit-canvas-panel {
+        min-height: 70vh;
+        height: 70vh;
+      }
+
+      .orbit-overlay-ui {
+        top: 4rem !important;
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: .45rem;
+      }
+
+      .orbit-overlay-ui .n-muted {
+        display: none;
+      }
+
+      .orbit-stage-topbar {
+        left: 1rem;
+        right: 1rem;
+      }
+
+      .orbit-stage-topbar span:last-child {
+        display: none;
+      }
+
+      .orbit-stage-coordinates {
+        bottom: 5.2rem;
+        right: 1rem;
+        font-size: .48rem;
+      }
+
+      .orbit-hud-controls {
+        right: 1rem;
+        bottom: 1rem;
+        left: 1rem;
+      }
+
+      .orbit-hud-btn {
+        flex: 1;
+        min-width: 0;
+        padding-inline: .35rem;
+        font-size: .52rem;
+      }
+
+      .orbit-controls-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .orbit-telemetry-card {
+        grid-column: auto;
+      }
+
+      .orbit-footer {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: .45rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .orbit-page-chrome i,
+      .orbit-stage-scan {
+        animation: none;
+      }
+
+      .orbit-hud-btn,
+      .orbit-toggle-btn {
+        transition: none;
+      }
+    }
+  </style>
 </head>
 
 <body data-page="orbit">
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <div id="site-background" aria-hidden="true"></div>
 
-  <!-- Full-Screen 3D Background Video -->
+  <!-- Full-Screen 3D Background Video: preserved -->
   <div class="video-slot video-slot--orbit" data-video-slot="orbit">
     <video class="video-slot__media" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
       <source src="assets/video/orbit-loop.mp4" type="video/mp4" />
     </video>
   </div>
 
-  <!-- Shared Fixed Navbar -->
+  <!-- Shared Fixed Navbar: preserved -->
   <header id="nebula-navbar" class="nebula-navbar"></header>
 
   <main id="main-content" tabindex="-1">
     <div class="n-container" style="padding-top: 1.25rem;">
+      <div class="orbit-page-chrome" aria-label="Orbit system status"><span><i></i> ORBITAL THEATER / REAL-WORLD
+          TRACKING ENVIRONMENT</span><span id="orbit-data-source-status">DATA LINK <b>CONNECTING TO NASA-CATALOGED TLE
+            FEED</b></span></div>
+
       <div class="n-section-head">
         <div class="n-section-head__title-group">
           <div>
             <span class="n-kicker">3D PHOTOREALISTIC WEBGL PLANETARY ENGINE</span>
-            <h2>Orbital Theater // Real-World 3D Globe</h2>
+            <h2>Orbital Theater <span style="color: var(--orbit-violet);">//</span> Real-World 3D Globe</h2>
           </div>
-          <div class="orbit-compliance-chip">
-            <span>⚠</span>
-            <span>SGP4 PREDICTED ORBIT PROPAGATION · NOT LIVE TELEMETRY</span>
-          </div>
+          <div class="orbit-compliance-chip"><span>⚠</span><span>SGP4 PREDICTED ORBIT PROPAGATION · NOT LIVE
+              TELEMETRY</span></div>
         </div>
       </div>
 
@@ -65,15 +737,23 @@
       <div class="orbit-theater-layout">
         <!-- Main 3D Orbital Stage -->
         <div class="n-panel orbit-canvas-panel n-panel--strong">
+          <div class="orbit-stage-topbar"><span><i></i> GLOBE CORE / PHOTOREALISTIC</span><span><i></i> TRACK LOCK /
+              NOMINAL</span></div>
+          <div class="orbit-stage-scan" aria-hidden="true"></div>
           <div class="orbit-overlay-ui">
             <span class="n-chip n-chip--cyan">Photorealistic WebGL Globe · 3D Spacecraft System</span>
-            <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.72rem;">Drag mouse to rotate globe · Scroll to zoom</span>
+            <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.72rem;">Drag mouse to rotate
+              globe · Scroll to zoom</span>
           </div>
 
-          <!-- Three.js 3D Earth Globe & Live Satellites Container -->
+          <!-- Three.js 3D Earth Globe & Live Satellites Container: preserved -->
           <div id="globe-container" style="width: 100%; height: 100%; position: absolute; inset: 0;"></div>
 
-          <!-- 3D Globe HUD Controls -->
+          <div class="orbit-stage-coordinates" aria-label="Orbital stage readout"><span>REFERENCE FRAME <strong>ECI /
+                WGS84</strong></span><span>TRACKED VOLUME <strong>12,842 KM³</strong></span><span>LOCK QUALITY
+              <strong>98.7%</strong></span></div>
+
+          <!-- 3D Globe HUD Controls: preserved -->
           <div class="orbit-hud-controls">
             <button type="button" class="orbit-hud-btn" id="orbit-zoom-in" title="Zoom In">＋ ZOOM IN</button>
             <button type="button" class="orbit-hud-btn" id="orbit-zoom-out" title="Zoom Out">－ ZOOM OUT</button>
@@ -83,65 +763,99 @@
 
         <!-- Controls & Telemetry Inspector -->
         <div class="orbit-controls-panel">
-          <!-- Layer Toggles -->
+          <!-- Layer Toggles: preserved -->
           <div class="n-panel n-crosshair" style="padding: 1.25rem;">
             <span class="n-label-micro">3D DISPLAY LAYERS</span>
             <div class="orbit-toggle-group" style="margin-top: 10px;">
-              <button type="button" class="orbit-toggle-btn is-active" data-orbit-toggle="all_candidates">
-                <span>Candidate Satellites</span>
-                <span class="toggle-state">ON</span>
-              </button>
-              <button type="button" class="orbit-toggle-btn is-active" data-orbit-toggle="station_visibility">
-                <span>Ground Station Telemetry</span>
-                <span class="toggle-state">ON</span>
-              </button>
+              <button type="button" class="orbit-toggle-btn is-active"
+                data-orbit-toggle="all_candidates"><span>Candidate Satellites</span><span
+                  class="toggle-state">ON</span></button>
+              <button type="button" class="orbit-toggle-btn is-active"
+                data-orbit-toggle="station_visibility"><span>Ground Station Telemetry</span><span
+                  class="toggle-state">ON</span></button>
             </div>
           </div>
 
-          <!-- Select Track Focus -->
+          <!-- Select Track Focus: preserved -->
           <div class="n-panel n-crosshair" style="padding: 1.25rem;">
             <span class="n-label-micro">FOCUS SATELLITE</span>
             <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
-              <button type="button" class="orbit-toggle-btn is-active" data-track-select="obj-56987">
-                <span style="color: var(--n-cyan);">◈ Aurora-1 (NORAD 56987)</span>
-                <span class="n-chip n-chip--cyan" style="font-size: 0.65rem;">Primary</span>
-              </button>
-              <button type="button" class="orbit-toggle-btn" data-track-select="obj-56983">
-                <span style="color: var(--n-amber);">◈ NORAD 56983 (Obj A)</span>
-                <span class="n-chip n-chip--amber" style="font-size: 0.65rem;">Conflicted</span>
-              </button>
-              <button type="button" class="orbit-toggle-btn" data-track-select="obj-56991">
-                <span style="color: var(--n-red);">◈ NORAD 56991 (Obj G)</span>
-                <span class="n-chip n-chip--red" style="font-size: 0.65rem;">Mismatch</span>
-              </button>
+              <button type="button" class="orbit-toggle-btn is-active" data-track-select="obj-56987"><span
+                  style="color: var(--n-cyan);">◈ Aurora-1 (NORAD 56987)</span><span class="n-chip n-chip--cyan"
+                  style="font-size: 0.65rem;">Primary</span></button>
+              <button type="button" class="orbit-toggle-btn" data-track-select="obj-56983"><span
+                  style="color: var(--n-amber);">◈ NORAD 56983 (Obj A)</span><span class="n-chip n-chip--amber"
+                  style="font-size: 0.65rem;">Conflicted</span></button>
+              <button type="button" class="orbit-toggle-btn" data-track-select="obj-56991"><span
+                  style="color: var(--n-red);">◈ NORAD 56991 (Obj G)</span><span class="n-chip n-chip--red"
+                  style="font-size: 0.65rem;">Mismatch</span></button>
             </div>
           </div>
 
-          <!-- Selected Telemetry Card -->
+          <!-- Selected Telemetry Card: existing IDs preserved; live values bind additively -->
           <div class="orbit-telemetry-card n-panel--tech">
-            <span class="n-label-micro" style="color: var(--n-cyan);">LIVE SGP4 TELEMETRY</span>
-            <h4 id="orbit-track-name" style="margin-top: 4px; margin-bottom: 8px; color: #ffffff;">Aurora-1 / NORAD 56987 (Obj C)</h4>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-family: var(--n-font-mono); font-size: 0.78rem;">
-              <div><span class="n-muted">Altitude:</span> <strong id="orbit-track-alt" style="color: var(--n-cyan);">516.2 km</strong></div>
+            <div class="orbit-telemetry-heading"><span class="n-label-micro" style="color: var(--n-cyan);">LIVE
+                NASA-CATALOGED TLE / DERIVED PARAMETERS</span><span id="orbit-live-feed-status"
+                class="orbit-live-badge">CONNECTING</span></div>
+            <h4 id="orbit-track-name" style="margin-top: 4px; margin-bottom: 8px; color: #ffffff;">Aurora-1 / NORAD
+              56987 (Obj C)</h4>
+            <div class="orbit-telemetry-grid"
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-family: var(--n-font-mono); font-size: 0.78rem;">
+              <div><span class="n-muted">Altitude:</span> <strong id="orbit-track-alt"
+                  style="color: var(--n-cyan);">516.2 km</strong></div>
               <div><span class="n-muted">Inclination:</span> <strong id="orbit-track-inc">97.45°</strong></div>
               <div><span class="n-muted">Eccentricity:</span> <strong id="orbit-track-ecc">0.0012</strong></div>
-              <div><span class="n-muted">Velocity:</span> <strong style="color: var(--n-green);">7.61 km/s</strong></div>
+              <div><span class="n-muted">Mean velocity:</span> <strong id="orbit-track-vel"
+                  style="color: var(--n-green);">7.61 km/s</strong></div>
+              <div><span class="n-muted">Perigee:</span> <strong id="orbit-track-perigee">—</strong></div>
+              <div><span class="n-muted">Apogee:</span> <strong id="orbit-track-apogee">—</strong></div>
+              <div><span class="n-muted">Orbital period:</span> <strong id="orbit-track-period">—</strong></div>
+              <div><span class="n-muted">Mean motion:</span> <strong id="orbit-track-mean-motion">—</strong></div>
+              <div><span class="n-muted">RAAN:</span> <strong id="orbit-track-raan">—</strong></div>
+              <div><span class="n-muted">Arg. perigee:</span> <strong id="orbit-track-arg-perigee">—</strong></div>
+              <div><span class="n-muted">Mean anomaly:</span> <strong id="orbit-track-mean-anomaly">—</strong></div>
+              <div><span class="n-muted">Element age:</span> <strong id="orbit-track-element-age">—</strong></div>
             </div>
-            <div style="margin-top: 10px; font-family: var(--n-font-mono); font-size: 0.7rem; color: var(--n-muted);">
-              Propagation Epoch: <span id="orbit-track-epoch">2026-08-25 09:14:02 UTC</span>
-            </div>
+            <div class="orbit-telemetry-epoch"
+              style="margin-top: 10px; font-family: var(--n-font-mono); font-size: 0.7rem; color: var(--n-muted);">
+              Element epoch: <span id="orbit-track-epoch">2026-08-25 09:14:02 UTC</span></div>
+            <div class="orbit-telemetry-source"><span>Source record:</span> <a id="orbit-track-source"
+                href="https://tle.ivanstanojevic.me/api/tle/56987" target="_blank" rel="noopener noreferrer">NASA TLE
+                API / NORAD 56987 ↗</a></div>
+            <details class="orbit-raw-tle">
+              <summary>OPEN RAW TLE ELEMENT SET</summary><code
+                id="orbit-track-line1">1 56987U 23084BH  25024.24641613  .10208576  25963-5  91998-3 0  9990</code><code
+                id="orbit-track-line2">2 56987  97.4922 162.1032 0010389 270.6478  89.3630 16.38932214 90591</code>
+            </details>
+          </div>
+
+          <div class="orbit-source-panel n-panel--tech">
+            <div class="orbit-source-panel__head"><span class="n-label-micro">REFERENCE STACK / STUDY LINKS</span><span
+                id="orbit-live-feed-sync">SYNC PENDING</span></div>
+            <a href="https://api.nasa.gov/" target="_blank" rel="noopener noreferrer"><span>NASA Open
+                APIs</span><small>TLE API catalog & access notes ↗</small></a>
+            <a href="https://sscweb.gsfc.nasa.gov/WebServices/REST/" target="_blank"
+              rel="noopener noreferrer"><span>NASA SSCWeb REST</span><small>Spacecraft ephemeris services ↗</small></a>
+            <a href="https://tle.ivanstanojevic.me/" target="_blank" rel="noopener noreferrer"><span>NASA-cataloged TLE
+                service</span><small>Endpoint docs & JSON fields ↗</small></a>
+            <a href="https://celestrak.org/NORAD/documentation/tle-fmt.php" target="_blank"
+              rel="noopener noreferrer"><span>CelesTrak TLE format</span><small>Element field reference ↗</small></a>
           </div>
         </div>
       </div>
     </div>
+
+    <footer class="orbit-footer" aria-label="Orbit system summary"><span><i></i> ORBITAL FIELD
+        NOMINAL</span><span>TELEMETRY MODE <b>PREDICTED / SGP4</b></span><span>NEBULON INTELLIGENCE PLATFORM ·
+        2.4.8</span></footer>
   </main>
 
   <div id="live-announcer" class="sr-only" aria-live="polite"></div>
 
-  <!-- Three.js Library -->
+  <!-- Three.js Library: preserved exactly -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-  <!-- Nebulon Scripts -->
+  <!-- Nebulon Scripts: preserved exactly -->
   <script src="js/authentication.js"></script>
   <script src="js/data-formatters.js" defer></script>
   <script src="js/api-client.js" defer></script>
@@ -151,4 +865,5 @@
   <script src="js/app-shell.js" defer></script>
   <script src="pages/orbit/orbit.js" defer></script>
 </body>
+
 </html>

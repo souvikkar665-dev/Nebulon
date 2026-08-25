@@ -39,6 +39,14 @@
     station_visibility: true
   };
 
+  // Live public TLE feed cataloged by NASA. Existing demo parameters remain the fallback.
+  const LIVE_TLE_ENDPOINT = 'https://tle.ivanstanojevic.me/api/tle';
+  const LIVE_REFRESH_MS = 15 * 60 * 1000;
+  const EARTH_MEAN_RADIUS_KM = 6378.137;
+  const EARTH_MU_KM3_S2 = 398600.4418;
+  const liveTleRecords = new Map();
+  let liveRefreshTimer = null;
+
   // Distinct Criss-Crossing 3D Orbital Parameters (Different Planes & Angles)
   const SATELLITE_DEFINITIONS = [
     {
@@ -147,6 +155,7 @@
     watchContainerSize(container);
     bindUIControls();
     updateTelemetryCard();
+    initLiveTleFeed();
 
     lastFrameTime = performance.now();
     animate(lastFrameTime);
@@ -727,12 +736,165 @@
     const incEl = document.getElementById('orbit-track-inc');
     const eccEl = document.getElementById('orbit-track-ecc');
     const epochEl = document.getElementById('orbit-track-epoch');
+    const liveRecord = liveTleRecords.get(activeTrackId);
+    const live = liveRecord ? parseTleRecord(liveRecord) : null;
 
-    if (nameEl) nameEl.textContent = orb.name;
-    if (altEl) altEl.textContent = `${orb.def.alt_km} km`;
-    if (incEl) incEl.textContent = `${orb.def.inc_deg}°`;
-    if (eccEl) eccEl.textContent = `${orb.def.ecc}`;
-    if (epochEl) epochEl.textContent = orb.def.epoch;
+    if (nameEl) nameEl.textContent = live ? `${live.name} / NORAD ${live.satelliteId}` : orb.name;
+    if (altEl) altEl.textContent = live ? `${live.meanAltitudeKm.toFixed(1)} km mean` : `${orb.def.alt_km} km`;
+    if (incEl) incEl.textContent = live ? `${live.inclinationDeg.toFixed(4)}°` : `${orb.def.inc_deg}°`;
+    if (eccEl) eccEl.textContent = live ? live.eccentricity.toFixed(7) : `${orb.def.ecc}`;
+    if (epochEl) epochEl.textContent = live ? live.epochLabel : orb.def.epoch;
+
+    setLiveText('orbit-track-vel', live ? `${live.meanVelocityKms.toFixed(3)} km/s` : `${orb.def.vel_kms || 7.61} km/s`);
+    setLiveText('orbit-track-perigee', live ? `${live.perigeeKm.toFixed(1)} km` : '—');
+    setLiveText('orbit-track-apogee', live ? `${live.apogeeKm.toFixed(1)} km` : '—');
+    setLiveText('orbit-track-period', live ? `${live.periodMinutes.toFixed(2)} min` : '—');
+    setLiveText('orbit-track-mean-motion', live ? `${live.meanMotionRevDay.toFixed(8)} rev/day` : '—');
+    setLiveText('orbit-track-raan', live ? `${live.raanDeg.toFixed(4)}°` : '—');
+    setLiveText('orbit-track-arg-perigee', live ? `${live.argPerigeeDeg.toFixed(4)}°` : '—');
+    setLiveText('orbit-track-mean-anomaly', live ? `${live.meanAnomalyDeg.toFixed(4)}°` : '—');
+    setLiveText('orbit-track-element-age', live ? `${live.elementAgeDays.toFixed(2)} days` : '—');
+
+    const source = document.getElementById('orbit-track-source');
+    if (source && live) {
+      source.href = `${LIVE_TLE_ENDPOINT}/${live.satelliteId}`;
+      source.textContent = `NASA TLE API / NORAD ${live.satelliteId} ↗`;
+    }
+    setLiveText('orbit-track-line1', liveRecord ? liveRecord.line1 : 'Live TLE unavailable — showing demo values');
+    setLiveText('orbit-track-line2', liveRecord ? liveRecord.line2 : 'Live TLE unavailable — showing demo values');
+  }
+
+  function setLiveText(id, value) {
+    const element = document.getElementById(id);
+    if (element) element.textContent = value;
+  }
+
+  function parseTleRecord(record) {
+    if (!record || !record.line1 || !record.line2) return null;
+    const line2 = record.line2;
+    const inclinationDeg = Number(line2.slice(8, 16));
+    const raanDeg = Number(line2.slice(17, 25));
+    const eccentricity = Number(`0.${line2.slice(26, 33).trim()}`);
+    const argPerigeeDeg = Number(line2.slice(34, 42));
+    const meanAnomalyDeg = Number(line2.slice(43, 51));
+    const meanMotionRevDay = Number(line2.slice(52, 63));
+    const meanMotionRadSec = meanMotionRevDay * 2 * Math.PI / 86400;
+    const semiMajorAxisKm = Math.pow(EARTH_MU_KM3_S2 / (meanMotionRadSec * meanMotionRadSec), 1 / 3);
+    const perigeeKm = semiMajorAxisKm * (1 - eccentricity) - EARTH_MEAN_RADIUS_KM;
+    const apogeeKm = semiMajorAxisKm * (1 + eccentricity) - EARTH_MEAN_RADIUS_KM;
+    const epochDate = parseTleEpoch(record.line1);
+    const elementAgeDays = epochDate ? Math.max(0, (Date.now() - epochDate.getTime()) / 86400000) : 0;
+
+    return {
+      satelliteId: record.satelliteId,
+      name: record.name || `NORAD ${record.satelliteId}`,
+      inclinationDeg,
+      raanDeg,
+      eccentricity,
+      argPerigeeDeg,
+      meanAnomalyDeg,
+      meanMotionRevDay,
+      meanAltitudeKm: semiMajorAxisKm - EARTH_MEAN_RADIUS_KM,
+      perigeeKm,
+      apogeeKm,
+      periodMinutes: 1440 / meanMotionRevDay,
+      meanVelocityKms: Math.sqrt(EARTH_MU_KM3_S2 / semiMajorAxisKm),
+      elementAgeDays,
+      epochDate,
+      epochLabel: epochDate ? `${formatUtc(epochDate)} · NASA TLE` : `${record.date || 'Unknown'} · NASA TLE`
+    };
+  }
+
+  function parseTleEpoch(line1) {
+    const epochYear = Number(line1.slice(18, 20));
+    const epochDay = Number(line1.slice(20, 32));
+    if (!Number.isFinite(epochYear) || !Number.isFinite(epochDay)) return null;
+    const year = epochYear < 57 ? 2000 + epochYear : 1900 + epochYear;
+    return new Date(Date.UTC(year, 0, 1) + (epochDay - 1) * 86400000);
+  }
+
+  function formatUtc(date) {
+    return date.toISOString().replace('T', ' ').replace(/\.\d{3}Z$/, ' UTC');
+  }
+
+  async function initLiveTleFeed() {
+    if (liveRefreshTimer) window.clearInterval(liveRefreshTimer);
+    await refreshLiveTleFeed();
+    liveRefreshTimer = window.setInterval(refreshLiveTleFeed, LIVE_REFRESH_MS);
+  }
+
+  async function refreshLiveTleFeed() {
+    setLiveFeedStatus('CONNECTING', false, false);
+    const results = await Promise.allSettled(SATELLITE_DEFINITIONS.map(async (def) => {
+      const response = await fetch(`${LIVE_TLE_ENDPOINT}/${def.id.replace('obj-', '')}`, { cache: 'no-store', headers: { Accept: 'application/json' } });
+      if (!response.ok) throw new Error(`TLE ${def.id} returned ${response.status}`);
+      return response.json();
+    }));
+
+    let successCount = 0;
+    results.forEach((result, index) => {
+      if (result.status === 'fulfilled' && result.value && result.value.line1 && result.value.line2) {
+        const def = SATELLITE_DEFINITIONS[index];
+        liveTleRecords.set(def.id, result.value);
+        const live = parseTleRecord(result.value);
+        if (live) {
+          applyLiveOrbitParameters(def, live);
+          syncTrackLabel(def.id, live);
+        }
+        successCount += 1;
+      }
+    });
+
+    updateTelemetryCard();
+    if (successCount === SATELLITE_DEFINITIONS.length) {
+      setLiveFeedStatus('LIVE / NASA TLE', true, true);
+    } else if (successCount > 0) {
+      setLiveFeedStatus(`PARTIAL / ${successCount} OF ${SATELLITE_DEFINITIONS.length}`, true, false);
+    } else {
+      setLiveFeedStatus('FALLBACK / DEMO VALUES', false, false);
+    }
+  }
+
+  function syncTrackLabel(trackId, live) {
+    const button = document.querySelector(`[data-track-select="${trackId}"]`);
+    const label = button ? button.querySelector('span:first-child') : null;
+    if (label && live) label.textContent = `◈ ${live.name} (NORAD ${live.satelliteId})`;
+  }
+
+  function applyLiveOrbitParameters(def, live) {
+    // Convert real mean orbital elements into the existing visual globe scale.
+    def.radius = EARTH_RADIUS * ((live.meanAltitudeKm + EARTH_MEAN_RADIUS_KM) / EARTH_MEAN_RADIUS_KM);
+    def.inc_rad = THREE.MathUtils.degToRad(live.inclinationDeg);
+    def.raan_rad = THREE.MathUtils.degToRad(live.raanDeg);
+    def.phase = THREE.MathUtils.degToRad(live.meanAnomalyDeg);
+    def.alt_km = live.meanAltitudeKm;
+    def.vel_kms = live.meanVelocityKms;
+    def.inc_deg = live.inclinationDeg;
+    def.ecc = live.eccentricity;
+    def.epoch = live.epochLabel;
+
+    const orbit = satelliteOrbits.find(item => item.id === def.id);
+    if (orbit && orbit.orbitPath) {
+      const replacement = createCrissCrossingOrbitRibbon(def);
+      orbit.orbitPath.geometry.dispose();
+      orbit.orbitPath.geometry = replacement.geometry;
+    }
+  }
+
+  function setLiveFeedStatus(label, isLive, isComplete) {
+    const badge = document.getElementById('orbit-live-feed-status');
+    const topStatus = document.getElementById('orbit-data-source-status');
+    const syncStatus = document.getElementById('orbit-live-feed-sync');
+    if (badge) {
+      badge.textContent = label;
+      badge.classList.toggle('is-live', isLive);
+      badge.classList.toggle('is-fallback', !isLive);
+    }
+    if (topStatus) topStatus.innerHTML = isLive ? `DATA LINK <b>NASA-CATALOGED TLE FEED / ${isComplete ? 'SYNCED' : 'PARTIAL'}</b>` : `DATA LINK <b>${label}</b>`;
+    if (syncStatus) {
+      syncStatus.textContent = isLive ? `SYNCED ${formatUtc(new Date())}` : label;
+      syncStatus.classList.toggle('is-synced', isLive);
+    }
   }
 
   function animate(frameTime) {
@@ -801,3 +963,4 @@
     initGlobe();
   }
 })();
+

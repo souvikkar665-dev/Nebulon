@@ -93,7 +93,8 @@ body.neb-auth-body {
   color: #ffffff;
   margin-bottom: 8px;
   display: inline-block;
-  padding-left: 0.45em; /* optical center */
+  padding-left: 0.45em;
+  /* optical center */
 }
 
 .neb-auth-flare {
@@ -496,11 +497,612 @@ body.neb-auth-body {
 }
 
 @media (max-width: 600px) {
+
   .neb-operator-grid,
   .neb-operator-inputs-row {
     grid-template-columns: 1fr;
   }
+
   .neb-auth-card {
     padding: 2rem 1.5rem;
+  }
+}
+
+/* ==========================================================================\n   NEBULON HYPER AUTHENTICATION UPGRADE\n   Additive premium visual layer. Existing selectors, IDs, routes, and behavior preserved.\n   ========================================================================== */
+
+:root {
+  --neb-void: #02030a;
+  --neb-night: #070913;
+  --neb-glass: rgba(16, 13, 17, .78);
+  --neb-glass-deep: rgba(5, 7, 14, .92);
+  --neb-cyan: #5ff8ed;
+  --neb-violet: #ad8bff;
+  --neb-lime: #d8ff71;
+  --neb-blue: #75a8ff;
+  --neb-display: "Orbitron", "Space Grotesk", system-ui, sans-serif;
+  --neb-body: "Space Grotesk", system-ui, sans-serif;
+  --neb-mono: "DM Mono", monospace;
+}
+
+body.neb-auth-body {
+  min-width: 320px;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  color: var(--neb-text);
+  background: radial-gradient(circle at 50% -12%, rgba(255, 122, 24, .16), transparent 30rem), radial-gradient(circle at 13% 84%, rgba(95, 248, 237, .09), transparent 25rem), radial-gradient(circle at 90% 60%, rgba(173, 139, 255, .08), transparent 26rem), var(--neb-void);
+  font-family: var(--neb-body);
+}
+
+body.neb-auth-body::before,
+body.neb-auth-body::after {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  content: "";
+  pointer-events: none;
+}
+
+body.neb-auth-body::before {
+  opacity: .26;
+  background-image: linear-gradient(rgba(255, 145, 56, .06) 1px, transparent 1px), linear-gradient(90deg, rgba(95, 248, 237, .045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(circle at 50% 40%, black, transparent 78%);
+}
+
+body.neb-auth-body::after {
+  z-index: 30;
+  opacity: .024;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='auth-hyper-noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23auth-hyper-noise)' opacity='.75'/%3E%3C/svg%3E");
+}
+
+.auth-video-bg {
+  opacity: .64;
+  filter: saturate(1.35) contrast(1.08);
+  mix-blend-mode: screen;
+}
+
+.auth-video-bg::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: radial-gradient(ellipse at center, transparent 12%, rgba(2, 3, 10, .28) 52%, rgba(2, 3, 10, .92) 100%);
+}
+
+#neb-auth-bg-canvas {
+  z-index: 2;
+  opacity: .82;
+  filter: drop-shadow(0 0 20px rgba(255, 122, 24, .08));
+}
+
+.neb-auth-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, .55) 100%);
+}
+
+.neb-auth-scanline {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: .35;
+  background: repeating-linear-gradient(0deg, transparent 0 5px, rgba(95, 248, 237, .018) 5px 6px);
+  mask-image: linear-gradient(180deg, black, transparent 80%);
+}
+
+.neb-auth-shell {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 66px minmax(0, 580px);
+  align-items: stretch;
+  width: min(100%, 700px);
+  margin: auto;
+}
+
+.neb-auth-side-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 610px;
+  padding: 1.15rem .65rem;
+  border: 1px solid rgba(255, 122, 24, .24);
+  border-right: 0;
+  border-radius: 16px 0 0 16px;
+  background: linear-gradient(180deg, rgba(22, 15, 18, .74), rgba(5, 8, 16, .82));
+  box-shadow: inset 0 1px rgba(255, 255, 255, .04), -12px 22px 70px rgba(0, 0, 0, .4);
+  backdrop-filter: blur(20px);
+}
+
+.neb-rail-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .45rem;
+  color: var(--neb-orange-bright);
+  font: 500 .45rem var(--neb-mono);
+  letter-spacing: .12em;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.neb-rail-brand small {
+  color: var(--neb-text-muted);
+  font-size: .38rem;
+  letter-spacing: .04em;
+}
+
+.neb-rail-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--neb-orange);
+  border-radius: 50%;
+  color: var(--neb-orange-bright);
+  font: 700 .82rem var(--neb-display);
+  box-shadow: 0 0 18px rgba(255, 122, 24, .22), inset 0 0 12px rgba(255, 122, 24, .1);
+}
+
+.neb-rail-line {
+  width: 1px;
+  height: 120px;
+  margin: 1.5rem 0;
+  background: linear-gradient(180deg, var(--neb-orange), rgba(95, 248, 237, .35), transparent);
+}
+
+.neb-rail-readout {
+  display: grid;
+  gap: .25rem;
+  margin-bottom: 1rem;
+  color: var(--neb-text-muted);
+  font: .4rem var(--neb-mono);
+  letter-spacing: .1em;
+  text-align: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.neb-rail-readout strong {
+  color: var(--neb-cyan);
+  font-weight: 400;
+}
+
+.neb-rail-spacer {
+  flex: 1;
+}
+
+.neb-rail-vertical {
+  color: rgba(255, 145, 56, .4);
+  font: .42rem var(--neb-mono);
+  letter-spacing: .18em;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.neb-auth-card {
+  max-width: none;
+  min-width: 0;
+  padding: 2rem clamp(1.45rem, 4vw, 2.75rem) 1.4rem;
+  border: 1px solid rgba(255, 145, 56, .48);
+  border-radius: 0 17px 17px 0;
+  background: linear-gradient(145deg, rgba(32, 20, 23, .84), rgba(7, 9, 18, .94)), var(--neb-card-bg);
+  box-shadow: 26px 38px 130px rgba(0, 0, 0, .82), 0 0 70px rgba(255, 122, 24, .12), inset 0 1px rgba(255, 255, 255, .07);
+  text-align: center;
+  overflow: hidden;
+}
+
+.neb-auth-card::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16rem;
+  height: 1px;
+  content: "";
+  background: linear-gradient(90deg, var(--neb-orange-bright), transparent);
+  box-shadow: 0 0 20px var(--neb-orange-bright);
+}
+
+.neb-auth-card::after {
+  position: absolute;
+  top: -8rem;
+  right: -7rem;
+  width: 19rem;
+  height: 19rem;
+  content: "";
+  border: 1px solid rgba(173, 139, 255, .12);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.7rem rgba(173, 139, 255, .025), 0 0 0 3.4rem rgba(173, 139, 255, .014);
+  pointer-events: none;
+}
+
+.neb-auth-card>* {
+  position: relative;
+  z-index: 1;
+}
+
+.neb-auth-card__topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+  color: var(--neb-text-muted);
+  font: .51rem var(--neb-mono);
+  letter-spacing: .1em;
+  text-align: left;
+}
+
+.neb-auth-card__topline span:last-child {
+  color: var(--neb-green);
+  white-space: nowrap;
+}
+
+.neb-auth-card__topline i,
+.neb-auth-metrics i {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: .3rem;
+  border-radius: 50%;
+  background: var(--neb-green);
+  box-shadow: 0 0 10px var(--neb-green);
+}
+
+.neb-auth-hero-mark {
+  position: relative;
+  width: 62px;
+  height: 62px;
+  margin: 0 auto .55rem;
+}
+
+.neb-auth-logo-ring {
+  width: 62px;
+  height: 62px;
+  margin: 0;
+  filter: drop-shadow(0 0 18px rgba(255, 122, 24, .4));
+}
+
+.neb-auth-hero-mark__orbit {
+  position: absolute;
+  border: 1px solid rgba(95, 248, 237, .32);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.neb-auth-hero-mark__orbit.orbit-a {
+  inset: 5px -13px;
+  transform: rotate(27deg);
+}
+
+.neb-auth-hero-mark__orbit.orbit-b {
+  inset: -7px 7px;
+  transform: rotate(-35deg);
+  border-color: rgba(173, 139, 255, .32);
+}
+
+.neb-auth-brand {
+  font-family: var(--neb-display);
+  font-size: clamp(1.18rem, 3vw, 1.45rem);
+  letter-spacing: .52em;
+  text-shadow: 0 0 24px rgba(255, 145, 56, .24);
+}
+
+.neb-auth-flare {
+  width: 110px;
+  height: 1px;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, transparent, var(--neb-orange-bright), transparent);
+  box-shadow: 0 0 16px var(--neb-orange);
+}
+
+.neb-auth-kicker {
+  color: var(--neb-cyan);
+  font-size: .57rem;
+  letter-spacing: .19em;
+}
+
+.neb-auth-title {
+  font-family: var(--neb-display);
+  font-size: clamp(1.26rem, 3.8vw, 1.7rem);
+  letter-spacing: .24em;
+  text-shadow: 0 0 22px rgba(255, 145, 56, .18);
+}
+
+.neb-auth-subtitle {
+  max-width: 35rem;
+  margin: 0 auto 1.1rem;
+  color: #9b8b7d;
+  font-size: .7rem;
+  line-height: 1.65;
+}
+
+.neb-auth-divider-line {
+  margin-block: .9rem 1.45rem;
+  font-size: .58rem;
+}
+
+.neb-auth-divider-line span {
+  padding: .34rem .55rem;
+  border: 1px solid rgba(255, 145, 56, .16);
+  border-radius: 4px;
+  color: var(--neb-gold);
+  background: rgba(255, 145, 56, .035);
+}
+
+.neb-step-tracker {
+  max-width: 300px;
+  margin-bottom: 1.7rem;
+}
+
+.neb-step-line {
+  background: linear-gradient(90deg, var(--neb-orange), rgba(95, 248, 237, .35));
+  box-shadow: 0 0 10px rgba(255, 122, 24, .2);
+}
+
+.neb-step-item {
+  transition: transform .22s ease;
+}
+
+.neb-step-item.is-active {
+  transform: translateY(-2px);
+}
+
+.neb-step-num {
+  font-family: var(--neb-display);
+}
+
+.neb-step-dot {
+  width: 9px;
+  height: 9px;
+  border-color: rgba(255, 145, 56, .42);
+  box-shadow: inset 0 0 6px rgba(255, 122, 24, .15);
+}
+
+.neb-step-item.is-active .neb-step-dot {
+  box-shadow: 0 0 16px var(--neb-orange), 0 0 30px rgba(255, 122, 24, .18);
+}
+
+.neb-field-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--neb-gold);
+  font-size: .62rem;
+  letter-spacing: .13em;
+}
+
+.neb-field-label small {
+  color: var(--neb-text-muted);
+  font: .48rem var(--neb-mono);
+  letter-spacing: .1em;
+}
+
+.neb-input-box {
+  min-height: 49px;
+  border-color: rgba(255, 145, 56, .3);
+  background: rgba(3, 5, 12, .84);
+  box-shadow: inset 0 1px rgba(255, 255, 255, .04), 0 7px 26px rgba(0, 0, 0, .16);
+  overflow: hidden;
+}
+
+.neb-input-box:focus-within {
+  border-color: var(--neb-orange-bright);
+  box-shadow: 0 0 0 3px rgba(255, 122, 24, .08), 0 0 30px rgba(255, 122, 24, .2), inset 0 1px rgba(255, 255, 255, .08);
+}
+
+.neb-input-icon {
+  left: 15px;
+  color: var(--neb-cyan);
+  font: 1rem var(--neb-mono);
+  text-shadow: 0 0 12px var(--neb-cyan);
+}
+
+.neb-input-control {
+  padding-left: 45px;
+  padding-right: 70px;
+  font-family: var(--neb-mono);
+  font-size: .78rem;
+  letter-spacing: .02em;
+}
+
+.neb-input-scan {
+  position: absolute;
+  inset: 0 auto 0 -4rem;
+  width: 4rem;
+  background: linear-gradient(90deg, transparent, rgba(95, 248, 237, .18), transparent);
+  animation: neb-input-scan 4.5s linear infinite;
+  pointer-events: none;
+}
+
+.neb-input-state {
+  position: absolute;
+  right: 13px;
+  color: var(--neb-green);
+  font: .48rem var(--neb-mono);
+  letter-spacing: .08em;
+  pointer-events: none;
+}
+
+.neb-pwd-toggle {
+  right: 14px;
+  color: var(--neb-cyan);
+  font: 1rem var(--neb-mono);
+  text-shadow: 0 0 12px var(--neb-cyan);
+}
+
+.neb-pwd-toggle:hover {
+  color: #fff;
+}
+
+.neb-field-group {
+  margin-bottom: 1rem;
+}
+
+.neb-remember-row {
+  margin-block: .85rem 1.2rem;
+  color: var(--neb-text-muted);
+  font-size: .59rem;
+  letter-spacing: .1em;
+}
+
+.neb-remember-row b {
+  margin-left: auto;
+  color: var(--neb-green);
+  font: .49rem var(--neb-mono);
+  font-weight: 400;
+  letter-spacing: .08em;
+}
+
+.neb-remember-row input[type="checkbox"] {
+  accent-color: var(--neb-orange);
+}
+
+.neb-btn-primary,
+.neb-btn-secondary {
+  border-radius: 6px;
+  letter-spacing: .15em;
+}
+
+.neb-btn-primary {
+  min-height: 48px;
+  background: linear-gradient(110deg, rgba(255, 145, 56, .23), rgba(82, 27, 17, .96));
+  box-shadow: 0 0 30px rgba(255, 122, 24, .2), inset 0 1px rgba(255, 255, 255, .15);
+}
+
+.neb-btn-primary:hover {
+  box-shadow: 0 0 48px rgba(255, 145, 56, .38), inset 0 1px rgba(255, 255, 255, .22);
+  transform: translateY(-2px);
+}
+
+.neb-btn-arrow {
+  color: var(--neb-cyan);
+  font: 1.5rem var(--neb-display);
+  line-height: 1;
+}
+
+.neb-btn-secondary {
+  min-height: 43px;
+  border-color: rgba(95, 248, 237, .2);
+  color: var(--neb-text-muted);
+  background: rgba(95, 248, 237, .025);
+}
+
+.neb-btn-secondary:hover {
+  border-color: var(--neb-cyan);
+  color: var(--neb-cyan);
+  background: rgba(95, 248, 237, .07);
+  box-shadow: 0 0 22px rgba(95, 248, 237, .1);
+}
+
+.neb-auth-metrics {
+  display: flex;
+  justify-content: space-between;
+  gap: .6rem;
+  margin-top: 1.15rem;
+  padding-top: .85rem;
+  border-top: 1px solid rgba(255, 145, 56, .13);
+  color: var(--neb-text-muted);
+  font: .47rem var(--neb-mono);
+  letter-spacing: .06em;
+}
+
+.neb-auth-metrics span {
+  white-space: nowrap;
+}
+
+.neb-auth-metrics span:first-child {
+  color: var(--neb-green);
+}
+
+.neb-auth-footer {
+  margin-top: .95rem;
+  padding-top: .9rem;
+  border-top: 1px solid rgba(95, 248, 237, .12);
+  color: var(--neb-text-muted);
+  font-size: .54rem;
+  letter-spacing: .1em;
+}
+
+.neb-footer-lock {
+  color: var(--neb-cyan);
+  font-size: .9rem;
+  text-shadow: 0 0 10px var(--neb-cyan);
+}
+
+.neb-footer-status {
+  color: var(--neb-green);
+  text-shadow: 0 0 10px var(--neb-green);
+}
+
+.neb-error-banner {
+  border-color: var(--neb-red);
+  color: #ffb4c2;
+  background: rgba(255, 71, 110, .12);
+  box-shadow: 0 0 20px rgba(255, 71, 110, .08);
+}
+
+@keyframes neb-input-scan {
+
+  0%,
+  42% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+
+  52% {
+    opacity: 1;
+  }
+
+  76%,
+  100% {
+    transform: translateX(34rem);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 680px) {
+  body.neb-auth-body {
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .neb-auth-shell {
+    display: block;
+    width: min(100%, 580px);
+    margin-top: 1rem;
+  }
+
+  .neb-auth-side-rail {
+    display: none;
+  }
+
+  .neb-auth-card {
+    border-radius: 15px;
+    padding: 1.5rem 1.1rem 1.15rem;
+  }
+
+  .neb-auth-card__topline {
+    font-size: .46rem;
+  }
+
+  .neb-auth-metrics {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: .42rem;
+  }
+
+  .neb-remember-row b {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .neb-input-scan,
+  .neb-step-item {
+    animation: none;
+    transition: none;
   }
 }

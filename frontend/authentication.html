@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,106 +11,143 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap"
+    rel="stylesheet" />
 
   <!-- Auth Design System -->
   <link rel="stylesheet" href="css/authentication.css" />
 </head>
 
 <body class="neb-auth-body">
-  <!-- Background 3D Video Loop -->
+  <!-- Background 3D Video Loop: preserved asset path -->
   <div class="auth-video-bg" style="position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;">
-    <video autoplay muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.92; filter: saturate(1.15) brightness(1.05);" aria-hidden="true">
+    <video autoplay muted loop playsinline preload="metadata"
+      style="width: 100%; height: 100%; object-fit: cover; opacity: 0.92; filter: saturate(1.15) brightness(1.05);"
+      aria-hidden="true">
       <source src="assets/video/auth-loop.mp4" type="video/mp4" />
     </video>
   </div>
 
-  <!-- Interactive Radar Grid & Hexagonal Lock Background Canvas -->
+  <!-- Interactive Radar Grid & Hexagonal Lock Background Canvas: preserved hook -->
   <canvas id="neb-auth-bg-canvas"></canvas>
+  <div class="neb-auth-vignette" aria-hidden="true"></div>
+  <div class="neb-auth-scanline" aria-hidden="true"></div>
 
-  <main class="neb-auth-card">
-    <div class="neb-auth-brand">NEBULON</div>
-    <div class="neb-auth-flare"></div>
+  <div class="neb-auth-shell">
+    <aside class="neb-auth-side-rail" aria-label="Authentication system status">
+      <div class="neb-rail-brand"><span class="neb-rail-brand__mark">N</span><span>NEBULON<br /><small>SECURE ACCESS
+            NODE</small></span></div>
+      <div class="neb-rail-line"></div>
+      <div class="neb-rail-readout"><span>NODE</span><strong>AUTH-07</strong></div>
+      <div class="neb-rail-readout"><span>CHANNEL</span><strong>ENCRYPTED</strong></div>
+      <div class="neb-rail-readout"><span>LATENCY</span><strong>0.042 MS</strong></div>
+      <div class="neb-rail-spacer"></div>
+      <div class="neb-rail-vertical">IDENTITY GATE / 2070</div>
+    </aside>
 
-    <div class="neb-auth-kicker">MEMBER ACCESS</div>
-    <h1 class="neb-auth-title">AUTHENTICATION</h1>
+    <main class="neb-auth-card">
+      <div class="neb-auth-card__topline"><span>AUTHENTICATION NODE / 01</span><span><i></i> SYSTEM NOMINAL</span></div>
 
-    <div class="neb-auth-divider-line">SECURE ACCOUNT SETUP</div>
-
-    <!-- Step Progress Tracker: 01 ACCOUNT -> 02 VERIFY -->
-    <div class="neb-step-tracker">
-      <div class="neb-step-line"></div>
-      <div class="neb-step-item is-active">
-        <span class="neb-step-num">01</span>
-        <span class="neb-step-label">ACCOUNT</span>
-        <div class="neb-step-dot"></div>
+      <div class="neb-auth-hero-mark" aria-hidden="true">
+        <div class="neb-auth-logo-ring">
+          <svg viewBox="0 0 100 100" fill="none">
+            <ellipse cx="50" cy="50" rx="42" ry="20" stroke="url(#auth-grad)" stroke-width="3" stroke-dasharray="4 2"
+              transform="rotate(-30 50 50)" />
+            <ellipse cx="50" cy="50" rx="35" ry="15" stroke="rgba(255,193,108,.5)" stroke-width="1"
+              transform="rotate(34 50 50)" />
+            <circle cx="50" cy="50" r="8" fill="#ff9138" />
+            <circle cx="80" cy="36" r="4" fill="#ffd06d" />
+            <defs>
+              <linearGradient id="auth-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ff7a18" />
+                <stop offset="100%" stop-color="#ffd06d" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="neb-auth-hero-mark__orbit orbit-a"></span>
+        <span class="neb-auth-hero-mark__orbit orbit-b"></span>
       </div>
-      <div class="neb-step-item">
-        <span class="neb-step-num">02</span>
-        <span class="neb-step-label">VERIFY</span>
-        <div class="neb-step-dot"></div>
-      </div>
-    </div>
 
-    <!-- Form Inputs -->
-    <form id="neb-step1-form" action="member_login.html">
-      <div class="neb-field-group">
-        <label class="neb-field-label" for="neb-uid">USER ID</label>
-        <div class="neb-input-box">
-          <span class="neb-input-icon">👤</span>
-          <input 
-            type="text" 
-            id="neb-uid" 
-            class="neb-input-control" 
-            placeholder="Enter your fixed User ID" 
-            value="nebulon"
-            autocomplete="off" 
-            required 
-          />
+      <div class="neb-auth-brand">NEBULON</div>
+      <div class="neb-auth-flare"></div>
+      <div class="neb-auth-kicker">MEMBER ACCESS / IDENTITY GATEWAY</div>
+      <h1 class="neb-auth-title">AUTHENTICATION</h1>
+      <p class="neb-auth-subtitle">Establish a secure operator session with the Nebulon orbital intelligence network.
+      </p>
+
+      <div class="neb-auth-divider-line"><span>SECURE ACCOUNT SETUP</span></div>
+
+      <!-- Step Progress Tracker: 01 ACCOUNT -> 02 VERIFY; hooks preserved -->
+      <div class="neb-step-tracker">
+        <div class="neb-step-line"></div>
+        <div class="neb-step-item is-active">
+          <span class="neb-step-num">01</span>
+          <span class="neb-step-label">ACCOUNT</span>
+          <div class="neb-step-dot"></div>
+        </div>
+        <div class="neb-step-item">
+          <span class="neb-step-num">02</span>
+          <span class="neb-step-label">VERIFY</span>
+          <div class="neb-step-dot"></div>
         </div>
       </div>
 
-      <div class="neb-field-group">
-        <label class="neb-field-label" for="neb-pwd">PASSWORD</label>
-        <div class="neb-input-box">
-          <span class="neb-input-icon">🔒</span>
-          <input 
-            type="password" 
-            id="neb-pwd" 
-            class="neb-input-control" 
-            placeholder="Enter your fixed password" 
-            value="nebulon@2070"
-            autocomplete="off" 
-            required 
-          />
-          <button type="button" class="neb-pwd-toggle" id="neb-pwd-toggle-btn" title="Toggle password visibility">
-            👁
-          </button>
+      <!-- Form Inputs: IDs, action, values, and behavior preserved -->
+      <form id="neb-step1-form" action="member_login.html">
+        <div class="neb-field-group">
+          <label class="neb-field-label" for="neb-uid"><span>USER ID</span><small>IDENTITY KEY</small></label>
+          <div class="neb-input-box">
+            <span class="neb-input-icon">⌁</span>
+            <span class="neb-input-scan" aria-hidden="true"></span>
+            <input type="text" id="neb-uid" class="neb-input-control" placeholder="Enter your fixed User ID"
+              value="nebulon" autocomplete="off" required />
+            <span class="neb-input-state" aria-hidden="true">READY</span>
+          </div>
         </div>
+
+        <div class="neb-field-group">
+          <label class="neb-field-label" for="neb-pwd"><span>PASSWORD</span><small>ACCESS CIPHER</small></label>
+          <div class="neb-input-box">
+            <span class="neb-input-icon">◇</span>
+            <span class="neb-input-scan" aria-hidden="true"></span>
+            <input type="password" id="neb-pwd" class="neb-input-control" placeholder="Enter your fixed password"
+              value="nebulon@2070" autocomplete="off" required />
+            <button type="button" class="neb-pwd-toggle" id="neb-pwd-toggle-btn" title="Toggle password visibility"
+              aria-label="Toggle password visibility">◉</button>
+          </div>
+        </div>
+
+        <label class="neb-remember-row">
+          <input type="checkbox" id="neb-remember-device" checked />
+          <span>REMEMBER THIS DEVICE</span>
+          <b>TRUSTED NODE</b>
+        </label>
+
+        <div id="neb-auth-error" class="neb-error-banner" style="display: none;"></div>
+
+        <button type="button" class="neb-btn-primary" id="neb-btn-continue">
+          <span>CONTINUE TO VERIFICATION</span>
+          <span class="neb-btn-arrow" aria-hidden="true"></span>
+        </button>
+
+        <button type="button" class="neb-btn-secondary" id="neb-btn-request">REQUEST ACCESS</button>
+      </form>
+
+      <div class="neb-auth-metrics" aria-label="Authentication system metrics">
+        <span><i></i> BIOMETRIC LAYER READY</span>
+        <span>256-BIT SEAL</span>
+        <span>SESSION TTL 08:00:00</span>
       </div>
 
-      <label class="neb-remember-row">
-        <input type="checkbox" id="neb-remember-device" checked />
-        <span>REMEMBER THIS DEVICE</span>
-      </label>
-
-      <div id="neb-auth-error" class="neb-error-banner" style="display: none;"></div>
-
-      <button type="button" class="neb-btn-primary" id="neb-btn-continue">
-        <span>CONTINUE TO VERIFICATION</span>
-        <span style="font-size: 1.1rem; line-height: 1;">›</span>
-      </button>
-
-      <button type="button" class="neb-btn-secondary" id="neb-btn-request">
-        REQUEST ACCESS
-      </button>
-    </form>
-
-    <div class="neb-auth-footer">
-      <span>🔒</span>
-      <span>SECURE CHANNEL / END-TO-END ENCRYPTED</span>
-    </div>
-  </main>
+      <div class="neb-auth-footer">
+        <span class="neb-footer-lock">◇</span>
+        <span>SECURE CHANNEL / END-TO-END ENCRYPTED</span>
+        <span class="neb-footer-status">●</span>
+      </div>
+    </main>
+  </div>
 
   <script src="js/authentication.js"></script>
   <script>
@@ -121,10 +159,10 @@
         e.preventDefault();
         if (pwdInput.type === 'password') {
           pwdInput.type = 'text';
-          pwdToggle.textContent = '🔒';
+          pwdToggle.textContent = '◇';
         } else {
           pwdInput.type = 'password';
-          pwdToggle.textContent = '👁';
+          pwdToggle.textContent = '◉';
         }
       });
     }
@@ -133,7 +171,7 @@
     function proceedToStep2() {
       const uid = (document.getElementById('neb-uid').value || 'nebulon').trim();
       const pwd = (document.getElementById('neb-pwd').value || 'nebulon@2070').trim();
-      
+
       sessionStorage.setItem('nebulon_step1_cleared', 'true');
       sessionStorage.setItem('nebulon_step1_time', new Date().toISOString());
       sessionStorage.setItem('nebulon_preferred_uid', uid);
@@ -163,8 +201,14 @@
       let w, h, angle = 0;
 
       function resize() {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
+        w = window.innerWidth;
+        h = window.innerHeight;
+        canvas.width = w * ratio;
+        canvas.height = h * ratio;
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
       }
       window.addEventListener('resize', resize);
       resize();
@@ -175,18 +219,12 @@
         const cy = h * 0.5;
         const maxR = Math.max(w, h) * 0.55;
 
-        // 1. Subtle Circuit Grid
-        ctx.strokeStyle = 'rgba(255, 122, 24, 0.03)';
+        ctx.strokeStyle = 'rgba(255, 122, 24, 0.035)';
         ctx.lineWidth = 1;
         const gridSize = 40;
-        for (let x = 0; x < w; x += gridSize) {
-          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
-        }
-        for (let y = 0; y < h; y += gridSize) {
-          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
-        }
+        for (let x = 0; x < w; x += gridSize) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+        for (let y = 0; y < h; y += gridSize) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
 
-        // 2. Concentric Orbit Rings
         [0.25, 0.42, 0.65, 0.88, 1.15].forEach((mul, idx) => {
           ctx.strokeStyle = `rgba(255, 122, 24, ${0.08 + idx * 0.03})`;
           ctx.lineWidth = 1;
@@ -195,12 +233,9 @@
           ctx.stroke();
         });
 
-        // 3. Floating Hexagonal Lock Reticle on the right
         const hexX = cx + Math.min(w * 0.36, 420);
         const hexY = cy;
         const hexR = 54;
-
-        // Concentric Orbit Circles behind Lock
         [35, 55, 75, 95].forEach((r, i) => {
           ctx.strokeStyle = `rgba(255, 122, 24, ${0.12 + i * 0.04})`;
           ctx.beginPath();
@@ -208,26 +243,27 @@
           ctx.stroke();
         });
 
-        // Hexagon Outline
+        ctx.save();
+        ctx.translate(hexX, hexY);
+        ctx.rotate(angle);
         ctx.strokeStyle = 'rgba(255, 140, 40, 0.55)';
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         for (let i = 0; i < 6; i++) {
           const a = (i * Math.PI) / 3;
-          const px = hexX + Math.cos(a) * hexR;
-          const py = hexY + Math.sin(a) * hexR;
-          if (i === 0) ctx.moveTo(px, py);
-          else ctx.lineTo(px, py);
+          const px = Math.cos(a) * hexR;
+          const py = Math.sin(a) * hexR;
+          if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
         }
         ctx.closePath();
         ctx.stroke();
+        ctx.restore();
 
-        // Lock Icon Inside Hexagon
-        ctx.fillStyle = 'rgba(255, 140, 40, 0.6)';
+        ctx.fillStyle = 'rgba(255, 140, 40, 0.8)';
         ctx.font = '22px "Space Grotesk", sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('🔒', hexX, hexY);
+        ctx.fillText('◇', hexX, hexY);
 
         angle += 0.005;
         requestAnimationFrame(render);
@@ -236,4 +272,5 @@
     })();
   </script>
 </body>
+
 </html>
