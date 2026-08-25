@@ -17,6 +17,13 @@
 </head>
 
 <body class="neb-auth-body">
+  <!-- Background 3D Video Loop -->
+  <div class="auth-video-bg" style="position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;">
+    <video autoplay muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.92; filter: saturate(1.15) brightness(1.05);" aria-hidden="true">
+      <source src="assets/video/auth-loop.mp4" type="video/mp4" />
+    </video>
+  </div>
+
   <!-- Interactive Radar Grid & Background Canvas -->
   <canvas id="neb-auth-bg-canvas"></canvas>
 

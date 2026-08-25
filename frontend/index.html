@@ -40,21 +40,19 @@
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <div id="site-background" aria-hidden="true"></div>
 
+  <!-- Full-Screen 3D Background Video -->
+  <div class="video-slot video-slot--home" data-video-slot="home">
+    <video class="video-slot__media" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+      <source src="assets/video/home-loop.mp4" type="video/mp4" />
+    </video>
+  </div>
+
   <!-- Shared Fixed Navbar -->
   <header id="nebula-navbar" class="nebula-navbar"></header>
 
   <main id="main-content" tabindex="-1">
-    <!-- Hero Cinematic Section with 3D Video Slot -->
+    <!-- Hero Cinematic Section -->
     <section class="home-hero">
-      <div class="video-slot video-slot--home" data-video-slot="home">
-        <video class="video-slot__media" autoplay muted loop playsinline preload="metadata" poster="assets/posters/home-poster.webp" aria-hidden="true">
-          <source src="assets/video/home-loop.mp4" type="video/mp4" />
-        </video>
-        <div class="video-slot__fallback" aria-hidden="true"></div>
-        <div class="video-slot__veil" aria-hidden="true"></div>
-        <span class="video-slot__label">IMMERSIVE LAYER / ORBITAL LATTICE</span>
-      </div>
-
       <canvas class="home-hero__canvas" id="home-hero-canvas" aria-hidden="true"></canvas>
 
       <div class="n-container home-hero__content">

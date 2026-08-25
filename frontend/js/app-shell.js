@@ -138,6 +138,11 @@ window.NebulonApp = (function () {
             </div>
           </div>
 
+          <a href="review.html" class="n-nav-review-badge" title="Unresolved Contradictions">
+            <span>REVIEW</span>
+            <span class="n-nav-review-badge__count" id="n-contradiction-count">1</span>
+          </a>
+
           <!-- Active Operator Badge & Prominent Logout Button -->
           <div class="n-nav-member-badge" id="n-active-operator-badge" title="Authenticated Operator Profile">
             <span class="n-label-micro">OP:</span>
@@ -147,11 +152,6 @@ window.NebulonApp = (function () {
               <span>⏻</span>
             </button>
           </div>
-
-          <a href="review.html" class="n-nav-review-badge" title="Unresolved Contradictions">
-            <span>REVIEW</span>
-            <span class="n-nav-review-badge__count" id="n-contradiction-count">1</span>
-          </a>
 
           <button type="button" class="n-perf-toggle" id="n-perf-btn" title="Toggle Motion & Performance Mode">
             <span class="n-label-micro">PERF:</span>

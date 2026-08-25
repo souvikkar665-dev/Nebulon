@@ -36,6 +36,13 @@
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <div id="site-background" aria-hidden="true"></div>
 
+  <!-- Full-Screen 3D Background Video -->
+  <div class="video-slot video-slot--evidence" data-video-slot="evidence">
+    <video class="video-slot__media" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+      <source src="assets/video/evidence-loop.mp4" type="video/mp4" />
+    </video>
+  </div>
+
   <!-- Shared Fixed Navbar -->
   <header id="nebula-navbar" class="nebula-navbar"></header>
 
@@ -51,15 +58,15 @@
         </div>
       </div>
 
-      <!-- Evidence Layout -->
+      <!-- Main Layout -->
       <div class="evidence-layout">
-        <!-- Left: Source Filter Rail -->
-        <aside class="n-panel evidence-source-rail" style="padding: 1.25rem;">
-          <span class="n-label-micro">SOURCE FEEDS</span>
-          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+        <!-- Left: Filter Rail -->
+        <aside class="n-panel evidence-filter-panel n-panel--strong">
+          <span class="n-label-micro">SOURCE FILTERS</span>
+          <div class="evidence-source-list" style="margin-top: 12px;">
             <button type="button" class="evidence-source-btn is-active" data-source-filter="all">
               <span>All Sources</span>
-              <span class="n-chip">4</span>
+              <span class="n-chip">24</span>
             </button>
             <button type="button" class="evidence-source-btn" data-source-filter="satnogs">
               <span>SatNOGS RF</span>
@@ -82,15 +89,6 @@
 
         <!-- Center: Evidence Chronological Timeline -->
         <div class="n-panel evidence-timeline-panel n-panel--strong">
-          <div class="video-slot video-slot--evidence" data-video-slot="evidence">
-            <video class="video-slot__media" autoplay muted loop playsinline preload="metadata" poster="assets/posters/evidence-poster.webp" aria-hidden="true">
-              <source src="assets/video/evidence-loop.mp4" type="video/mp4" />
-            </video>
-            <div class="video-slot__fallback" aria-hidden="true"></div>
-            <div class="video-slot__veil" aria-hidden="true"></div>
-            <span class="video-slot__label">IMMERSIVE / PROVENANCE CARDS</span>
-          </div>
-
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <span class="n-chip n-chip--cyan">Chronological Audit Sequence</span>
             <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.72rem;">Click any record to inspect provenance</span>

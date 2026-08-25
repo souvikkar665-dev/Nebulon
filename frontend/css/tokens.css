@@ -9,14 +9,14 @@
   --n-bg-2: #0d122b;
   --n-bg-3: #141c3d;
   
-  /* Holographic Glass & Tactical HUD Panels */
-  --n-panel: rgba(9, 14, 34, 0.78);
-  --n-panel-strong: rgba(13, 20, 48, 0.92);
-  --n-panel-elevated: rgba(16, 26, 60, 0.96);
-  --n-panel-hud: rgba(6, 10, 26, 0.85);
-  --n-panel-border: rgba(98, 232, 255, 0.18);
-  --n-panel-border-bright: rgba(98, 232, 255, 0.55);
-  --n-panel-border-hover: rgba(98, 232, 255, 0.75);
+  /* Holographic Glass & Tactical HUD Panels (Transparent for Maximum Video Visibility) */
+  --n-panel: rgba(7, 12, 28, 0.42);
+  --n-panel-strong: rgba(9, 16, 38, 0.55);
+  --n-panel-elevated: rgba(12, 20, 48, 0.68);
+  --n-panel-hud: rgba(5, 9, 24, 0.48);
+  --n-panel-border: rgba(98, 232, 255, 0.28);
+  --n-panel-border-bright: rgba(98, 232, 255, 0.65);
+  --n-panel-border-hover: rgba(98, 232, 255, 0.9);
   
   /* Laser Hairlines & Luminous Grid Lines */
   --n-line: rgba(135, 170, 255, 0.16);

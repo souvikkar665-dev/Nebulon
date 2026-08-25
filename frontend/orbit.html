@@ -36,6 +36,13 @@
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <div id="site-background" aria-hidden="true"></div>
 
+  <!-- Full-Screen 3D Background Video -->
+  <div class="video-slot video-slot--orbit" data-video-slot="orbit">
+    <video class="video-slot__media" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+      <source src="assets/video/orbit-loop.mp4" type="video/mp4" />
+    </video>
+  </div>
+
   <!-- Shared Fixed Navbar -->
   <header id="nebula-navbar" class="nebula-navbar"></header>
 
@@ -58,15 +65,6 @@
       <div class="orbit-theater-layout">
         <!-- Main 3D Orbital Stage -->
         <div class="n-panel orbit-canvas-panel n-panel--strong">
-          <div class="video-slot video-slot--orbit" data-video-slot="orbit">
-            <video class="video-slot__media" autoplay muted loop playsinline preload="metadata" poster="assets/posters/orbit-poster.webp" aria-hidden="true">
-              <source src="assets/video/orbit-loop.mp4" type="video/mp4" />
-            </video>
-            <div class="video-slot__fallback" aria-hidden="true"></div>
-            <div class="video-slot__veil" aria-hidden="true"></div>
-            <span class="video-slot__label">IMMERSIVE / 3D ORBITAL SHELLS</span>
-          </div>
-
           <div class="orbit-overlay-ui">
             <span class="n-chip n-chip--cyan">Photorealistic WebGL Globe · 3D Spacecraft System</span>
             <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.72rem;">Drag mouse to rotate globe · Scroll to zoom</span>

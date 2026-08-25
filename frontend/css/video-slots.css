@@ -1,25 +1,36 @@
 /* ==========================================================================
-   NEBULON VIDEO-SLOT SYSTEM & ATMOSPHERIC LAYERS
-   Graceful 3D Loop Integration, Fallback Gradients & Vignettes
+   NEBULON FULL-SCREEN 3D VIDEO BACKGROUND SYSTEM
+   Crystal-Clear Full-Frame Video Loops with Full Brightness & High Visibility
    ========================================================================== */
 
 .video-slot {
-  position: absolute;
-  inset: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
-  z-index: var(--n-z-video);
+  z-index: 0;
   pointer-events: none;
-  background: var(--n-bg-0);
+  background: #03050c;
 }
 
 .video-slot__media {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.45;
-  transition: opacity 0.8s ease;
+  opacity: 0.95;
+  filter: brightness(1.05) contrast(1.08) saturate(1.1);
+  transition: opacity 0.6s ease;
+}
+
+/* Remove Dark Black Overlay Veils for Maximum Video Clarity */
+.video-slot__veil,
+.video-slot__fallback {
+  display: none !important;
 }
 
 .video-slot.has-error .video-slot__media,
@@ -28,91 +39,6 @@
   display: none;
 }
 
-.video-slot__fallback {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at 50% 30%,
-    rgba(16, 28, 68, 0.45) 0%,
-    rgba(10, 14, 30, 0.75) 50%,
-    var(--n-bg-0) 100%
-  );
-  opacity: 1;
-}
-
-.video-slot__veil {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at center,
-    transparent 20%,
-    rgba(5, 6, 17, 0.6) 70%,
-    var(--n-bg-0) 100%
-  );
-}
-
 .video-slot__label {
-  position: absolute;
-  bottom: 12px;
-  right: 18px;
-  font-family: var(--n-font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.14em;
-  color: rgba(135, 170, 255, 0.25);
-  pointer-events: none;
-  user-select: none;
-  z-index: 2;
-}
-
-/* Specific Page Slot Atmospheres */
-.video-slot--investigate .video-slot__fallback {
-  background: radial-gradient(
-    circle at 40% 40%,
-    rgba(30, 16, 68, 0.35) 0%,
-    rgba(10, 20, 48, 0.65) 50%,
-    var(--n-bg-0) 100%
-  );
-}
-
-.video-slot--orbit .video-slot__fallback {
-  background: radial-gradient(
-    circle at 60% 40%,
-    rgba(10, 36, 64, 0.45) 0%,
-    rgba(8, 16, 38, 0.7) 60%,
-    var(--n-bg-0) 100%
-  );
-}
-
-.video-slot--observe .video-slot__fallback {
-  background: radial-gradient(
-    circle at 50% 20%,
-    rgba(14, 48, 56, 0.4) 0%,
-    rgba(8, 18, 36, 0.7) 60%,
-    var(--n-bg-0) 100%
-  );
-}
-
-.video-slot--evidence .video-slot__fallback {
-  background: radial-gradient(
-    circle at 30% 50%,
-    rgba(18, 24, 52, 0.5) 0%,
-    var(--n-bg-0) 90%
-  );
-}
-
-.video-slot--model .video-slot__fallback {
-  background: radial-gradient(
-    circle at 70% 30%,
-    rgba(54, 20, 80, 0.4) 0%,
-    rgba(10, 14, 38, 0.75) 60%,
-    var(--n-bg-0) 100%
-  );
-}
-
-.video-slot--review .video-slot__fallback {
-  background: radial-gradient(
-    circle at 50% 50%,
-    rgba(24, 36, 60, 0.4) 0%,
-    var(--n-bg-0) 90%
-  );
+  display: none;
 }
