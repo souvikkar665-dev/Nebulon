@@ -1,0 +1,87 @@
+/* ==========================================================================
+   NEBULON ACCESSIBILITY & REDUCED MOTION
+   Screen Reader Utilities, High Contrast Focus, and Motion Overrides
+   ========================================================================== */
+
+/* Skip to Main Content Link */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 1.5rem;
+  z-index: calc(var(--n-z-modal) + 10);
+  background: var(--n-cyan);
+  color: #030712;
+  padding: 10px 18px;
+  font-family: var(--n-font-display);
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-radius: var(--n-radius-sm);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  transition: top 0.2s var(--n-ease-snappy);
+}
+
+.skip-link:focus {
+  top: 1rem;
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* High Visibility Keyboard Focus States */
+:focus-visible {
+  outline: 2px solid var(--n-cyan);
+  outline-offset: 3px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--n-cyan);
+  outline-offset: 3px;
+}
+
+/* Reduced Motion Mode Override (System + Manual Preference) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .video-slot__media {
+    display: none !important;
+  }
+}
+
+[data-motion="reduced"] *,
+[data-motion="reduced"] *::before,
+[data-motion="reduced"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+[data-motion="reduced"] .video-slot__media {
+  display: none !important;
+}
+
+[data-motion="balanced"] .video-slot__media {
+  opacity: 0.25;
+}

@@ -1,0 +1,72 @@
+/* ==========================================================================
+   NEBULON INTELLIGENCE LAYER STYLES
+   ========================================================================== */
+
+.model-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  padding-bottom: 3rem;
+}
+
+.model-column-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  background: var(--n-panel-strong);
+  border-radius: var(--n-radius-lg);
+  min-height: 540px;
+}
+
+.model-column-panel--physics {
+  border-top: 3px solid var(--n-cyan);
+}
+
+.model-column-panel--neural {
+  border-top: 3px solid var(--n-violet);
+}
+
+.model-mesh-card {
+  position: relative;
+  height: 220px;
+  background: rgba(10, 14, 32, 0.85);
+  border: 1px solid var(--n-line);
+  border-radius: var(--n-radius-md);
+  margin-block: 1.25rem;
+  overflow: hidden;
+}
+
+.model-mesh-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.model-metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(10, 14, 32, 0.5);
+  border: 1px solid var(--n-line-dim);
+  border-radius: var(--n-radius-sm);
+  margin-bottom: 8px;
+  font-family: var(--n-font-mono);
+  font-size: 0.8rem;
+}
+
+.model-disclaimer-card {
+  padding: 1rem;
+  background: rgba(162, 118, 255, 0.08);
+  border: 1px solid rgba(162, 118, 255, 0.3);
+  border-radius: var(--n-radius-sm);
+  margin-top: auto;
+  font-size: 0.8rem;
+  color: var(--n-violet);
+}
+
+@media (max-width: 900px) {
+  .model-layout {
+    grid-template-columns: 1fr;
+  }
+}

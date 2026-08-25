@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-motion="full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050611" />
+  <meta name="description" content="Nebulon Identity Investigation — Interactive multi-candidate identity graph, RF Doppler residuals, and evidence drawer." />
+  <title>Identity Investigation — Nebulon</title>
+
+  <!-- Core Design System -->
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/typography.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/video-slots.css" />
+  <link rel="stylesheet" href="css/motion.css" />
+  <link rel="stylesheet" href="css/accessibility.css" />
+  <link rel="stylesheet" href="pages/investigate/investigate.css" />
+
+  <!-- Instant 2-Step Verification Guard -->
+  <script>
+    (function () {
+      var s1 = sessionStorage.getItem('nebulon_step1_cleared') === 'true';
+      var s2 = sessionStorage.getItem('nebulon_member_verified') === 'true';
+      if (!s1) {
+        window.location.href = 'authentication.html';
+      } else if (!s2) {
+        window.location.href = 'member_login.html';
+      }
+    })();
+  </script>
+</head>
+
+<body data-page="investigate">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="site-background" aria-hidden="true"></div>
+
+  <!-- Shared Fixed Navbar -->
+  <header id="nebula-navbar" class="nebula-navbar"></header>
+
+  <main id="main-content" tabindex="-1">
+    <div class="n-container" style="padding-top: 1.5rem;">
+      <!-- Workspace Header -->
+      <div class="n-panel investigate-header n-panel--strong">
+        <div class="investigate-target-lockup">
+          <div class="investigate-target-icon">◈</div>
+          <div>
+            <div class="n-kicker" id="inv-launch-sub">LAUNCH CONTEXT · 2023-06-12 UTC</div>
+            <h2 id="inv-launch-name" style="font-size: 1.5rem; margin-top: 2px;">Transporter-8 SSO CubeSat Swarm</h2>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1.5rem; align-items: center; font-family: var(--n-font-mono); font-size: 0.8rem;">
+          <div>
+            <span class="n-muted">Target Spacecraft:</span>
+            <strong style="color: var(--n-cyan);" id="inv-target-name">Aurora-1</strong>
+          </div>
+          <div>
+            <span class="n-muted">Leading Candidate:</span>
+            <strong style="color: var(--n-green);" id="inv-candidate-lead">NORAD 56987 (87.4%)</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Graph & Evidence Drawer Layout -->
+      <div class="investigate-layout">
+        <!-- SVG Identity Graph -->
+        <div class="n-panel investigate-graph-panel n-panel--strong">
+          <div class="video-slot video-slot--investigate" data-video-slot="investigate">
+            <video class="video-slot__media" autoplay muted loop playsinline preload="metadata" poster="assets/posters/investigate-poster.webp" aria-hidden="true">
+              <source src="assets/video/investigate-loop.mp4" type="video/mp4" />
+            </video>
+            <div class="video-slot__fallback" aria-hidden="true"></div>
+            <div class="video-slot__veil" aria-hidden="true"></div>
+            <span class="video-slot__label">IMMERSIVE / IDENTITY FILAMENTS</span>
+          </div>
+
+          <div class="investigate-graph-toolbar">
+            <span class="n-chip n-chip--cyan">SVG Constellation Graph · Multi-Sensor Links</span>
+            <div style="display: flex; gap: 8px;">
+              <span class="n-chip" style="font-size: 0.68rem;">Cyan = Supporting</span>
+              <span class="n-chip" style="font-size: 0.68rem; color: var(--n-red);">Red = Conflict</span>
+            </div>
+          </div>
+
+          <div class="investigate-svg-container" id="inv-svg-container">
+            <!-- Rendered by investigate.js -->
+          </div>
+        </div>
+
+        <!-- Evidence & Observation Drawer (Right Side) -->
+        <div class="n-panel investigate-drawer-panel n-panel--strong" id="inv-evidence-drawer">
+          <div class="investigate-drawer-head">
+            <span class="n-kicker">EVIDENCE PROVENANCE</span>
+            <h3 style="font-size: 1.15rem; margin-top: 2px;">Candidate Telemetry</h3>
+          </div>
+          <div class="investigate-drawer-body" id="inv-evidence-drawer-body">
+            <!-- Populated dynamically by investigate.js -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Hypothesis Comparison Rail -->
+      <div class="investigate-hypotheses-rail">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <span class="n-kicker">HYPOTHESIS ARBITER</span>
+            <h3>Candidate Disambiguation & Separation</h3>
+          </div>
+          <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.75rem;">Ranked by deterministic physics residual & multi-sensor evidence</span>
+        </div>
+
+        <div class="investigate-hypotheses-grid" id="inv-hypotheses-container">
+          <!-- Populated by investigate.js -->
+        </div>
+      </div>
+
+      <!-- Accessible Semantic Table Fallback -->
+      <section style="margin-top: 3rem; margin-bottom: 2rem;">
+        <details class="n-panel" style="padding: 1.25rem;">
+          <summary style="font-family: var(--n-font-mono); font-size: 0.85rem; color: var(--n-text-soft); cursor: pointer;">
+            ▸ Accessible Screen-Reader & Data Table View
+          </summary>
+          <div style="margin-top: 1rem; overflow-x: auto;">
+            <table aria-label="Spacecraft Hypotheses Table">
+              <thead>
+                <tr style="text-align: left; font-family: var(--n-font-mono); font-size: 0.75rem; color: var(--n-muted); border-bottom: 1px solid var(--n-line);">
+                  <th style="padding: 8px;">Rank</th>
+                  <th style="padding: 8px;">Tracked Object</th>
+                  <th style="padding: 8px;">Target Hypothesis</th>
+                  <th style="padding: 8px;">Evidence Score</th>
+                  <th style="padding: 8px;">Status</th>
+                </tr>
+              </thead>
+              <tbody id="inv-accessible-table-body">
+                <!-- Inserted by JS -->
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+    </div>
+  </main>
+
+  <div id="live-announcer" class="sr-only" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="js/authentication.js"></script>
+  <script src="js/data-formatters.js" defer></script>
+  <script src="js/api-client.js" defer></script>
+  <script src="js/live-stream.js" defer></script>
+  <script src="js/video-controller.js" defer></script>
+  <script src="js/motion-controller.js" defer></script>
+  <script src="js/app-shell.js" defer></script>
+  <script src="pages/investigate/investigate.js" defer></script>
+</body>
+</html>

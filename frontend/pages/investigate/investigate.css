@@ -1,0 +1,282 @@
+/* ==========================================================================
+   NEBULON IDENTITY INVESTIGATION — NASA 2070 / JARVIS HUD SPECIFICATION
+   ========================================================================== */
+
+.investigate-layout {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 1.5rem;
+  padding-bottom: 3rem;
+  margin-top: 1.25rem;
+}
+
+/* Mission Workspace Header */
+.investigate-header {
+  padding: 1.25rem 1.75rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-top: 2px solid var(--n-cyan);
+}
+
+.investigate-target-lockup {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.investigate-target-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid var(--n-cyan);
+  border-radius: var(--n-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--n-cyan);
+  font-size: 1.5rem;
+  box-shadow: 0 0 20px var(--n-cyan-glow);
+  position: relative;
+}
+
+/* Graph Canvas Panel */
+.investigate-graph-panel {
+  position: relative;
+  min-height: 560px;
+  height: 62vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: radial-gradient(circle at center, rgba(13, 20, 50, 0.9) 0%, rgba(3, 5, 14, 0.98) 100%);
+  border: 1px solid var(--n-panel-border-bright);
+  box-shadow: inset 0 0 40px rgba(0, 240, 255, 0.05);
+}
+
+.investigate-graph-toolbar {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.investigate-graph-toolbar > * {
+  pointer-events: auto;
+}
+
+.investigate-svg-container {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.investigate-svg {
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+/* SVG Holographic HUD Compass & Grid */
+.hud-grid-ring {
+  fill: none;
+  stroke: rgba(0, 240, 255, 0.08);
+  stroke-width: 1;
+  stroke-dasharray: 4 6;
+}
+
+.hud-grid-axis {
+  stroke: rgba(0, 240, 255, 0.06);
+  stroke-width: 1;
+}
+
+/* Graph Node Styles (Rock-Solid 60fps - Zero Hover Jitter/Flicker) */
+.graph-node {
+  cursor: pointer;
+  outline: none;
+}
+
+.graph-node .node-beacon {
+  transition: filter 0.2s ease, stroke 0.2s ease, stroke-width 0.2s ease;
+}
+
+.graph-node:hover .node-beacon {
+  filter: drop-shadow(0 0 18px var(--n-cyan)) brightness(1.25);
+}
+
+.graph-node.is-selected .node-beacon {
+  stroke: #ffffff;
+  stroke-width: 3px;
+  filter: drop-shadow(0 0 24px var(--n-cyan));
+}
+
+.graph-node.is-selected .node-target-ring {
+  stroke: var(--n-cyan);
+  stroke-dasharray: 5 3;
+  stroke-width: 1.8px;
+  opacity: 1;
+}
+
+/* Holographic Pill Badges */
+.node-badge-bg {
+  fill: rgba(4, 7, 22, 0.92);
+  stroke: rgba(0, 240, 255, 0.35);
+  stroke-width: 1px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8));
+  transition: stroke 0.2s, fill 0.2s;
+}
+
+.graph-node:hover .node-badge-bg {
+  stroke: var(--n-cyan);
+  fill: rgba(9, 16, 45, 0.98);
+}
+
+.graph-node.is-selected .node-badge-bg {
+  stroke: var(--n-cyan);
+  fill: rgba(0, 240, 255, 0.15);
+}
+
+.node-badge-text {
+  font-family: var(--n-font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  fill: #edf4ff;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+/* Graph Edge Filaments */
+.graph-edge {
+  transition: stroke-width 0.2s;
+}
+
+.graph-edge.is-supporting {
+  stroke: var(--n-cyan);
+  stroke-dasharray: 5 4;
+  opacity: 0.85;
+}
+
+.graph-edge.is-conflict {
+  stroke: var(--n-red);
+  stroke-width: 2.5px;
+  stroke-dasharray: 6 3;
+  animation: n-conflict-glow 3s ease-in-out infinite;
+}
+
+/* Evidence Drawer Panel (Right Side) */
+.investigate-drawer-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 560px;
+  background: var(--n-panel-strong);
+  border: 1px solid var(--n-panel-border-bright);
+}
+
+.investigate-drawer-head {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--n-line);
+}
+
+.investigate-drawer-body {
+  padding: 1.25rem 1.5rem;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.investigate-detail-card {
+  padding: 1.1rem;
+  background: rgba(6, 10, 26, 0.75);
+  border: 1px solid var(--n-line);
+  border-radius: var(--n-radius-sm);
+  position: relative;
+}
+
+.investigate-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+  font-family: var(--n-font-mono);
+  font-size: 0.78rem;
+}
+
+/* Bottom Hypothesis Comparison Rail */
+.investigate-hypotheses-rail {
+  margin-top: 1.75rem;
+}
+
+.investigate-hypotheses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.investigate-hypothesis-card {
+  padding: 1.4rem;
+  cursor: pointer;
+  border: 1px solid var(--n-line);
+  transition: all 0.2s var(--n-ease-orbit);
+  position: relative;
+  background: rgba(9, 14, 34, 0.85);
+}
+
+.investigate-hypothesis-card:hover {
+  border-color: var(--n-cyan);
+  transform: translateY(-2px);
+}
+
+.investigate-hypothesis-card.is-active {
+  border-color: var(--n-cyan);
+  background: rgba(13, 24, 60, 0.95);
+  box-shadow: 0 0 35px rgba(0, 240, 255, 0.2), inset 0 0 15px rgba(0, 240, 255, 0.05);
+}
+
+.investigate-confidence-bar {
+  height: 6px;
+  background: rgba(135, 170, 255, 0.15);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-block: 10px;
+}
+
+.investigate-confidence-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--n-cyan) 0%, #0088ff 100%);
+  transition: width 0.6s var(--n-ease-orbit);
+  box-shadow: 0 0 10px var(--n-cyan-glow);
+}
+
+.investigate-confidence-fill.is-conflict {
+  background: linear-gradient(90deg, var(--n-amber) 0%, var(--n-red) 100%);
+  box-shadow: 0 0 10px var(--n-red-glow);
+}
+
+/* Spectrum Canvas in Drawer */
+.rf-spectrum-canvas {
+  width: 100%;
+  height: 60px;
+  background: rgba(2, 4, 12, 0.9);
+  border: 1px solid var(--n-line-dim);
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+@media (max-width: 1024px) {
+  .investigate-layout {
+    grid-template-columns: 1fr;
+  }
+}

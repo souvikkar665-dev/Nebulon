@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" data-motion="full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050611" />
+  <meta name="description" content="Nebulon Protocol — Architecture, physics-first principles, responsible open orbital data ethics, and design system." />
+  <title>Nebulon Protocol — Architecture & Ethics</title>
+
+  <!-- Core Design System -->
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/typography.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/video-slots.css" />
+  <link rel="stylesheet" href="css/motion.css" />
+  <link rel="stylesheet" href="css/accessibility.css" />
+  <link rel="stylesheet" href="pages/about/about.css" />
+
+  <!-- Instant 2-Step Verification Guard -->
+  <script>
+    (function () {
+      var s1 = sessionStorage.getItem('nebulon_step1_cleared') === 'true';
+      var s2 = sessionStorage.getItem('nebulon_member_verified') === 'true';
+      if (!s1) {
+        window.location.href = 'authentication.html';
+      } else if (!s2) {
+        window.location.href = 'member_login.html';
+      }
+    })();
+  </script>
+</head>
+
+<body data-page="about">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="site-background" aria-hidden="true"></div>
+
+  <!-- Shared Fixed Navbar -->
+  <header id="nebula-navbar" class="nebula-navbar"></header>
+
+  <main id="main-content" tabindex="-1">
+    <div class="n-container" style="padding-top: 1.5rem;">
+      <div class="n-section-head" style="max-width: 800px;">
+        <span class="n-kicker">SYSTEM SPECIFICATION & ETHICS</span>
+        <h2>The Nebulon Protocol</h2>
+        <p class="n-body" style="font-size: 1.05rem; margin-top: 0.75rem;">
+          Nebulon is an open, physics-first orbital intelligence engine designed to solve spacecraft post-launch identification ambiguity through multi-sensor evidence arbitration and active observation recommendation.
+        </p>
+      </div>
+
+      <!-- Video Slot Atmospheric Layer -->
+      <div class="video-slot video-slot--about" data-video-slot="about">
+        <video class="video-slot__media" autoplay muted loop playsinline preload="metadata" poster="assets/posters/about-poster.webp" aria-hidden="true">
+          <source src="assets/video/about-loop.mp4" type="video/mp4" />
+        </video>
+        <div class="video-slot__fallback" aria-hidden="true"></div>
+        <div class="video-slot__veil" aria-hidden="true"></div>
+        <span class="video-slot__label">IMMERSIVE / PROTOCOL FORMATION</span>
+      </div>
+
+      <!-- 5-Stage Pipeline Section -->
+      <section class="about-pipeline-section">
+        <span class="n-kicker">END-TO-END PIPELINE</span>
+        <h3 style="font-size: 1.5rem; margin-top: 4px;">From Ambiguous Swarm to Verified Identity</h3>
+
+        <div class="about-pipeline-grid">
+          <div class="about-pipeline-card">
+            <div class="about-step-number">01</div>
+            <h4 style="color: var(--n-cyan); margin-bottom: 6px;">Multi-Source Ingestion</h4>
+            <p class="n-body" style="font-size: 0.8rem;">
+              Streams radar element sets from CelesTrak & 18th SDS, RF Doppler waterfalls from SatNOGS, and deployment timestamps from launch manifests.
+            </p>
+          </div>
+
+          <div class="about-pipeline-card">
+            <div class="about-step-number">02</div>
+            <h4 style="color: var(--n-blue); margin-bottom: 6px;">Physics Residual Filter</h4>
+            <p class="n-body" style="font-size: 0.8rem;">
+              Propagates Keplerian orbits using SGP4/SDP4 models, comparing measured Doppler shifts against theoretical orbital trajectories.
+            </p>
+          </div>
+
+          <div class="about-pipeline-card">
+            <div class="about-step-number">03</div>
+            <h4 style="color: var(--n-violet); margin-bottom: 6px;">Identity Graph Solver</h4>
+            <p class="n-body" style="font-size: 0.8rem;">
+              Constructs an evidence network linking spacecraft hypotheses to candidate objects, flagging contradictions and calculating match confidence.
+            </p>
+          </div>
+
+          <div class="about-pipeline-card">
+            <div class="about-step-number">04</div>
+            <h4 style="color: var(--n-amber); margin-bottom: 6px;">Next-Best Engine</h4>
+            <p class="n-body" style="font-size: 0.8rem;">
+              Evaluates upcoming ground station passes to recommend the exact observation window that maximizes Doppler separation and information gain.
+            </p>
+          </div>
+
+          <div class="about-pipeline-card">
+            <div class="about-step-number">05</div>
+            <h4 style="color: var(--n-green); margin-bottom: 6px;">Human Verification</h4>
+            <p class="n-body" style="font-size: 0.8rem;">
+              Provides complete cryptographic provenance and contradiction audit, enabling human operators to permanently seal verified spacecraft identities.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Responsible Data & Science Ethics -->
+      <section style="margin-block: 3.5rem;">
+        <span class="n-kicker">RESPONSIBLE SPACE DOMAIN AWARENESS</span>
+        <h3 style="font-size: 1.5rem; margin-top: 4px;">Open Science & Provenance Principles</h3>
+
+        <div class="about-principles-grid">
+          <div class="about-principle-card">
+            <div style="font-family: var(--n-font-mono); color: var(--n-cyan); font-size: 0.8rem; margin-bottom: 6px;">
+              PRINCIPLE 1 · OPEN SOURCES FIRST
+            </div>
+            <h4 style="margin-bottom: 8px;">Public Satellite Ephemeris</h4>
+            <p class="n-body" style="font-size: 0.85rem;">
+              All orbit predictions and telemetry validations rely strictly on open-access scientific networks like CelesTrak, SatNOGS, and Space-Track public catalogs.
+            </p>
+          </div>
+
+          <div class="about-principle-card">
+            <div style="font-family: var(--n-font-mono); color: var(--n-violet); font-size: 0.8rem; margin-bottom: 6px;">
+              PRINCIPLE 2 · DETERMINISTIC ARBITER
+            </div>
+            <h4 style="margin-bottom: 8px;">Physics Over Black-Box Predictions</h4>
+            <p class="n-body" style="font-size: 0.85rem;">
+              Machine learning is utilized solely for advisory ranking. Identity verification decisions require physical Doppler residual matching and human-in-the-loop signoff.
+            </p>
+          </div>
+
+          <div class="about-principle-card">
+            <div style="font-family: var(--n-font-mono); color: var(--n-green); font-size: 0.8rem; margin-bottom: 6px;">
+              PRINCIPLE 3 · STRICT PROVENANCE
+            </div>
+            <h4 style="margin-bottom: 8px;">No Conflated Timestamps</h4>
+            <p class="n-body" style="font-size: 0.85rem;">
+              Nebulon maintains separate audit records for physical observation time, source update, element epoch, and system retrieval time, ensuring complete data honesty.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="live-announcer" class="sr-only" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="js/authentication.js"></script>
+  <script src="js/data-formatters.js" defer></script>
+  <script src="js/api-client.js" defer></script>
+  <script src="js/live-stream.js" defer></script>
+  <script src="js/video-controller.js" defer></script>
+  <script src="js/motion-controller.js" defer></script>
+  <script src="js/app-shell.js" defer></script>
+  <script src="pages/about/about.js" defer></script>
+</body>
+</html>

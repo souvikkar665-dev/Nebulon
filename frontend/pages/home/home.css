@@ -1,0 +1,160 @@
+/* ==========================================================================
+   NEBULON GATEWAY (HOME) STYLES
+   ========================================================================== */
+
+.home-hero {
+  position: relative;
+  height: calc(100vh - 64px);
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 1.5rem;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.home-hero__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.home-hero__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+.home-hero__title {
+  font-family: var(--n-font-display);
+  font-size: clamp(2rem, 4.5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.home-hero__title span {
+  background: linear-gradient(135deg, var(--n-cyan) 0%, var(--n-blue) 50%, var(--n-violet) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-hero__lead {
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  line-height: 1.55;
+  color: var(--n-text-soft);
+  max-width: 62ch;
+  margin-inline: auto;
+  margin-bottom: 1.75rem;
+}
+
+.home-hero__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+/* Live Synchronization Pulse Bar */
+.home-pulse-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.home-pulse-card {
+  padding: 1.25rem;
+  background: rgba(13, 20, 42, 0.65);
+  border: 1px solid var(--n-panel-border);
+  border-radius: var(--n-radius-md);
+  text-align: left;
+}
+
+.home-pulse-card__label {
+  font-family: var(--n-font-mono);
+  font-size: 0.7rem;
+  color: var(--n-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.home-pulse-card__value {
+  font-family: var(--n-font-mono);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--n-text);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Chapter Sections */
+.home-section {
+  padding-block: 6rem;
+  position: relative;
+}
+
+.home-section--alt {
+  background: rgba(10, 13, 29, 0.4);
+}
+
+.home-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.home-interactive-visual {
+  position: relative;
+  min-height: 380px;
+  background: var(--n-panel-strong);
+  border: 1px solid var(--n-line);
+  border-radius: var(--n-radius-lg);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mission Launchpad Cards */
+.home-launchpad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.home-mission-card {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 280px;
+  cursor: pointer;
+  transition: all 0.3s var(--n-ease-orbit);
+}
+
+.home-mission-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--n-cyan);
+  box-shadow: var(--n-shadow-glow-cyan);
+}
+
+@media (max-width: 900px) {
+  .home-grid-2col {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

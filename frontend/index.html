@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#03050c" />
-  <meta name="description" content="Nebulon — NASA 2070 Orbital Identity Graph & Next-Best Observation Engine. Disambiguate post-launch spacecraft swarms through multi-sensor evidence and active observation." />
+  <meta name="theme-color" content="#050611" />
+  <meta name="description" content="Nebulon — Orbital Identity Graph & Next-Best Observation Engine. Disambiguate post-launch spacecraft swarms through multi-sensor evidence and active observation." />
   <title>Nebulon — Orbital Identity Graph & Next-Best Observation Engine</title>
 
   <!-- Google Fonts -->
@@ -12,15 +12,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   
   <!-- Core Design System -->
-  <link rel="stylesheet" href="frontend/css/tokens.css" />
-  <link rel="stylesheet" href="frontend/css/reset.css" />
-  <link rel="stylesheet" href="frontend/css/typography.css" />
-  <link rel="stylesheet" href="frontend/css/global.css" />
-  <link rel="stylesheet" href="frontend/css/navbar.css" />
-  <link rel="stylesheet" href="frontend/css/video-slots.css" />
-  <link rel="stylesheet" href="frontend/css/motion.css" />
-  <link rel="stylesheet" href="frontend/css/accessibility.css" />
-  <link rel="stylesheet" href="frontend/pages/home/home.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/typography.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/video-slots.css" />
+  <link rel="stylesheet" href="css/motion.css" />
+  <link rel="stylesheet" href="css/accessibility.css" />
+  <link rel="stylesheet" href="pages/home/home.css" />
 
   <!-- Instant 2-Step Verification Guard -->
   <script>
@@ -28,9 +28,9 @@
       var s1 = sessionStorage.getItem('nebulon_step1_cleared') === 'true';
       var s2 = sessionStorage.getItem('nebulon_member_verified') === 'true';
       if (!s1) {
-        window.location.href = 'frontend/authentication.html';
+        window.location.href = 'authentication.html';
       } else if (!s2) {
-        window.location.href = 'frontend/member_login.html';
+        window.location.href = 'member_login.html';
       }
     })();
   </script>
@@ -47,8 +47,8 @@
     <!-- Hero Cinematic Section with 3D Video Slot -->
     <section class="home-hero">
       <div class="video-slot video-slot--home" data-video-slot="home">
-        <video class="video-slot__media" autoplay muted loop playsinline preload="metadata" poster="frontend/assets/posters/home-poster.webp" aria-hidden="true">
-          <source src="frontend/assets/video/home-loop.mp4" type="video/mp4" />
+        <video class="video-slot__media" autoplay muted loop playsinline preload="metadata" poster="assets/posters/home-poster.webp" aria-hidden="true">
+          <source src="assets/video/home-loop.mp4" type="video/mp4" />
         </video>
         <div class="video-slot__fallback" aria-hidden="true"></div>
         <div class="video-slot__veil" aria-hidden="true"></div>
@@ -58,7 +58,7 @@
       <canvas class="home-hero__canvas" id="home-hero-canvas" aria-hidden="true"></canvas>
 
       <div class="n-container home-hero__content">
-        <div class="n-kicker">ORBITAL IDENTITY & NEXT-BEST OBSERVATION // NASA 2070</div>
+        <div class="n-kicker">ORBITAL IDENTITY & NEXT-BEST OBSERVATION</div>
         <h1 class="home-hero__title">
           Find the spacecraft.<br />
           <span>Ask the sky the right next question.</span>
@@ -68,29 +68,29 @@
         </p>
 
         <div class="home-hero__actions">
-          <a href="frontend/investigate.html" class="n-btn n-btn--primary n-btn--lg">
+          <a href="investigate.html" class="n-btn n-btn--primary n-btn--lg">
             Enter Live Mission Workspace →
           </a>
-          <a href="frontend/about.html" class="n-btn n-btn--secondary n-btn--lg" id="home-loop-btn">
+          <a href="about.html" class="n-btn n-btn--secondary n-btn--lg" id="home-loop-btn">
             Explore Investigation Loop →
           </a>
         </div>
 
         <!-- Live Synchronized Pulse Strip -->
         <div class="home-pulse-strip">
-          <div class="home-pulse-card n-crosshair">
+          <div class="home-pulse-card">
             <div class="home-pulse-card__label">Telemetry Pipeline</div>
             <div class="home-pulse-card__value">
               <span class="n-live-dot"></span> <span id="home-source-sync">4 Sources Synchronized</span>
             </div>
           </div>
-          <div class="home-pulse-card n-crosshair">
+          <div class="home-pulse-card">
             <div class="home-pulse-card__label">Physics Residual Arbiter</div>
             <div class="home-pulse-card__value" style="color: var(--n-cyan);">
               SGP4 / SDP4 Active
             </div>
           </div>
-          <div class="home-pulse-card n-crosshair">
+          <div class="home-pulse-card">
             <div class="home-pulse-card__label">Verification Status</div>
             <div class="home-pulse-card__value" style="color: var(--n-green);">
               Human-in-the-Loop
@@ -104,13 +104,13 @@
   <div id="live-announcer" class="sr-only" aria-live="polite"></div>
 
   <!-- Scripts -->
-  <script src="frontend/js/authentication.js"></script>
-  <script src="frontend/js/data-formatters.js" defer></script>
-  <script src="frontend/js/api-client.js" defer></script>
-  <script src="frontend/js/live-stream.js" defer></script>
-  <script src="frontend/js/video-controller.js" defer></script>
-  <script src="frontend/js/motion-controller.js" defer></script>
-  <script src="frontend/js/app-shell.js" defer></script>
-  <script src="frontend/pages/home/home.js" defer></script>
+  <script src="js/authentication.js"></script>
+  <script src="js/data-formatters.js" defer></script>
+  <script src="js/api-client.js" defer></script>
+  <script src="js/live-stream.js" defer></script>
+  <script src="js/video-controller.js" defer></script>
+  <script src="js/motion-controller.js" defer></script>
+  <script src="js/app-shell.js" defer></script>
+  <script src="pages/home/home.js" defer></script>
 </body>
 </html>

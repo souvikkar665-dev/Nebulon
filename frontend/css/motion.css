@@ -1,0 +1,126 @@
+/* ==========================================================================
+   NEBULON MOTION & KEYFRAME ANIMATIONS — SILKY SMOOTH (NO FLICKER)
+   ========================================================================== */
+
+/* Smooth Status Pulse */
+@keyframes n-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* Linear Timeline Scanner Beam */
+@keyframes n-scan-beam {
+  0% {
+    left: -40px;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Radar Sweep Rotation */
+@keyframes n-radar-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Orbital Rings Slow Glide */
+@keyframes n-orbit-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes n-orbit-spin-reverse {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* Smooth Constellation Reveal */
+@keyframes n-fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Toast In-Out */
+@keyframes n-toast-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Smooth Conflict Glow (Gentle breath, absolutely zero flickering/strobing) */
+@keyframes n-conflict-glow {
+  0%, 100% {
+    stroke-opacity: 0.85;
+    filter: drop-shadow(0 0 3px rgba(244, 63, 94, 0.4));
+  }
+  50% {
+    stroke-opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.8));
+  }
+}
+
+/* Verification Seal Converging Pulse */
+@keyframes n-seal-converge {
+  0% {
+    transform: scale(0.7) rotate(-20deg);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.05) rotate(3deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* HUD Laser Scanlines */
+@keyframes n-hud-scanline {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+.n-animate-in {
+  animation: n-fade-in-up 0.4s var(--n-ease-orbit) forwards;
+}
+
+.n-stagger-1 { animation-delay: 0.04s; }
+.n-stagger-2 { animation-delay: 0.08s; }
+.n-stagger-3 { animation-delay: 0.12s; }
+.n-stagger-4 { animation-delay: 0.16s; }
+.n-stagger-5 { animation-delay: 0.20s; }

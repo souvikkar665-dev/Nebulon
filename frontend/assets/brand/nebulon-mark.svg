@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="n-mark-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#62e8ff" />
+      <stop offset="50%" stop-color="#558cff" />
+      <stop offset="100%" stop-color="#a276ff" />
+    </linearGradient>
+    <filter id="n-mark-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Outer Elliptical Orbit -->
+  <ellipse cx="50" cy="50" rx="42" ry="20" stroke="url(#n-mark-grad)" stroke-width="2.5" stroke-dasharray="3 2" transform="rotate(-30 50 50)" opacity="0.85" filter="url(#n-mark-glow)" />
+  
+  <!-- Intersecting Secondary Orbit -->
+  <ellipse cx="50" cy="50" rx="38" ry="18" stroke="#62e8ff" stroke-width="2" stroke-dasharray="6 3" transform="rotate(45 50 50)" opacity="0.6" />
+  
+  <!-- Central Identity Core -->
+  <circle cx="50" cy="50" r="9" fill="url(#n-mark-grad)" filter="url(#n-mark-glow)" />
+  <circle cx="50" cy="50" r="4" fill="#ffffff" />
+  
+  <!-- Orbital Nodes / Satellites -->
+  <circle cx="82" cy="34" r="4.5" fill="#62e8ff" filter="url(#n-mark-glow)" />
+  <circle cx="20" cy="62" r="3.5" fill="#a276ff" />
+  <circle cx="68" cy="74" r="3" fill="#ffc86b" />
+</svg>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ff7a18" />
+  <meta name="description" content="Nebulon — Select Operator Identity for Step 2 Member Access Verification." />
+  <title>Nebulon | Select Operator</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Auth Design System -->
+  <link rel="stylesheet" href="css/authentication.css" />
+</head>
+
+<body class="neb-auth-body">
+  <!-- Interactive Radar Grid & Background Canvas -->
+  <canvas id="neb-auth-bg-canvas"></canvas>
+
+  <main class="neb-auth-card is-wide">
+    <!-- Top Orbital Ring Mark -->
+    <div class="neb-auth-logo-ring">
+      <svg viewBox="0 0 100 100" fill="none">
+        <circle cx="50" cy="50" r="38" stroke="#ff7a18" stroke-width="5" stroke-dasharray="140 25" />
+        <circle cx="50" cy="50" r="14" fill="#ff7a18" />
+        <circle cx="50" cy="50" r="6" fill="#ffffff" />
+      </svg>
+    </div>
+
+    <div class="neb-auth-brand">NEBULON</div>
+    <div class="neb-auth-flare"></div>
+
+    <div class="neb-auth-kicker">MEMBER ACCESS</div>
+    <h1 class="neb-auth-title" style="font-size: 1.45rem; letter-spacing: 0.28em;">SELECT OPERATOR</h1>
+    <div class="neb-auth-subtitle">Choose a member identity to continue</div>
+
+    <!-- 2x2 Operator Selection Grid (4 Members Only) -->
+    <div class="neb-operator-grid" id="neb-operator-grid">
+      <!-- Operator 1: Souvik -->
+      <div class="neb-operator-card is-selected" data-op-id="souvik" data-op-pass="souvik@2070">
+        <div class="neb-hex-badge">S</div>
+        <div class="neb-op-info">
+          <div class="neb-op-name">SOUVIK</div>
+          <div class="neb-op-code">SOUVIK-01</div>
+          <div class="neb-op-orbit">DEMO-ORBIT-01</div>
+        </div>
+      </div>
+
+      <!-- Operator 2: Debangshu -->
+      <div class="neb-operator-card" data-op-id="debangshu" data-op-pass="debangshu@2070">
+        <div class="neb-hex-badge">D</div>
+        <div class="neb-op-info">
+          <div class="neb-op-name">DEBANGSHU</div>
+          <div class="neb-op-code">DEBANGSHU-02</div>
+          <div class="neb-op-orbit">DEMO-ORBIT-02</div>
+        </div>
+      </div>
+
+      <!-- Operator 3: Sneha -->
+      <div class="neb-operator-card" data-op-id="sneha" data-op-pass="sneha@2070">
+        <div class="neb-hex-badge">S</div>
+        <div class="neb-op-info">
+          <div class="neb-op-name">SNEHA</div>
+          <div class="neb-op-code">SNEHA-03</div>
+          <div class="neb-op-orbit">DEMO-ORBIT-03</div>
+        </div>
+      </div>
+
+      <!-- Operator 4: Adrika -->
+      <div class="neb-operator-card" data-op-id="adrika" data-op-pass="adrika@2070">
+        <div class="neb-hex-badge">A</div>
+        <div class="neb-op-info">
+          <div class="neb-op-name">ADRIKA</div>
+          <div class="neb-op-code">ADRIKA-04</div>
+          <div class="neb-op-orbit">DEMO-ORBIT-04</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shield Divider -->
+    <div class="neb-auth-divider-line">
+      <span>🛡️</span>
+    </div>
+
+    <form id="neb-step2-form" action="index.html">
+      <!-- 2-Column Credential Summary Inputs with Checkmarks -->
+      <div class="neb-operator-inputs-row">
+        <div class="neb-field-group" style="margin-bottom: 0;">
+          <label class="neb-field-label" for="neb-summary-uid">USER ID</label>
+          <div class="neb-input-box">
+            <input 
+              type="text" 
+              id="neb-summary-uid" 
+              class="neb-input-control" 
+              value="souvik" 
+              readonly 
+              style="padding-left: 14px; color: var(--neb-gold); font-weight: 700;"
+            />
+            <span class="neb-check-icon">✓</span>
+          </div>
+        </div>
+
+        <div class="neb-field-group" style="margin-bottom: 0;">
+          <label class="neb-field-label" for="neb-summary-pwd">PASSWORD</label>
+          <div class="neb-input-box">
+            <input 
+              type="password" 
+              id="neb-summary-pwd" 
+              class="neb-input-control" 
+              value="souvik@2070" 
+              required 
+              style="padding-left: 14px; color: var(--neb-gold); font-weight: 700;"
+            />
+            <span class="neb-check-icon">✓</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="neb-step2-error" class="neb-error-banner" style="display: none; margin-top: 1rem;"></div>
+
+      <button type="button" class="neb-btn-primary" id="neb-btn-finish" style="margin-top: 1.5rem;">
+        <span>C O N T I N U E</span>
+        <span style="font-size: 1.1rem; line-height: 1;">›</span>
+      </button>
+    </form>
+
+    <div class="neb-auth-footer">
+      <span>🔒</span>
+      <span>SECURE CHANNEL / END-TO-END ENCRYPTED</span>
+    </div>
+  </main>
+
+  <script src="js/authentication.js"></script>
+  <script>
+    const cards = document.querySelectorAll('.neb-operator-card');
+    const uidInput = document.getElementById('neb-summary-uid');
+    const pwdInput = document.getElementById('neb-summary-pwd');
+    const errorBox = document.getElementById('neb-step2-error');
+
+    // Operator Card Selection Click Handler
+    cards.forEach(card => {
+      card.addEventListener('click', function () {
+        cards.forEach(c => c.classList.remove('is-selected'));
+        this.classList.add('is-selected');
+        uidInput.value = this.dataset.opId;
+        pwdInput.value = this.dataset.opPass;
+        errorBox.style.display = 'none';
+      });
+    });
+
+    // Form Submission: Complete Verification & Launch Nebulon
+    function proceedToApp() {
+      const memberId = (uidInput.value || 'souvik').trim();
+      const pass = (pwdInput.value || 'souvik@2070').trim();
+
+      sessionStorage.setItem('nebulon_step1_cleared', 'true');
+      sessionStorage.setItem('nebulon_member_verified', 'true');
+      if (window.NebulonAuth) {
+        window.NebulonAuth.verifyStep2(memberId, pass);
+      }
+
+      window.location.href = 'index.html';
+    }
+
+    document.getElementById('neb-btn-finish').addEventListener('click', proceedToApp);
+    document.getElementById('neb-step2-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      proceedToApp();
+    });
+
+    // Background Canvas
+    (function () {
+      const canvas = document.getElementById('neb-auth-bg-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w, h;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      function render() {
+        ctx.clearRect(0, 0, w, h);
+        const cx = w * 0.5;
+        const cy = h * 0.5;
+        const maxR = Math.max(w, h) * 0.55;
+
+        // Subtle Grid
+        ctx.strokeStyle = 'rgba(255, 122, 24, 0.03)';
+        ctx.lineWidth = 1;
+        const gridSize = 40;
+        for (let x = 0; x < w; x += gridSize) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        }
+        for (let y = 0; y < h; y += gridSize) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        }
+
+        // Concentric Orbit Circles
+        [0.25, 0.45, 0.68, 0.92, 1.2].forEach((mul, idx) => {
+          ctx.strokeStyle = `rgba(255, 122, 24, ${0.07 + idx * 0.03})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(cx, cy, maxR * mul, 0, Math.PI * 2);
+          ctx.stroke();
+        });
+
+        requestAnimationFrame(render);
+      }
+      render();
+    })();
+  </script>
+</body>
+</html>

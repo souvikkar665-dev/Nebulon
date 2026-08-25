@@ -1,0 +1,53 @@
+/* ==========================================================================
+   NEBULON PROTOCOL (ABOUT) STYLES
+   ========================================================================== */
+
+.about-pipeline-section {
+  margin-block: 2.5rem;
+}
+
+.about-pipeline-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  position: relative;
+}
+
+.about-pipeline-card {
+  padding: 1.5rem;
+  background: var(--n-panel-strong);
+  border: 1px solid var(--n-line);
+  border-radius: var(--n-radius-md);
+  position: relative;
+  transition: all 0.3s var(--n-ease-orbit);
+}
+
+.about-pipeline-card:hover {
+  border-color: var(--n-cyan);
+  transform: translateY(-3px);
+  box-shadow: var(--n-shadow-glow-cyan);
+}
+
+.about-step-number {
+  font-family: var(--n-font-mono);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--n-cyan);
+  opacity: 0.4;
+  margin-bottom: 0.5rem;
+}
+
+.about-principles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.about-principle-card {
+  padding: 1.5rem;
+  background: rgba(10, 14, 32, 0.65);
+  border: 1px solid var(--n-line-dim);
+  border-radius: var(--n-radius-md);
+}

@@ -1,0 +1,506 @@
+/* ==========================================================================
+   NEBULON TWO-STEP AUTHENTICATION — SCREEN-EXACT OBSIDIAN & AMBER HUD
+   ========================================================================== */
+
+:root {
+  --neb-bg: #050403;
+  --neb-card-bg: linear-gradient(180deg, rgba(22, 15, 10, 0.92) 0%, rgba(11, 8, 6, 0.97) 100%);
+  --neb-card-border: rgba(255, 122, 24, 0.38);
+  --neb-card-border-glow: rgba(255, 140, 40, 0.7);
+  --neb-orange: #ff7a18;
+  --neb-orange-bright: #ff9138;
+  --neb-amber: #ffaa33;
+  --neb-gold: #ffc46b;
+  --neb-dim: rgba(255, 122, 24, 0.15);
+  --neb-line: rgba(255, 122, 24, 0.22);
+  --neb-text: #f5eedf;
+  --neb-text-muted: #8c7866;
+  --neb-green: #34d399;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body.neb-auth-body {
+  background-color: var(--neb-bg);
+  color: var(--neb-text);
+  font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Background HUD Canvas (Radar Circles, Grid & Glowing Lock Badge) */
+#neb-auth-bg-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Auth Center Card Container */
+.neb-auth-card {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 580px;
+  background: var(--neb-card-bg);
+  border: 1px solid var(--neb-card-border);
+  border-radius: 18px;
+  padding: 3rem 2.75rem 2.25rem;
+  box-shadow: 0 35px 120px rgba(0, 0, 0, 0.95), 0 0 70px rgba(255, 122, 24, 0.15);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  text-align: center;
+}
+
+.neb-auth-card.is-wide {
+  max-width: 660px;
+  padding: 2.75rem 2.5rem 2rem;
+}
+
+/* Header Top Branding */
+.neb-auth-logo-ring {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.neb-auth-logo-ring svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 10px rgba(255, 122, 24, 0.6));
+}
+
+.neb-auth-brand {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 0.45em;
+  color: #ffffff;
+  margin-bottom: 8px;
+  display: inline-block;
+  padding-left: 0.45em; /* optical center */
+}
+
+.neb-auth-flare {
+  width: 80px;
+  height: 2px;
+  background: radial-gradient(circle, var(--neb-orange-bright) 0%, transparent 80%);
+  margin: 0 auto 12px;
+  box-shadow: 0 0 10px var(--neb-orange);
+}
+
+.neb-auth-kicker {
+  font-family: "DM Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  color: var(--neb-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.neb-auth-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 0.32em;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  padding-left: 0.32em;
+}
+
+.neb-auth-subtitle {
+  font-family: "DM Mono", monospace;
+  font-size: 0.74rem;
+  color: var(--neb-text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.neb-auth-divider-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-block: 1rem 1.75rem;
+  font-family: "DM Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: var(--neb-text-muted);
+  text-transform: uppercase;
+}
+
+.neb-auth-divider-line::before,
+.neb-auth-divider-line::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--neb-line);
+}
+
+/* Step 01 / 02 Progress Tracker */
+.neb-step-tracker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 320px;
+  margin: 0 auto 2rem;
+  position: relative;
+}
+
+.neb-step-line {
+  position: absolute;
+  top: 60%;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: rgba(255, 122, 24, 0.2);
+  z-index: 1;
+}
+
+.neb-step-item {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.neb-step-num {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--neb-text-muted);
+  margin-bottom: 2px;
+}
+
+.neb-step-label {
+  font-family: "DM Mono", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--neb-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.neb-step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #332318;
+  border: 1px solid rgba(255, 122, 24, 0.3);
+}
+
+.neb-step-item.is-active .neb-step-num {
+  color: #ffffff;
+}
+
+.neb-step-item.is-active .neb-step-label {
+  color: var(--neb-orange);
+}
+
+.neb-step-item.is-active .neb-step-dot {
+  background: var(--neb-orange);
+  box-shadow: 0 0 12px var(--neb-orange);
+}
+
+/* Form Fields */
+.neb-field-group {
+  text-align: left;
+  margin-bottom: 1.25rem;
+}
+
+.neb-field-label {
+  display: block;
+  font-family: "DM Mono", monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--neb-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.neb-input-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(10, 7, 5, 0.95);
+  border: 1px solid var(--neb-line);
+  border-radius: 8px;
+  transition: all 0.25s;
+}
+
+.neb-input-box:focus-within {
+  border-color: var(--neb-card-border-glow);
+  box-shadow: 0 0 20px rgba(255, 122, 24, 0.25);
+  background: rgba(16, 10, 6, 0.98);
+}
+
+.neb-input-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--neb-text-muted);
+  font-size: 0.95rem;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.neb-input-control {
+  width: 100%;
+  padding: 14px 14px 14px 44px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-family: "DM Mono", monospace;
+  font-size: 0.88rem;
+  outline: none;
+}
+
+.neb-input-control::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.neb-pwd-toggle {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--neb-text-muted);
+  cursor: pointer;
+  padding: 0;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.neb-pwd-toggle:hover {
+  color: var(--neb-orange);
+}
+
+.neb-remember-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-block: 1rem 1.5rem;
+  font-family: "DM Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--neb-text-muted);
+  cursor: pointer;
+  text-align: left;
+}
+
+.neb-remember-row input[type="checkbox"] {
+  accent-color: var(--neb-orange);
+  cursor: pointer;
+}
+
+/* Action Buttons */
+.neb-btn-primary {
+  width: 100%;
+  padding: 15px 24px;
+  background: linear-gradient(180deg, rgba(35, 20, 12, 0.9) 0%, rgba(20, 12, 6, 0.95) 100%);
+  border: 1px solid var(--neb-card-border-glow);
+  border-radius: 8px;
+  color: var(--neb-amber);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(255, 122, 24, 0.2);
+  transition: all 0.25s;
+}
+
+.neb-btn-primary:hover {
+  background: linear-gradient(180deg, rgba(55, 30, 16, 0.95) 0%, rgba(35, 18, 8, 0.98) 100%);
+  border-color: var(--neb-orange-bright);
+  color: #ffffff;
+  box-shadow: 0 0 40px rgba(255, 145, 56, 0.45);
+  transform: translateY(-1px);
+}
+
+.neb-btn-secondary {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px 24px;
+  background: transparent;
+  border: 1px solid rgba(255, 122, 24, 0.22);
+  border-radius: 8px;
+  color: var(--neb-text-muted);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.neb-btn-secondary:hover {
+  border-color: var(--neb-orange);
+  color: var(--neb-text);
+  background: rgba(255, 122, 24, 0.06);
+}
+
+/* Bottom Security Text */
+.neb-auth-footer {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 122, 24, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: "DM Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--neb-text-muted);
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   STEP 2: 2x2 OPERATOR SELECTION GRID (IMAGE 2 EXACT)
+   -------------------------------------------------------------------------- */
+.neb-operator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 1.75rem;
+  text-align: left;
+}
+
+.neb-operator-card {
+  background: rgba(14, 9, 6, 0.9);
+  border: 1px solid rgba(255, 122, 24, 0.22);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+}
+
+.neb-operator-card:hover {
+  background: rgba(24, 15, 10, 0.95);
+  border-color: rgba(255, 122, 24, 0.5);
+  box-shadow: 0 0 16px rgba(255, 122, 24, 0.15);
+}
+
+.neb-operator-card.is-selected {
+  background: rgba(30, 18, 10, 0.98);
+  border: 1px solid var(--neb-orange-bright);
+  box-shadow: 0 0 24px rgba(255, 122, 24, 0.35);
+}
+
+.neb-hex-badge {
+  width: 42px;
+  height: 48px;
+  background: rgba(255, 122, 24, 0.08);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--neb-amber);
+  border: 1px solid rgba(255, 122, 24, 0.3);
+  flex-shrink: 0;
+}
+
+.neb-operator-card.is-selected .neb-hex-badge {
+  color: #ffffff;
+  background: rgba(255, 122, 24, 0.25);
+  border-color: var(--neb-orange-bright);
+  box-shadow: 0 0 12px var(--neb-orange);
+}
+
+.neb-op-info {
+  flex: 1;
+}
+
+.neb-op-name {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.neb-op-code {
+  font-family: "DM Mono", monospace;
+  font-size: 0.7rem;
+  color: var(--neb-text-muted);
+  margin-top: 2px;
+}
+
+.neb-op-orbit {
+  font-family: "DM Mono", monospace;
+  font-size: 0.65rem;
+  color: rgba(255, 122, 24, 0.65);
+}
+
+/* Step 2 Inputs 2-Column Row */
+.neb-operator-inputs-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 1.5rem;
+}
+
+.neb-check-icon {
+  position: absolute;
+  right: 12px;
+  color: var(--neb-green);
+  font-size: 0.85rem;
+}
+
+.neb-error-banner {
+  margin-bottom: 1rem;
+  padding: 10px 14px;
+  background: rgba(255, 34, 0, 0.15);
+  border: 1px solid #ff3311;
+  border-radius: 6px;
+  font-family: "DM Mono", monospace;
+  font-size: 0.75rem;
+  color: #ff9999;
+  text-align: left;
+}
+
+@media (max-width: 600px) {
+  .neb-operator-grid,
+  .neb-operator-inputs-row {
+    grid-template-columns: 1fr;
+  }
+  .neb-auth-card {
+    padding: 2rem 1.5rem;
+  }
+}

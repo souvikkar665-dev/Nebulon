@@ -1,0 +1,151 @@
+/* ==========================================================================
+   NEBULON ORBITAL THEATER — NASA 2070 3D REAL-WORLD GLOBE STYLES
+   ========================================================================== */
+
+.orbit-theater-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+  padding-bottom: 3rem;
+}
+
+.orbit-canvas-panel {
+  position: relative;
+  min-height: 640px;
+  height: 72vh;
+  background: radial-gradient(circle at center, #060c24 0%, #03050e 100%);
+  border: 1px solid var(--n-panel-border-bright);
+  border-radius: var(--n-radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: inset 0 0 60px rgba(0, 240, 255, 0.08), 0 20px 80px rgba(0, 0, 0, 0.8);
+}
+
+.orbit-canvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+}
+
+.orbit-canvas:active {
+  cursor: grabbing;
+}
+
+.orbit-overlay-ui {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.orbit-overlay-ui > * {
+  pointer-events: auto;
+}
+
+/* 3D Globe HUD Controls Overlay */
+.orbit-hud-controls {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 5;
+}
+
+.orbit-hud-btn {
+  padding: 6px 12px;
+  background: rgba(6, 10, 28, 0.85);
+  border: 1px solid var(--n-panel-border-bright);
+  border-radius: var(--n-radius-sm);
+  color: var(--n-cyan);
+  font-family: var(--n-font-mono);
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(12px);
+}
+
+.orbit-hud-btn:hover {
+  background: rgba(0, 240, 255, 0.2);
+  border-color: var(--n-cyan);
+  box-shadow: 0 0 15px var(--n-cyan-glow);
+}
+
+.orbit-compliance-chip {
+  background: rgba(6, 10, 26, 0.9);
+  border: 1px solid var(--n-amber);
+  color: var(--n-amber);
+  font-family: var(--n-font-mono);
+  font-size: 0.72rem;
+  padding: 5px 12px;
+  border-radius: var(--n-radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  backdrop-filter: blur(10px);
+}
+
+.orbit-controls-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.orbit-toggle-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.orbit-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(10, 14, 32, 0.6);
+  border: 1px solid var(--n-line);
+  border-radius: var(--n-radius-sm);
+  font-family: var(--n-font-mono);
+  font-size: 0.78rem;
+  color: var(--n-text-soft);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.orbit-toggle-btn:hover {
+  background: rgba(0, 240, 255, 0.1);
+  border-color: var(--n-line-bright);
+}
+
+.orbit-toggle-btn.is-active {
+  border-color: var(--n-cyan);
+  background: rgba(0, 240, 255, 0.12);
+  color: var(--n-cyan);
+  box-shadow: 0 0 12px var(--n-cyan-glow);
+}
+
+.orbit-telemetry-card {
+  padding: 1.35rem;
+  background: var(--n-panel-strong);
+  border: 1px solid var(--n-panel-border-bright);
+  border-radius: var(--n-radius-md);
+  position: relative;
+}
+
+@media (max-width: 1024px) {
+  .orbit-theater-layout {
+    grid-template-columns: 1fr;
+  }
+}

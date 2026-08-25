@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-motion="full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050611" />
+  <meta name="description" content="Nebulon Observation Forge — Rank Next-Best Observation opportunities that maximize information gain and Doppler separation." />
+  <title>Observation Forge — Nebulon</title>
+
+  <!-- Core Design System -->
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/typography.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/video-slots.css" />
+  <link rel="stylesheet" href="css/motion.css" />
+  <link rel="stylesheet" href="css/accessibility.css" />
+  <link rel="stylesheet" href="pages/observe/observe.css" />
+
+  <!-- Instant 2-Step Verification Guard -->
+  <script>
+    (function () {
+      var s1 = sessionStorage.getItem('nebulon_step1_cleared') === 'true';
+      var s2 = sessionStorage.getItem('nebulon_member_verified') === 'true';
+      if (!s1) {
+        window.location.href = 'authentication.html';
+      } else if (!s2) {
+        window.location.href = 'member_login.html';
+      }
+    })();
+  </script>
+</head>
+
+<body data-page="observe">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="site-background" aria-hidden="true"></div>
+
+  <!-- Shared Fixed Navbar -->
+  <header id="nebula-navbar" class="nebula-navbar"></header>
+
+  <main id="main-content" tabindex="-1">
+    <div class="n-container" style="padding-top: 1.5rem;">
+      <div class="n-section-head">
+        <div class="n-section-head__title-group">
+          <div>
+            <span class="n-kicker">ACTIVE EXPERIMENT SELECTION</span>
+            <h2>Next-Best Observation Engine</h2>
+          </div>
+          <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.75rem;">Optimizing sensor information gain across global ground stations</span>
+        </div>
+      </div>
+
+      <!-- Main Layout -->
+      <div class="observe-layout">
+        <!-- Left: Hero Recommendation & Alternative Queue -->
+        <div>
+          <!-- Hero Card Container -->
+          <div id="observe-hero-container">
+            <!-- Populated by observe.js -->
+          </div>
+
+          <div style="margin-top: 2rem;">
+            <div class="n-section-head" style="margin-bottom: 1rem;">
+              <span class="n-kicker">ALTERNATIVE OPPORTUNITIES</span>
+              <h3>Comparative Pass Windows</h3>
+            </div>
+            <div id="observe-opps-list">
+              <!-- Populated by observe.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Multi-Factor Radar Evaluation Panel -->
+        <div class="n-panel observe-radar-panel n-panel--strong">
+          <div class="video-slot video-slot--observe" data-video-slot="observe">
+            <video class="video-slot__media" autoplay muted loop playsinline preload="metadata" poster="assets/posters/observe-poster.webp" aria-hidden="true">
+              <source src="assets/video/observe-loop.mp4" type="video/mp4" />
+            </video>
+            <div class="video-slot__fallback" aria-hidden="true"></div>
+            <div class="video-slot__veil" aria-hidden="true"></div>
+            <span class="video-slot__label">IMMERSIVE / OBSERVATION BEAMS</span>
+          </div>
+
+          <div>
+            <span class="n-kicker">VALUE ARBITRATION MATRIX</span>
+            <h3 style="font-size: 1.2rem; margin-top: 2px;">Decision Weight Radar</h3>
+            <p class="n-muted" style="font-size: 0.8rem; margin-top: 4px;">
+              Balancing Doppler separation, station feasibility, latency, and sensor independence.
+            </p>
+          </div>
+
+          <div class="observe-radar-canvas-wrap">
+            <canvas class="observe-radar-canvas" id="observe-radar-canvas"></canvas>
+          </div>
+
+          <div style="margin-top: auto; border-top: 1px solid var(--n-line); padding-top: 1rem; font-family: var(--n-font-mono); font-size: 0.75rem; color: var(--n-muted);">
+            <div>Recommendation Engine: <strong style="color: var(--n-cyan);">Nebula-InfoGain-v3</strong></div>
+            <div style="margin-top: 4px;">Sensor Network: <strong>SatNOGS Global + Partner Relays</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="live-announcer" class="sr-only" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="js/authentication.js"></script>
+  <script src="js/data-formatters.js" defer></script>
+  <script src="js/api-client.js" defer></script>
+  <script src="js/live-stream.js" defer></script>
+  <script src="js/video-controller.js" defer></script>
+  <script src="js/motion-controller.js" defer></script>
+  <script src="js/app-shell.js" defer></script>
+  <script src="pages/observe/observe.js" defer></script>
+</body>
+</html>

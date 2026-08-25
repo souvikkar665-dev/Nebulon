@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-motion="full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#03050c" />
+  <meta name="description" content="Nebulon Orbital Theater — 3D Photorealistic WebGL Earth Globe with live animating satellites, Keplerian trajectories, and ground pass radar locks." />
+  <title>Orbital Theater — 3D Real-World Globe — Nebulon</title>
+
+  <!-- Core Design System -->
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/typography.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/video-slots.css" />
+  <link rel="stylesheet" href="css/motion.css" />
+  <link rel="stylesheet" href="css/accessibility.css" />
+  <link rel="stylesheet" href="pages/orbit/orbit.css" />
+
+  <!-- Instant 2-Step Verification Guard -->
+  <script>
+    (function () {
+      var s1 = sessionStorage.getItem('nebulon_step1_cleared') === 'true';
+      var s2 = sessionStorage.getItem('nebulon_member_verified') === 'true';
+      if (!s1) {
+        window.location.href = 'authentication.html';
+      } else if (!s2) {
+        window.location.href = 'member_login.html';
+      }
+    })();
+  </script>
+</head>
+
+<body data-page="orbit">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="site-background" aria-hidden="true"></div>
+
+  <!-- Shared Fixed Navbar -->
+  <header id="nebula-navbar" class="nebula-navbar"></header>
+
+  <main id="main-content" tabindex="-1">
+    <div class="n-container" style="padding-top: 1.25rem;">
+      <div class="n-section-head">
+        <div class="n-section-head__title-group">
+          <div>
+            <span class="n-kicker">3D PHOTOREALISTIC WEBGL PLANETARY ENGINE</span>
+            <h2>Orbital Theater // Real-World 3D Globe</h2>
+          </div>
+          <div class="orbit-compliance-chip">
+            <span>⚠</span>
+            <span>SGP4 PREDICTED ORBIT PROPAGATION · NOT LIVE TELEMETRY</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theater Canvas & Control Sidebar -->
+      <div class="orbit-theater-layout">
+        <!-- Main 3D Orbital Stage -->
+        <div class="n-panel orbit-canvas-panel n-panel--strong">
+          <div class="video-slot video-slot--orbit" data-video-slot="orbit">
+            <video class="video-slot__media" autoplay muted loop playsinline preload="metadata" poster="assets/posters/orbit-poster.webp" aria-hidden="true">
+              <source src="assets/video/orbit-loop.mp4" type="video/mp4" />
+            </video>
+            <div class="video-slot__fallback" aria-hidden="true"></div>
+            <div class="video-slot__veil" aria-hidden="true"></div>
+            <span class="video-slot__label">IMMERSIVE / 3D ORBITAL SHELLS</span>
+          </div>
+
+          <div class="orbit-overlay-ui">
+            <span class="n-chip n-chip--cyan">Photorealistic WebGL Globe · 3D Spacecraft System</span>
+            <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.72rem;">Drag mouse to rotate globe · Scroll to zoom</span>
+          </div>
+
+          <!-- Three.js 3D Earth Globe & Live Satellites Container -->
+          <div id="globe-container" style="width: 100%; height: 100%; position: absolute; inset: 0;"></div>
+
+          <!-- 3D Globe HUD Controls -->
+          <div class="orbit-hud-controls">
+            <button type="button" class="orbit-hud-btn" id="orbit-zoom-in" title="Zoom In">＋ ZOOM IN</button>
+            <button type="button" class="orbit-hud-btn" id="orbit-zoom-out" title="Zoom Out">－ ZOOM OUT</button>
+            <button type="button" class="orbit-hud-btn" id="orbit-reset-view" title="Reset View">⟲ RESET CAMERA</button>
+          </div>
+        </div>
+
+        <!-- Controls & Telemetry Inspector -->
+        <div class="orbit-controls-panel">
+          <!-- Layer Toggles -->
+          <div class="n-panel n-crosshair" style="padding: 1.25rem;">
+            <span class="n-label-micro">3D DISPLAY LAYERS</span>
+            <div class="orbit-toggle-group" style="margin-top: 10px;">
+              <button type="button" class="orbit-toggle-btn is-active" data-orbit-toggle="all_candidates">
+                <span>Candidate Satellites</span>
+                <span class="toggle-state">ON</span>
+              </button>
+              <button type="button" class="orbit-toggle-btn is-active" data-orbit-toggle="station_visibility">
+                <span>Ground Station Telemetry</span>
+                <span class="toggle-state">ON</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Select Track Focus -->
+          <div class="n-panel n-crosshair" style="padding: 1.25rem;">
+            <span class="n-label-micro">FOCUS SATELLITE</span>
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+              <button type="button" class="orbit-toggle-btn is-active" data-track-select="obj-56987">
+                <span style="color: var(--n-cyan);">◈ Aurora-1 (NORAD 56987)</span>
+                <span class="n-chip n-chip--cyan" style="font-size: 0.65rem;">Primary</span>
+              </button>
+              <button type="button" class="orbit-toggle-btn" data-track-select="obj-56983">
+                <span style="color: var(--n-amber);">◈ NORAD 56983 (Obj A)</span>
+                <span class="n-chip n-chip--amber" style="font-size: 0.65rem;">Conflicted</span>
+              </button>
+              <button type="button" class="orbit-toggle-btn" data-track-select="obj-56991">
+                <span style="color: var(--n-red);">◈ NORAD 56991 (Obj G)</span>
+                <span class="n-chip n-chip--red" style="font-size: 0.65rem;">Mismatch</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Selected Telemetry Card -->
+          <div class="orbit-telemetry-card n-panel--tech">
+            <span class="n-label-micro" style="color: var(--n-cyan);">LIVE SGP4 TELEMETRY</span>
+            <h4 id="orbit-track-name" style="margin-top: 4px; margin-bottom: 8px; color: #ffffff;">Aurora-1 / NORAD 56987 (Obj C)</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-family: var(--n-font-mono); font-size: 0.78rem;">
+              <div><span class="n-muted">Altitude:</span> <strong id="orbit-track-alt" style="color: var(--n-cyan);">516.2 km</strong></div>
+              <div><span class="n-muted">Inclination:</span> <strong id="orbit-track-inc">97.45°</strong></div>
+              <div><span class="n-muted">Eccentricity:</span> <strong id="orbit-track-ecc">0.0012</strong></div>
+              <div><span class="n-muted">Velocity:</span> <strong style="color: var(--n-green);">7.61 km/s</strong></div>
+            </div>
+            <div style="margin-top: 10px; font-family: var(--n-font-mono); font-size: 0.7rem; color: var(--n-muted);">
+              Propagation Epoch: <span id="orbit-track-epoch">2026-08-25 09:14:02 UTC</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="live-announcer" class="sr-only" aria-live="polite"></div>
+
+  <!-- Three.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Nebulon Scripts -->
+  <script src="js/authentication.js"></script>
+  <script src="js/data-formatters.js" defer></script>
+  <script src="js/api-client.js" defer></script>
+  <script src="js/live-stream.js" defer></script>
+  <script src="js/video-controller.js" defer></script>
+  <script src="js/motion-controller.js" defer></script>
+  <script src="js/app-shell.js" defer></script>
+  <script src="pages/orbit/orbit.js" defer></script>
+</body>
+</html>

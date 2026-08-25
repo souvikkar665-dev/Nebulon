@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <defs>
+    <!-- Satellite Icon -->
+    <g id="icon-satellite">
+      <path d="M12 2L2 12l4 4 10-10-4-4zm-3 7l2 2m4-4l2 2m2 7l4 4-2 2-4-4 2-2zm-7 7l4 4-2 2-4-4 2-2zM2 22l3-3m17-17l-3 3" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Orbit Icon -->
+    <g id="icon-orbit">
+      <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+      <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" stroke-width="1.75" transform="rotate(-30 12 12)"/>
+    </g>
+
+    <!-- Radar / Ground Station Icon -->
+    <g id="icon-radar">
+      <path d="M12 19V5m-7 3a9 9 0 0114 0M8 11a5 5 0 018 0M3 21h18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+    </g>
+
+    <!-- Identity Graph Icon -->
+    <g id="icon-graph">
+      <circle cx="6" cy="6" r="3" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <circle cx="18" cy="6" r="3" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <circle cx="12" cy="18" r="3" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <path d="M8.5 7.5l7 0m-8 2.5l3.5 6m6-6l-3.5 6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </g>
+
+    <!-- Observation / Eye Icon -->
+    <g id="icon-eye">
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.75"/>
+    </g>
+
+    <!-- Evidence Vault Icon -->
+    <g id="icon-evidence">
+      <path d="M4 6h16M4 12h16M4 18h10M19 16l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Intelligence Model Icon -->
+    <g id="icon-model">
+      <rect x="3" y="3" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <rect x="14" y="3" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <rect x="8.5" y="14" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <path d="M6.5 10v2a2 2 0 002 2h3.5m5.5-4v2a2 2 0 01-2 2h-3.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </g>
+
+    <!-- Shield / Verification Icon -->
+    <g id="icon-shield">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+      <path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Check Icon -->
+    <g id="icon-check">
+      <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Warning / Conflict Icon -->
+    <g id="icon-warning">
+      <path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Clock Icon -->
+    <g id="icon-clock">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      <path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+    </g>
+
+    <!-- Chevron Right -->
+    <g id="icon-chevron-right">
+      <path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </defs>
+</svg>

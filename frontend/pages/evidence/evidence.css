@@ -1,0 +1,137 @@
+/* ==========================================================================
+   NEBULON EVIDENCE VAULT STYLES
+   ========================================================================== */
+
+.evidence-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr 380px;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  padding-bottom: 3rem;
+}
+
+/* Source Rail (Left) */
+.evidence-source-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.evidence-source-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(135, 170, 255, 0.06);
+  border: 1px solid var(--n-line);
+  border-radius: var(--n-radius-sm);
+  font-family: var(--n-font-mono);
+  font-size: 0.75rem;
+  color: var(--n-text-soft);
+  transition: all 0.2s;
+}
+
+.evidence-source-btn:hover {
+  background: rgba(135, 170, 255, 0.14);
+  border-color: var(--n-line-bright);
+}
+
+.evidence-source-btn.is-active {
+  border-color: var(--n-cyan);
+  background: rgba(98, 232, 255, 0.1);
+  color: var(--n-cyan);
+}
+
+/* Main Timeline (Center) */
+.evidence-timeline-panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--n-panel-strong);
+  padding: 1.5rem;
+  min-height: 600px;
+}
+
+.evidence-timeline-list {
+  position: relative;
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.evidence-timeline-list::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 18px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--n-cyan) 0%, var(--n-blue) 50%, var(--n-violet) 100%);
+  opacity: 0.4;
+}
+
+.evidence-card {
+  position: relative;
+  padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+  background: rgba(10, 14, 32, 0.75);
+  border: 1px solid var(--n-line);
+  border-radius: var(--n-radius-md);
+  cursor: pointer;
+  transition: all 0.25s var(--n-ease-orbit);
+}
+
+.evidence-card::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 20px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--n-cyan);
+  box-shadow: 0 0 10px var(--n-cyan);
+  border: 2px solid var(--n-bg-0);
+}
+
+.evidence-card.is-conflict::before {
+  background: var(--n-red);
+  box-shadow: 0 0 10px var(--n-red);
+}
+
+.evidence-card:hover {
+  border-color: var(--n-line-bright);
+}
+
+.evidence-card.is-selected {
+  border-color: var(--n-cyan);
+  background: rgba(18, 30, 64, 0.9);
+  box-shadow: var(--n-shadow-glow-cyan);
+}
+
+/* Provenance Inspector Drawer (Right) */
+.evidence-inspector-panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--n-panel-strong);
+  padding: 1.5rem;
+}
+
+.evidence-provenance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.evidence-provenance-item {
+  padding: 10px;
+  background: rgba(10, 14, 32, 0.6);
+  border: 1px solid var(--n-line-dim);
+  border-radius: var(--n-radius-sm);
+}
+
+@media (max-width: 1100px) {
+  .evidence-layout {
+    grid-template-columns: 1fr;
+  }
+}

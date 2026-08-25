@@ -1,0 +1,85 @@
+/* ==========================================================================
+   NEBULON DESIGN TOKENS — NASA 2070 & JARVIS HUD SCI-FI SPECIFICATION
+   ========================================================================== */
+
+:root {
+  /* Ultra-Deep Space & Holographic Canvas */
+  --n-bg-0: #03050c;
+  --n-bg-1: #070a18;
+  --n-bg-2: #0d122b;
+  --n-bg-3: #141c3d;
+  
+  /* Holographic Glass & Tactical HUD Panels */
+  --n-panel: rgba(9, 14, 34, 0.78);
+  --n-panel-strong: rgba(13, 20, 48, 0.92);
+  --n-panel-elevated: rgba(16, 26, 60, 0.96);
+  --n-panel-hud: rgba(6, 10, 26, 0.85);
+  --n-panel-border: rgba(98, 232, 255, 0.18);
+  --n-panel-border-bright: rgba(98, 232, 255, 0.55);
+  --n-panel-border-hover: rgba(98, 232, 255, 0.75);
+  
+  /* Laser Hairlines & Luminous Grid Lines */
+  --n-line: rgba(135, 170, 255, 0.16);
+  --n-line-bright: rgba(98, 232, 255, 0.65);
+  --n-line-dim: rgba(135, 170, 255, 0.08);
+  --n-grid-hud: rgba(98, 232, 255, 0.04);
+  
+  /* Luminous Typography */
+  --n-text: #f0f6ff;
+  --n-text-soft: #b4c5e8;
+  --n-muted: #62749d;
+  --n-muted-dim: #384568;
+  
+  /* Sci-Fi Tactical Accents */
+  --n-cyan: #00f0ff;
+  --n-cyan-glow: rgba(0, 240, 255, 0.45);
+  --n-blue: #3b82f6;
+  --n-blue-glow: rgba(59, 130, 246, 0.45);
+  --n-violet: #a855f7;
+  --n-violet-glow: rgba(168, 85, 247, 0.45);
+  --n-amber: #f59e0b;
+  --n-amber-glow: rgba(245, 158, 11, 0.45);
+  --n-green: #10b981;
+  --n-green-glow: rgba(16, 185, 129, 0.45);
+  --n-red: #f43f5e;
+  --n-red-glow: rgba(244, 63, 94, 0.45);
+
+  /* Holographic Glows & Blooms */
+  --n-shadow: 0 20px 80px rgba(0, 0, 0, 0.7);
+  --n-shadow-hud: 0 0 25px rgba(0, 240, 255, 0.18), inset 0 0 20px rgba(0, 240, 255, 0.04);
+  --n-shadow-glow-cyan: 0 0 30px rgba(0, 240, 255, 0.35);
+  --n-shadow-glow-violet: 0 0 30px rgba(168, 85, 247, 0.35);
+  --n-shadow-glow-amber: 0 0 30px rgba(245, 158, 11, 0.35);
+  --n-shadow-glow-red: 0 0 30px rgba(244, 63, 94, 0.35);
+
+  /* Tactical Geometry */
+  --n-radius-sm: 4px;
+  --n-radius-md: 8px;
+  --n-radius-lg: 16px;
+  --n-radius-full: 9999px;
+
+  /* Sizing & Layout */
+  --n-navbar-height: 74px;
+  --n-content-width: 1540px;
+
+  /* Easing Curves */
+  --n-ease-orbit: cubic-bezier(.16, 1, .3, 1);
+  --n-ease-signal: cubic-bezier(.22, .61, .36, 1);
+  --n-ease-snappy: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Typography Stacks */
+  --n-font-display: "Space Grotesk", "Outfit", system-ui, -apple-system, sans-serif;
+  --n-font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --n-font-mono: "DM Mono", "JetBrains Mono", monospace;
+
+  /* Z-Index Hierarchy */
+  --n-z-bg: -10;
+  --n-z-canvas: -5;
+  --n-z-video: -2;
+  --n-z-content: 1;
+  --n-z-sticky: 10;
+  --n-z-navbar: 100;
+  --n-z-drawer: 200;
+  --n-z-modal: 300;
+  --n-z-toast: 400;
+}

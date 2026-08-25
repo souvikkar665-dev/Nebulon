@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" data-motion="full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050611" />
+  <meta name="description" content="Nebulon Intelligence Layer — Deterministic physics baseline vs optional neural graph intelligence ranking." />
+  <title>Intelligence Layer — Nebulon</title>
+
+  <!-- Core Design System -->
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/typography.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/video-slots.css" />
+  <link rel="stylesheet" href="css/motion.css" />
+  <link rel="stylesheet" href="css/accessibility.css" />
+  <link rel="stylesheet" href="pages/model/model.css" />
+
+  <!-- Instant 2-Step Verification Guard -->
+  <script>
+    (function () {
+      var s1 = sessionStorage.getItem('nebulon_step1_cleared') === 'true';
+      var s2 = sessionStorage.getItem('nebulon_member_verified') === 'true';
+      if (!s1) {
+        window.location.href = 'authentication.html';
+      } else if (!s2) {
+        window.location.href = 'member_login.html';
+      }
+    })();
+  </script>
+</head>
+
+<body data-page="model">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="site-background" aria-hidden="true"></div>
+
+  <!-- Shared Fixed Navbar -->
+  <header id="nebula-navbar" class="nebula-navbar"></header>
+
+  <main id="main-content" tabindex="-1">
+    <div class="n-container" style="padding-top: 1.5rem;">
+      <div class="n-section-head">
+        <div class="n-section-head__title-group">
+          <div>
+            <span class="n-kicker">PHYSICS VS NEURAL ARBITRATION</span>
+            <h2>Intelligence & Decision Architecture</h2>
+          </div>
+          <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.75rem;">Honest separation of deterministic math and advisory machine learning</span>
+        </div>
+      </div>
+
+      <!-- Video Slot Atmospheric Layer -->
+      <div class="video-slot video-slot--model" data-video-slot="model">
+        <video class="video-slot__media" autoplay muted loop playsinline preload="metadata" poster="assets/posters/model-poster.webp" aria-hidden="true">
+          <source src="assets/video/model-loop.mp4" type="video/mp4" />
+        </video>
+        <div class="video-slot__fallback" aria-hidden="true"></div>
+        <div class="video-slot__veil" aria-hidden="true"></div>
+        <span class="video-slot__label">IMMERSIVE / NEURAL MESH</span>
+      </div>
+
+      <!-- 2-Column Comparison Layout -->
+      <div class="model-layout">
+        <!-- Left: Physics & Evidence Baseline -->
+        <div class="n-panel model-column-panel model-column-panel--physics">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span class="n-chip n-chip--cyan">DETERMINISTIC BASELINE</span>
+              <h3 style="font-size: 1.35rem; margin-top: 6px;">Keplerian Physics Engine</h3>
+            </div>
+            <span style="font-size: 1.5rem; color: var(--n-cyan);">◎</span>
+          </div>
+
+          <p class="n-body" style="font-size: 0.85rem; margin-block: 1rem;">
+            Primary arbiter based on SGP4 orbital element propagation, Doppler shift curve fitting, RF frequency bounds, and deployment spring impulse dynamics.
+          </p>
+
+          <div id="model-physics-body" style="margin-top: 0.5rem;">
+            <!-- Populated by model.js -->
+          </div>
+
+          <div style="margin-top: auto; padding-top: 1.25rem;">
+            <a href="investigate.html" class="n-btn n-btn--secondary n-btn--sm" style="width: 100%;">
+              Inspect Physics Residuals in Investigation Graph →
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Optional Neural Intelligence -->
+        <div class="n-panel model-column-panel model-column-panel--neural">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span class="n-chip n-chip--violet">OPTIONAL NEURAL LAYER</span>
+              <h3 style="font-size: 1.35rem; margin-top: 6px;">GraphNet Candidate Ranking</h3>
+            </div>
+            <span style="font-size: 1.5rem; color: var(--n-violet);">⌁</span>
+          </div>
+
+          <p class="n-body" style="font-size: 0.85rem; margin-block: 0.75rem;">
+            Advisory graph neural network providing topological hypothesis ranking, RF signature anomaly detection, and expected uncertainty minimization hints.
+          </p>
+
+          <!-- Neural Mesh Visualizer -->
+          <div class="model-mesh-card">
+            <canvas class="model-mesh-canvas" id="model-mesh-canvas"></canvas>
+          </div>
+
+          <div id="model-neural-body">
+            <!-- Populated by model.js -->
+          </div>
+
+          <!-- Scientific Honesty Disclaimer Card -->
+          <div class="model-disclaimer-card">
+            <strong>⚠ SCIENTIFIC TRANSPARENCY PRINCIPLE</strong>
+            <p style="margin-top: 4px; font-size: 0.75rem; color: var(--n-text-soft);">
+              Experimental advisory ranking — not mathematical proof of spacecraft identity. Physical verification requires sensor observation match or operator sign-off.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="live-announcer" class="sr-only" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="js/authentication.js"></script>
+  <script src="js/data-formatters.js" defer></script>
+  <script src="js/api-client.js" defer></script>
+  <script src="js/live-stream.js" defer></script>
+  <script src="js/video-controller.js" defer></script>
+  <script src="js/motion-controller.js" defer></script>
+  <script src="js/app-shell.js" defer></script>
+  <script src="pages/model/model.js" defer></script>
+</body>
+</html>

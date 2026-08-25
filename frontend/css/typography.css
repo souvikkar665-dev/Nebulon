@@ -1,0 +1,159 @@
+/* ==========================================================================
+   NEBULON TYPOGRAPHY SYSTEM
+   Modern Aerospace Display + Precise Scientific Monospace Data Hierarchy
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+/* Headings */
+h1, .n-h1 {
+  font-family: var(--n-font-display);
+  font-size: clamp(2rem, 5vw, 3.75rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--n-text);
+}
+
+h2, .n-h2 {
+  font-family: var(--n-font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--n-text);
+}
+
+h3, .n-h3 {
+  font-family: var(--n-font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--n-text);
+}
+
+h4, .n-h4 {
+  font-family: var(--n-font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--n-text);
+}
+
+/* Eyebrows and Section Kickers */
+.n-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--n-font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--n-cyan);
+  margin-bottom: 0.5rem;
+}
+
+.n-kicker::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--n-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--n-cyan);
+}
+
+/* Body and Soft Technical Text */
+p, .n-body {
+  font-family: var(--n-font-body);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--n-text-soft);
+}
+
+.n-lead {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--n-text-soft);
+  max-width: 68ch;
+}
+
+.n-muted {
+  color: var(--n-muted);
+  font-size: 0.85rem;
+}
+
+/* Monospace Scientific Telemetry & Labels */
+.n-mono {
+  font-family: var(--n-font-mono);
+}
+
+.n-label-micro {
+  font-family: var(--n-font-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--n-muted);
+}
+
+.n-telemetry-val {
+  font-family: var(--n-font-mono);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--n-text);
+  letter-spacing: -0.01em;
+}
+
+.n-telemetry-unit {
+  font-family: var(--n-font-mono);
+  font-size: 0.75rem;
+  color: var(--n-muted);
+  margin-left: 3px;
+}
+
+/* Data Chips and Badges */
+.n-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--n-radius-sm);
+  font-family: var(--n-font-mono);
+  font-size: 0.75rem;
+  background: rgba(135, 170, 255, 0.08);
+  border: 1px solid var(--n-line);
+  color: var(--n-text-soft);
+  white-space: nowrap;
+}
+
+.n-chip--cyan {
+  background: rgba(98, 232, 255, 0.1);
+  border-color: rgba(98, 232, 255, 0.35);
+  color: var(--n-cyan);
+}
+
+.n-chip--violet {
+  background: rgba(162, 118, 255, 0.1);
+  border-color: rgba(162, 118, 255, 0.35);
+  color: var(--n-violet);
+}
+
+.n-chip--amber {
+  background: rgba(255, 200, 107, 0.1);
+  border-color: rgba(255, 200, 107, 0.35);
+  color: var(--n-amber);
+}
+
+.n-chip--green {
+  background: rgba(99, 244, 176, 0.1);
+  border-color: rgba(99, 244, 176, 0.35);
+  color: var(--n-green);
+}
+
+.n-chip--red {
+  background: rgba(255, 111, 142, 0.1);
+  border-color: rgba(255, 111, 142, 0.35);
+  color: var(--n-red);
+}
