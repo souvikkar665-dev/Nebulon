@@ -75,10 +75,25 @@
   box-shadow: 0 0 10px var(--n-cyan-glow);
 }
 
-.jarvis-bracket--tl::after { top: 0; left: 0; }
-.jarvis-bracket--tr::after { top: 0; right: 0; }
-.jarvis-bracket--bl::after { bottom: 0; left: 0; }
-.jarvis-bracket--br::after { bottom: 0; right: 0; }
+.jarvis-bracket--tl::after {
+  top: 0;
+  left: 0;
+}
+
+.jarvis-bracket--tr::after {
+  top: 0;
+  right: 0;
+}
+
+.jarvis-bracket--bl::after {
+  bottom: 0;
+  left: 0;
+}
+
+.jarvis-bracket--br::after {
+  bottom: 0;
+  right: 0;
+}
 
 /* --------------------------------------------------------------------------
    FLOATING JARVIS SIDE HUD TELEMETRY WIDGETS
@@ -161,22 +176,74 @@
   animation: waveBar 1.2s ease-in-out infinite alternate;
 }
 
-.jarvis-waveform .bar:nth-child(1) { height: 35%; animation-delay: 0.1s; }
-.jarvis-waveform .bar:nth-child(2) { height: 70%; animation-delay: 0.3s; }
-.jarvis-waveform .bar:nth-child(3) { height: 45%; animation-delay: 0.15s; }
-.jarvis-waveform .bar:nth-child(4) { height: 90%; animation-delay: 0.4s; }
-.jarvis-waveform .bar:nth-child(5) { height: 60%; animation-delay: 0.2s; }
-.jarvis-waveform .bar:nth-child(6) { height: 100%; animation-delay: 0.5s; }
-.jarvis-waveform .bar:nth-child(7) { height: 50%; animation-delay: 0.25s; }
-.jarvis-waveform .bar:nth-child(8) { height: 80%; animation-delay: 0.35s; }
-.jarvis-waveform .bar:nth-child(9) { height: 40%; animation-delay: 0.1s; }
-.jarvis-waveform .bar:nth-child(10) { height: 75%; animation-delay: 0.45s; }
-.jarvis-waveform .bar:nth-child(11) { height: 55%; animation-delay: 0.3s; }
-.jarvis-waveform .bar:nth-child(12) { height: 30%; animation-delay: 0.1s; }
+.jarvis-waveform .bar:nth-child(1) {
+  height: 35%;
+  animation-delay: 0.1s;
+}
+
+.jarvis-waveform .bar:nth-child(2) {
+  height: 70%;
+  animation-delay: 0.3s;
+}
+
+.jarvis-waveform .bar:nth-child(3) {
+  height: 45%;
+  animation-delay: 0.15s;
+}
+
+.jarvis-waveform .bar:nth-child(4) {
+  height: 90%;
+  animation-delay: 0.4s;
+}
+
+.jarvis-waveform .bar:nth-child(5) {
+  height: 60%;
+  animation-delay: 0.2s;
+}
+
+.jarvis-waveform .bar:nth-child(6) {
+  height: 100%;
+  animation-delay: 0.5s;
+}
+
+.jarvis-waveform .bar:nth-child(7) {
+  height: 50%;
+  animation-delay: 0.25s;
+}
+
+.jarvis-waveform .bar:nth-child(8) {
+  height: 80%;
+  animation-delay: 0.35s;
+}
+
+.jarvis-waveform .bar:nth-child(9) {
+  height: 40%;
+  animation-delay: 0.1s;
+}
+
+.jarvis-waveform .bar:nth-child(10) {
+  height: 75%;
+  animation-delay: 0.45s;
+}
+
+.jarvis-waveform .bar:nth-child(11) {
+  height: 55%;
+  animation-delay: 0.3s;
+}
+
+.jarvis-waveform .bar:nth-child(12) {
+  height: 30%;
+  animation-delay: 0.1s;
+}
 
 @keyframes waveBar {
-  0% { transform: scaleY(0.3); }
-  100% { transform: scaleY(1.1); }
+  0% {
+    transform: scaleY(0.3);
+  }
+
+  100% {
+    transform: scaleY(1.1);
+  }
 }
 
 /* Mini Radar Sweep Circle */
@@ -200,8 +267,13 @@
 }
 
 @keyframes radarRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .jarvis-radar-blip {
@@ -214,12 +286,28 @@
   animation: blipGlow 1.8s ease-in-out infinite alternate;
 }
 
-.blip-1 { top: 30%; left: 45%; }
-.blip-2 { top: 65%; left: 75%; background: var(--n-amber); box-shadow: 0 0 8px var(--n-amber); }
+.blip-1 {
+  top: 30%;
+  left: 45%;
+}
+
+.blip-2 {
+  top: 65%;
+  left: 75%;
+  background: var(--n-amber);
+  box-shadow: 0 0 8px var(--n-amber);
+}
 
 @keyframes blipGlow {
-  0% { opacity: 0.3; transform: scale(0.8); }
-  100% { opacity: 1; transform: scale(1.3); }
+  0% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -253,8 +341,15 @@
 }
 
 @keyframes pillPulse {
-  0% { border-color: rgba(0, 240, 255, 0.3); box-shadow: 0 0 15px rgba(0, 240, 255, 0.1); }
-  100% { border-color: rgba(0, 240, 255, 0.65); box-shadow: 0 0 35px rgba(0, 240, 255, 0.3); }
+  0% {
+    border-color: rgba(0, 240, 255, 0.3);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+  }
+
+  100% {
+    border-color: rgba(0, 240, 255, 0.65);
+    box-shadow: 0 0 35px rgba(0, 240, 255, 0.3);
+  }
 }
 
 .jarvis-pill-icon {
@@ -264,8 +359,13 @@
 }
 
 @keyframes spinSlow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .jarvis-pill-text {
@@ -371,9 +471,17 @@
 }
 
 @keyframes lightSweep {
-  0% { left: -60%; }
-  35% { left: 140%; }
-  100% { left: 140%; }
+  0% {
+    left: -60%;
+  }
+
+  35% {
+    left: 140%;
+  }
+
+  100% {
+    left: 140%;
+  }
 }
 
 .btn-luxury-primary__inner {
@@ -583,21 +691,28 @@
     min-height: 100vh;
     padding-block: 4rem 2rem;
   }
+
   .home-pulse-strip {
     grid-template-columns: 1fr;
   }
+
   .home-hero__actions {
     flex-direction: column;
     width: 100%;
   }
-  .btn-luxury-primary, .btn-luxury-secondary {
+
+  .btn-luxury-primary,
+  .btn-luxury-secondary {
     width: 100%;
   }
-  .btn-luxury-primary__inner, .btn-luxury-secondary__inner {
+
+  .btn-luxury-primary__inner,
+  .btn-luxury-secondary__inner {
     width: 100%;
     align-items: center;
     text-align: center;
   }
+
   .btn-luxury-main {
     justify-content: center;
   }

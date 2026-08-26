@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" data-motion="full">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#03050c" />
+  <meta name="description"
+    content="Nebulon Solar System Explorer — Photorealistic 3D WebGL Solar System with 8 Planets, Sun, Moons, and Real Spacecraft in Criss-Crossing Keplerian Trajectories." />
+  <title>Solar System Explorer — 3D Planetary Engine — Nebulon</title>
+
+  <!-- Core Design System -->
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/typography.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/video-slots.css" />
+  <link rel="stylesheet" href="css/motion.css" />
+  <link rel="stylesheet" href="css/accessibility.css" />
+  <link rel="stylesheet" href="pages/solar/solar.css" />
+
+  <!-- 2-Step Verification Guard -->
+  <script>
+    (function () {
+      var s1 = sessionStorage.getItem('nebulon_step1_cleared') === 'true';
+      var s2 = sessionStorage.getItem('nebulon_member_verified') === 'true';
+      if (!s1) {
+        window.location.href = 'authentication.html';
+      } else if (!s2) {
+        window.location.href = 'member_login.html';
+      }
+    })();
+  </script>
+</head>
+
+<body data-page="solar">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="site-background" aria-hidden="true"></div>
+
+  <!-- Shared Fixed Navbar -->
+  <header id="nebula-navbar" class="nebula-navbar"></header>
+
+  <main id="main-content" tabindex="-1" class="solar-main-stage">
+
+    <!-- ------------------------------------------------------------------------
+         1. TOP COMMAND RAIL: View Mode Pills, Breadcrumb, Search, Orbit Link
+         ------------------------------------------------------------------------ -->
+    <section class="solar-command-rail" aria-label="Solar System Navigation Controls">
+      <div class="solar-command-rail__inner">
+        <!-- View Mode Switcher -->
+        <div class="solar-mode-tabs" id="solar-mode-tabs" role="tablist">
+          <div class="solar-mode-indicator" id="solar-mode-indicator"></div>
+          <button type="button" class="solar-mode-btn is-active" data-view-mode="system" role="tab" aria-selected="true" id="tab-system">
+            <span class="mode-glyph">☀</span> SYSTEM VIEW
+          </button>
+          <button type="button" class="solar-mode-btn" data-view-mode="planet" role="tab" aria-selected="false" id="tab-planet">
+            <span class="mode-glyph">🔍</span> PLANET FOCUS
+          </button>
+          <button type="button" class="solar-mode-btn" data-view-mode="detail" role="tab" aria-selected="false" id="tab-detail">
+            <span class="mode-glyph">📡</span> BODY DETAIL
+          </button>
+        </div>
+
+        <!-- Live Target Breadcrumb -->
+        <div class="solar-breadcrumb" id="solar-breadcrumb" aria-live="polite">
+          <span class="solar-bc-prefix">TARGETING:</span>
+          <div class="solar-bc-trail" id="solar-bc-trail">
+            <button type="button" class="solar-bc-crumb" data-jump-target="sun">Solar System</button>
+          </div>
+          <span class="solar-bc-cursor" aria-hidden="true">▮</span>
+        </div>
+
+        <!-- Right Quick Controls -->
+        <div class="solar-rail-actions">
+          <div class="solar-counter-badge" title="Total Cataloged Solar Bodies">
+            <span class="n-live-dot"></span>
+            <span>BODIES: <strong id="solar-bodies-count">52</strong></span>
+          </div>
+
+          <button type="button" class="solar-search-trigger" id="solar-search-btn" title="Search Planets, Moons & Satellites (Ctrl+K)">
+            <span>🔍 SEARCH</span>
+            <kbd>Ctrl+K</kbd>
+          </button>
+
+          <a href="orbit.html" class="solar-back-orbit-btn" title="Return to Earth Orbit Theater">
+            <span>⟐ ORBIT THEATER</span>
+            <span class="arrow">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------------
+         2. MAIN COCKPIT VIEWPORT (Left Tree + 3D Canvas + Right HUD)
+         ------------------------------------------------------------------------ -->
+    <div class="solar-viewport">
+
+      <!-- Left Sidebar: Celestial Body Tree Navigator -->
+      <aside class="solar-sidebar" id="solar-sidebar" aria-label="Celestial Bodies Hierarchy">
+        <div class="solar-sidebar__head">
+          <span class="sidebar-title">CELESTIAL CATALOG</span>
+          <button type="button" class="sidebar-collapse-all" id="sidebar-toggle-all" title="Expand/Collapse All Trees">
+            <span>[ ± ]</span>
+          </button>
+        </div>
+
+        <div class="solar-tree" id="solar-tree" role="tree">
+          <!-- Dynamically populated by solar.js with all 52 celestial bodies -->
+        </div>
+      </aside>
+
+      <!-- Center 3D Stage Container -->
+      <div class="solar-canvas-wrap" id="solar-canvas-wrap">
+        <div id="solar-canvas-container" class="solar-canvas-container"></div>
+
+        <!-- 4 Corner Reticle Brackets (JARVIS Aerospace Spec) -->
+        <div class="solar-bracket solar-bracket--tl" aria-hidden="true"></div>
+        <div class="solar-bracket solar-bracket--tr" aria-hidden="true"></div>
+        <div class="solar-bracket solar-bracket--bl" aria-hidden="true"></div>
+        <div class="solar-bracket solar-bracket--br" aria-hidden="true"></div>
+
+        <!-- Hyperspace Warp Speed Transition Overlay -->
+        <div class="solar-warp-overlay" id="solar-warp-overlay" aria-hidden="true"></div>
+
+        <!-- Center Crosshair Laser Ring -->
+        <div class="solar-center-crosshair" id="solar-crosshair" aria-hidden="true">
+          <div class="crosshair-ring"></div>
+          <div class="crosshair-dot"></div>
+        </div>
+
+        <!-- Quick Planet Glyphs Quick-Jump Strip (Real Planet Picture Logos) -->
+        <nav class="solar-quick-jump" id="solar-quick-jump" aria-label="Quick Planet Jump Bar">
+          <button type="button" class="quick-planet-btn is-active" data-body-id="sun" title="Sun (Sol)">
+            <span class="planet-pic-badge planet-pic-badge--sun"></span>
+          </button>
+          <button type="button" class="quick-planet-btn" data-body-id="mercury" title="Mercury">
+            <span class="planet-pic-badge planet-pic-badge--mercury"></span>
+          </button>
+          <button type="button" class="quick-planet-btn" data-body-id="venus" title="Venus">
+            <span class="planet-pic-badge planet-pic-badge--venus"></span>
+          </button>
+          <button type="button" class="quick-planet-btn" data-body-id="earth" title="Earth (Terra)">
+            <span class="planet-pic-badge planet-pic-badge--earth"></span>
+          </button>
+          <button type="button" class="quick-planet-btn" data-body-id="mars" title="Mars (Ares)">
+            <span class="planet-pic-badge planet-pic-badge--mars"></span>
+          </button>
+          <button type="button" class="quick-planet-btn" data-body-id="jupiter" title="Jupiter (Jove)">
+            <span class="planet-pic-badge planet-pic-badge--jupiter"></span>
+          </button>
+          <button type="button" class="quick-planet-btn" data-body-id="saturn" title="Saturn (Cronus)">
+            <span class="planet-pic-badge planet-pic-badge--saturn"></span>
+          </button>
+          <button type="button" class="quick-planet-btn" data-body-id="uranus" title="Uranus (Caelus)">
+            <span class="planet-pic-badge planet-pic-badge--uranus"></span>
+          </button>
+          <button type="button" class="quick-planet-btn" data-body-id="neptune" title="Neptune (Poseidon)">
+            <span class="planet-pic-badge planet-pic-badge--neptune"></span>
+          </button>
+          <button type="button" class="quick-planet-btn" data-body-id="pluto" title="Pluto (Dwarf Planet)">
+            <span class="planet-pic-badge planet-pic-badge--pluto"></span>
+          </button>
+        </nav>
+
+        <!-- Floating Right Camera & Render HUD -->
+        <aside class="solar-camera-hud" id="solar-camera-hud" aria-label="Camera & Rendering Telemetry">
+          <div class="hud-card-header">
+            <span class="hud-tag"><span class="n-live-dot"></span> OPTICAL VECTOR</span>
+            <span class="hud-fps-pill" id="hud-fps-val">60 FPS</span>
+          </div>
+
+          <div class="hud-data-row">
+            <span>CAMERA POS:</span>
+            <strong id="hud-cam-pos">0.0, 45.0, 900.0</strong>
+          </div>
+          <div class="hud-data-row">
+            <span>LOOK AT:</span>
+            <strong id="hud-look-at">0.0, 0.0, 0.0</strong>
+          </div>
+          <div class="hud-data-row">
+            <span>FOV / ZOOM:</span>
+            <strong style="color: var(--n-cyan);" id="hud-fov-val">45.0° (1.0×)</strong>
+          </div>
+          <div class="hud-data-row">
+            <span>TARGET RANGE:</span>
+            <strong style="color: var(--n-amber);" id="hud-target-range">0.00 AU</strong>
+          </div>
+          <div class="hud-data-row">
+            <span>GEOMETRY:</span>
+            <span id="hud-poly-count">148,220 TRIS</span>
+          </div>
+
+          <!-- Micro Audio/RF Render Activity Spectrum Waveform -->
+          <div class="solar-waveform" id="solar-waveform" aria-hidden="true">
+            <span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span>
+            <span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span>
+            <span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------------------
+         3. BOTTOM 6-POD TELEMETRY MATRIX STRIP
+         ------------------------------------------------------------------------ -->
+    <section class="solar-telemetry-matrix" id="solar-telemetry-matrix" aria-label="Selected Body Telemetry Matrix">
+
+      <!-- Pod 1: Body Identity -->
+      <div class="telemetry-pod" id="pod-identity">
+        <div class="pod-header">
+          <span class="pod-label">BODY IDENTITY</span>
+          <span class="pod-tag pod-tag--cyan" id="hud-tag-class">STAR</span>
+        </div>
+        <div class="pod-value-row">
+          <span class="pod-glyph" id="hud-glyph">☀</span>
+          <strong class="pod-value" id="hud-body-name">SUN (SOL)</strong>
+        </div>
+        <div class="pod-sub" id="hud-body-sub">G-type Main-Sequence Star · Stellar Core</div>
+      </div>
+
+      <!-- Pod 2: Orbital Elements -->
+      <div class="telemetry-pod" id="pod-orbital">
+        <div class="pod-header">
+          <span class="pod-label">KEPLERIAN EPHEMERIS</span>
+          <span class="pod-tag" id="hud-tag-orbit">INCLINED 3D</span>
+        </div>
+        <div class="pod-value" id="hud-orb-val">a: 0.0 AU · e: 0.0000</div>
+        <div class="pod-sub" id="hud-orb-sub">i: 0.00° · Ω: 0.0° · Period: 0.0 days</div>
+      </div>
+
+      <!-- Pod 3: Physical Parameters -->
+      <div class="telemetry-pod" id="pod-physical">
+        <div class="pod-header">
+          <span class="pod-label">PHYSICAL CORPUS</span>
+          <span class="pod-tag" id="hud-tag-scale">1.989 × 10³⁰ KG</span>
+        </div>
+        <div class="pod-value" id="hud-phys-val">Radius: 696,340 KM</div>
+        <div class="pod-sub" id="hud-phys-sub">Gravity: 274.0 m/s² · Tilt: 7.25°</div>
+      </div>
+
+      <!-- Pod 4: Mission Status -->
+      <div class="telemetry-pod" id="pod-mission">
+        <div class="pod-header">
+          <span class="pod-label">MISSION METRICS</span>
+          <span class="pod-tag pod-tag--green" id="hud-tag-status">CENTRAL BODY</span>
+        </div>
+        <div class="pod-value" style="color: var(--n-green);" id="hud-mission-val">Gravitational Anchor</div>
+        <div class="pod-sub" id="hud-mission-sub">52 cataloged bodies in orbit</div>
+      </div>
+
+      <!-- Pod 5: Authority & Source Tier -->
+      <div class="telemetry-pod" id="pod-agency">
+        <div class="pod-header">
+          <span class="pod-label">AGENCY PROVENANCE</span>
+          <span class="pod-tag pod-tag--cyan" id="hud-tag-tier">TIER A OEM</span>
+        </div>
+        <div class="pod-value" id="hud-agency-val">NASA / ISRO / ESA / JAXA</div>
+        <div class="pod-sub" id="hud-agency-sub">JPL Horizons / SGP4 Verified</div>
+      </div>
+
+      <!-- Pod 6: Spatial Metrics -->
+      <div class="telemetry-pod" id="pod-spatial">
+        <div class="pod-header">
+          <span class="pod-label">SPATIAL POSITION</span>
+          <span class="pod-tag" id="hud-tag-coord">BARYCENTRIC</span>
+        </div>
+        <div class="pod-value" id="hud-spatial-val">0.00 AU from Sun</div>
+        <div class="pod-sub" id="hud-spatial-sub">Relative Velocity: 0.00 km/s</div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ------------------------------------------------------------------------
+       4. HIGH-TECH SEARCH & AUTOCOMPLETE MODAL (Ctrl+K)
+       ------------------------------------------------------------------------ -->
+  <dialog class="solar-search-modal" id="solar-search-modal" aria-labelledby="search-modal-title">
+    <div class="search-modal-inner">
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="solar-search-input" placeholder="Search any planet, moon, or satellite (e.g., Mars, Europa, ISS, Juno)..." autocomplete="off" />
+        <button type="button" class="search-close-btn" id="solar-search-close" aria-label="Close search">✕</button>
+      </div>
+
+      <div class="search-results-list" id="solar-search-results">
+        <!-- Dynamically populated matching results -->
+      </div>
+
+      <div class="search-modal-footer">
+        <span><kbd>↑</kbd> <kbd>↓</kbd> Navigate</span>
+        <span><kbd>Enter</kbd> Jump to Body</span>
+        <span><kbd>Esc</kbd> Close</span>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="live-announcer" class="sr-only" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/authentication.js"></script>
+  <script src="js/data-formatters.js"></script>
+  <script src="js/motion-controller.js"></script>
+  <script src="js/video-controller.js"></script>
+  <script src="js/app-shell.js"></script>
+  <script src="pages/solar/solar.js"></script>
+</body>
+
+</html>

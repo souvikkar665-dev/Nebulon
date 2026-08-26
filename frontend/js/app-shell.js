@@ -14,6 +14,7 @@ window.NebulonApp = (function () {
     { id: 'home', label: 'Gateway', href: 'index.html' },
     { id: 'investigate', label: 'Investigate', href: 'investigate.html' },
     { id: 'orbit', label: 'Orbit', href: 'orbit.html' },
+    { id: 'solar', label: 'Solar', href: 'solar.html' },
     { id: 'observe', label: 'Observe', href: 'observe.html' },
     { id: 'evidence', label: 'Evidence', href: 'evidence.html' },
     { id: 'model', label: 'Model', href: 'model.html' },
