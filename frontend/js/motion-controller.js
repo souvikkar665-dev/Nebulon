@@ -1,26 +1,30 @@
 /**
  * NEBULON MOTION & PERFORMANCE CONTROLLER
- * Full / Balanced / Reduced Motion performance tier management
+ * Full / Balanced performance mode management (No reduced mode).
  */
 
 window.NebulonMotion = (function () {
   'use strict';
 
   const STORAGE_KEY = 'nebulon_motion_pref';
+  const MODES = ['full', 'balanced'];
   let currentMode = 'full';
 
   function init() {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved && ['full', 'balanced', 'reduced'].includes(saved)) {
+    if (saved && MODES.includes(saved)) {
       currentMode = saved;
-    } else if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      currentMode = 'reduced';
+    } else {
+      currentMode = 'full';
     }
 
     applyMode(currentMode, false);
   }
 
   function applyMode(mode, save = true) {
+    if (!MODES.includes(mode)) {
+      mode = 'full';
+    }
     currentMode = mode;
     document.documentElement.setAttribute('data-motion', mode);
     if (save) {
@@ -45,9 +49,8 @@ window.NebulonMotion = (function () {
   }
 
   function cycleMode() {
-    const modes = ['full', 'balanced', 'reduced'];
-    const nextIndex = (modes.indexOf(currentMode) + 1) % modes.length;
-    applyMode(modes[nextIndex], true);
+    const nextIndex = (MODES.indexOf(currentMode) + 1) % MODES.length;
+    applyMode(MODES[nextIndex], true);
   }
 
   function getMode() {

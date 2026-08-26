@@ -28,16 +28,15 @@ window.NebulonApp = (function () {
     }
 
     currentRoute = document.body.dataset.page || 'home';
+    if (window.NebulonMotion) window.NebulonMotion.init();
     renderBackgroundElements();
     renderNavbar();
     renderMissionDrawer();
-    setupTimelineScrubber();
     setupShortcuts();
     initStarfield();
     startClockAndMet();
 
     // Initialize Subsystems
-    if (window.NebulonMotion) window.NebulonMotion.init();
     if (window.NebulonVideo) window.NebulonVideo.init();
     if (window.NebulonStream) window.NebulonStream.init();
 
@@ -110,7 +109,7 @@ window.NebulonApp = (function () {
           </div>
         </nav>
 
-        <!-- Right: Pulse + Scrubber + Actions -->
+        <!-- Right: Atomic Clock + Permanent Live Beacon + Actions -->
         <div class="nebula-navbar__right">
           <!-- Live UTC Atomic Clock & MET -->
           <div class="n-nav-clock-capsule">
@@ -118,24 +117,10 @@ window.NebulonApp = (function () {
             <div class="n-nav-clock-met" id="n-live-met-clock">MET T+04:18:22</div>
           </div>
 
-          <div class="n-pulse-badge" id="n-nav-pulse" title="Telemetry Feed State">
+          <!-- Permanent Live Telemetry Stream Indicator -->
+          <div class="n-pulse-badge" id="n-nav-pulse" title="Authoritative Live Telemetry Stream Active">
             <span class="n-live-dot"></span>
             <span id="n-nav-pulse-text">LIVE</span>
-          </div>
-
-          <!-- Time Scrubber -->
-          <div class="nav-time-slider" data-time-slider>
-            <div class="nav-time-slider__meta">
-              <span class="nav-time-slider__mode" data-time-mode>LIVE</span>
-              <time class="nav-time-slider__time" data-time-value>2026-08-25 14:22:10 UTC</time>
-            </div>
-            <div class="nav-time-slider__track" id="n-slider-track">
-              <div class="nav-time-slider__ticks" aria-hidden="true"></div>
-              <div class="nav-time-slider__scan" aria-hidden="true"></div>
-              <div class="nav-time-slider__fill" id="n-slider-fill" style="width: 100%;"></div>
-              <input type="range" id="n-timeline-input" min="0" max="100" value="100" aria-label="Mission historical timeline scrubber" />
-              <div class="nav-time-slider__thumb" id="n-slider-thumb" style="left: 100%;"></div>
-            </div>
           </div>
 
           <a href="review.html" class="n-nav-review-badge" title="Unresolved Contradictions">
@@ -153,9 +138,10 @@ window.NebulonApp = (function () {
             </button>
           </div>
 
-          <button type="button" class="n-perf-toggle" id="n-perf-btn" title="Toggle Motion & Performance Mode">
+          <!-- Performance Mode Toggle: Full / Balanced Only -->
+          <button type="button" class="n-perf-toggle" id="n-perf-btn" title="Toggle Performance Mode (Full / Balanced)">
             <span class="n-label-micro">PERF:</span>
-            <strong data-perf-label>Full</strong>
+            <strong data-perf-label>${window.NebulonMotion ? window.NebulonMotion.getMode().charAt(0).toUpperCase() + window.NebulonMotion.getMode().slice(1) : 'Full'}</strong>
           </button>
 
           <button type="button" class="n-mobile-menu-btn" id="n-mobile-toggle" aria-label="Open Navigation Menu">
@@ -166,7 +152,8 @@ window.NebulonApp = (function () {
     `;
 
     updateNavIndicator();
-    window.addEventListener('resize', updateNavIndicator);
+    setupNavHoverGlide();
+    window.addEventListener('resize', () => updateNavIndicator());
 
     // Populate active operator name
     if (window.NebulonAuth) {
@@ -182,10 +169,15 @@ window.NebulonApp = (function () {
       }
     }
 
-    // Bind Perf Toggle
-    document.getElementById('n-perf-btn').addEventListener('click', function () {
-      if (window.NebulonMotion) window.NebulonMotion.cycleMode();
-    });
+    // Bind Perf Toggle (Full / Balanced)
+    const perfBtn = document.getElementById('n-perf-btn');
+    if (perfBtn) {
+      perfBtn.addEventListener('click', function () {
+        if (window.NebulonMotion) {
+          window.NebulonMotion.cycleMode();
+        }
+      });
+    }
 
     // Bind Mission Selector Trigger
     document.getElementById('n-mission-trigger').addEventListener('click', toggleMissionDrawer);
@@ -210,17 +202,42 @@ window.NebulonApp = (function () {
     }, 1000);
   }
 
-  function updateNavIndicator() {
+  function updateNavIndicator(targetElement) {
     const rail = document.getElementById('n-nav-rail');
-    const activeLink = document.querySelector('.n-nav-link.is-active');
+    const targetLink = targetElement || document.querySelector('.n-nav-link.is-active') || document.querySelector('.n-nav-link');
     const indicator = document.getElementById('n-nav-indicator');
-    if (!rail || !activeLink || !indicator) return;
+    if (!rail || !targetLink || !indicator) return;
 
     const railRect = rail.getBoundingClientRect();
-    const linkRect = activeLink.getBoundingClientRect();
+    const linkRect = targetLink.getBoundingClientRect();
 
-    indicator.style.left = `${linkRect.left - railRect.left}px`;
-    indicator.style.width = `${linkRect.width}px`;
+    if (linkRect.width === 0) return; // Prevent zero-width calculation before layout
+
+    const left = linkRect.left - railRect.left;
+    const width = linkRect.width;
+
+    indicator.style.left = `${left}px`;
+    indicator.style.width = `${width}px`;
+  }
+
+  function setupNavHoverGlide() {
+    const rail = document.getElementById('n-nav-rail');
+    if (!rail) return;
+
+    const links = rail.querySelectorAll('.n-nav-link');
+    links.forEach(link => {
+      link.addEventListener('mouseenter', function () {
+        updateNavIndicator(this);
+      });
+    });
+
+    rail.addEventListener('mouseleave', function () {
+      updateNavIndicator();
+    });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => updateNavIndicator());
+    }
   }
 
   function setupTimelineScrubber() {
