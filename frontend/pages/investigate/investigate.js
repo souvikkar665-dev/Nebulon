@@ -11,6 +11,19 @@
   let spectrumCanvas, spectrumCtx;
   let spectrumAnimId;
 
+  // Live public TLE feed cataloged by NASA. Existing investigation data remains the fallback.
+  const LIVE_TLE_ENDPOINT = 'https://tle.ivanstanojevic.me/api/tle';
+  const LIVE_REFRESH_MS = 15 * 60 * 1000;
+  const EARTH_MEAN_RADIUS_KM = 6378.137;
+  const EARTH_MU_KM3_S2 = 398600.4418;
+  const liveTleRecords = new Map();
+  let liveRefreshTimer = null;
+  let liveClockTimer = null;
+
+  // Orbital Intelligence Deck state; scoped to the replacement graph panel.
+  const deckState = { radar: true, heatmap: true, sensors: { rf: true, optical: true, ground: true, catalog: true }, replayValue: 58 };
+  let deckReplayTimer = null;
+
   // Web Audio Sci-Fi Synthesizer (Zero External Audio Files Needed)
   let audioCtx = null;
   function playHudChirp(freq = 880, type = 'sine', duration = 0.06) {
@@ -50,6 +63,9 @@
       renderEvidenceDrawer();
       renderAccessibleTable();
       initSpectrumCanvas();
+      renderLiveOrbitalCard();
+      initOrbitalIntelligenceDeck();
+      initLiveInvestigationFeed();
     } catch (err) {
       console.error(err);
     }
@@ -69,6 +85,124 @@
       const top = workspaceData.hypotheses[0];
       candidateLead.textContent = top ? `${top.tracked_object} (${top.evidence_score}% score)` : '—';
     }
+  }
+
+  function initOrbitalIntelligenceDeck() {
+    const deck = document.querySelector('.orbital-intelligence-deck');
+    if (!deck || deck.dataset.deckBound === 'true') return;
+    deck.dataset.deckBound = 'true';
+
+    deck.querySelectorAll('[data-deck-action]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const action = button.dataset.deckAction;
+        playHudChirp(action === 'reset' ? 720 : 980, action === 'replay' ? 'triangle' : 'sine', 0.06);
+        if (action === 'toggle-radar') deckState.radar = !deckState.radar;
+        if (action === 'toggle-heatmap') deckState.heatmap = !deckState.heatmap;
+        if (action === 'reset') resetOrbitalDeck();
+        if (action === 'replay') startOrbitalDeckReplay();
+        if (action === 'focus-selected') {
+          const target = document.getElementById('inv-evidence-drawer');
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        updateOrbitalDeck();
+      });
+    });
+
+    deck.querySelectorAll('[data-deck-sensor]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const key = button.dataset.deckSensor;
+        deckState.sensors[key] = !deckState.sensors[key];
+        button.classList.toggle('is-on', deckState.sensors[key]);
+        playHudChirp(deckState.sensors[key] ? 1080 : 560, 'sine', 0.05);
+        updateOrbitalDeck();
+      });
+    });
+
+    const timeline = document.getElementById('investigation-deck-timeline');
+    if (timeline) {
+      timeline.addEventListener('input', () => {
+        deckState.replayValue = Number(timeline.value);
+        updateOrbitalDeck();
+        window.dispatchEvent(new CustomEvent('nebulon:timeline-scrub', { detail: { value: deckState.replayValue } }));
+      });
+    }
+    updateOrbitalDeck();
+  }
+
+  function updateOrbitalDeck() {
+    const deck = document.querySelector('.orbital-intelligence-deck');
+    if (!deck) return;
+    deck.classList.toggle('is-radar-off', !deckState.radar);
+    deck.classList.toggle('is-heatmap-off', !deckState.heatmap);
+    deck.classList.toggle('is-replaying', Boolean(deckReplayTimer));
+    const radarValue = deck.querySelector('[data-deck-value="radar"]');
+    const heatmapValue = deck.querySelector('[data-deck-value="heatmap"]');
+    if (radarValue) radarValue.textContent = deckState.radar ? 'ON' : 'OFF';
+    if (heatmapValue) heatmapValue.textContent = deckState.heatmap ? 'ON' : 'OFF';
+    const activeSensors = Object.values(deckState.sensors).filter(Boolean).length;
+    setInvestigationDeckText('investigation-active-sensors', `${activeSensors.toString().padStart(2, '0')} / 04`);
+    setInvestigationDeckText('investigation-deck-timeline-value', `T+${deckState.replayValue}%`);
+    const eventLabel = deckState.replayValue < 25 ? 'Initial detection envelope' : deckState.replayValue < 55 ? 'RF correlation resolving' : deckState.replayValue < 82 ? 'Orbital match consolidating' : 'Current evidence state';
+    setInvestigationDeckText('investigation-deck-event', eventLabel);
+    const timeline = document.getElementById('investigation-deck-timeline');
+    if (timeline && document.activeElement !== timeline) timeline.value = deckState.replayValue;
+    renderOrbitalDeckInspector();
+  }
+
+  function setInvestigationDeckText(id, value) {
+    const element = document.getElementById(id);
+    if (element) element.textContent = value;
+  }
+
+  function resetOrbitalDeck() {
+    if (deckReplayTimer) window.clearInterval(deckReplayTimer);
+    deckReplayTimer = null;
+    deckState.radar = true;
+    deckState.heatmap = true;
+    deckState.replayValue = 58;
+    Object.keys(deckState.sensors).forEach((key) => { deckState.sensors[key] = true; });
+    selectedNodeId = 'obj-56987';
+    if (workspaceData && workspaceData.hypotheses) selectedHypothesis = workspaceData.hypotheses[0] || null;
+    renderGraph();
+    renderHypotheses();
+    renderEvidenceDrawer();
+  }
+
+  function startOrbitalDeckReplay() {
+    if (deckReplayTimer) {
+      window.clearInterval(deckReplayTimer);
+      deckReplayTimer = null;
+      return;
+    }
+    deckState.replayValue = 0;
+    deckReplayTimer = window.setInterval(() => {
+      deckState.replayValue += 1;
+      window.dispatchEvent(new CustomEvent('nebulon:timeline-scrub', { detail: { value: deckState.replayValue } }));
+      updateOrbitalDeck();
+      if (deckState.replayValue >= 100) {
+        window.clearInterval(deckReplayTimer);
+        deckReplayTimer = null;
+        updateOrbitalDeck();
+      }
+    }, 70);
+  }
+
+  function renderOrbitalDeckInspector() {
+    const deck = document.querySelector('.orbital-intelligence-deck');
+    if (!deck) return;
+    let satelliteId = selectedNodeId.startsWith('obj-') ? selectedNodeId.replace('obj-', '') : '56987';
+    const record = liveTleRecords.get(satelliteId);
+    const live = record ? parseTleRecord(record) : null;
+    const hypothesis = workspaceData && workspaceData.hypotheses ? workspaceData.hypotheses.find((item) => String(item.tracked_object).includes(satelliteId)) : null;
+    const fallback = hypothesis && hypothesis.orbital_elements ? hypothesis.orbital_elements : null;
+    setInvestigationDeckText('investigation-selected-target', live ? `NORAD ${satelliteId}` : (hypothesis ? hypothesis.tracked_object : `NORAD ${satelliteId}`));
+    setInvestigationDeckText('investigation-selected-id', `OBJ-${satelliteId} / ${hypothesis && hypothesis.status ? hypothesis.status.toUpperCase() : 'PRIMARY'}`);
+    setInvestigationDeckText('investigation-selected-confidence', hypothesis ? `${hypothesis.evidence_score}%` : '—');
+    setInvestigationDeckText('investigation-selected-altitude', live ? `${live.meanAltitudeKm.toFixed(1)} km` : (fallback ? `${fallback.altitude_km} km` : '—'));
+    setInvestigationDeckText('investigation-selected-inclination', live ? `${live.inclinationDeg.toFixed(2)}°` : (fallback ? `${fallback.inclination}°` : '—'));
+    setInvestigationDeckText('investigation-selected-velocity', live ? `${live.meanVelocityKms.toFixed(2)} km/s` : '—');
+    setInvestigationDeckText('investigation-selected-age', live ? `${live.elementAgeDays.toFixed(2)} d` : '—');
+    setInvestigationDeckText('investigation-selected-source', live ? 'NASA TLE / RUNTIME' : 'WORKSPACE FALLBACK');
   }
 
   function renderGraph() {
@@ -330,6 +464,28 @@
         </div>
       </div>
 
+      <div class="investigation-live-orbit-card" id="investigation-live-orbit-card" aria-live="polite">
+        <div class="investigation-live-orbit-card__head"><span class="n-label-micro">LIVE NASA ORBITAL ANCHOR</span><span id="investigation-live-orbit-status" class="investigation-feed-badge">AWAITING FEED</span></div>
+        <div class="investigation-live-orbit-name" id="investigation-live-orbit-name">NORAD orbital record pending</div>
+        <div class="investigation-live-orbit-grid">
+          <div><span>Mean altitude</span><strong id="investigation-live-altitude">—</strong></div>
+          <div><span>Inclination</span><strong id="investigation-live-inclination">—</strong></div>
+          <div><span>Eccentricity</span><strong id="investigation-live-eccentricity">—</strong></div>
+          <div><span>Mean velocity</span><strong id="investigation-live-velocity">—</strong></div>
+          <div><span>Perigee</span><strong id="investigation-live-perigee">—</strong></div>
+          <div><span>Apogee</span><strong id="investigation-live-apogee">—</strong></div>
+          <div><span>Orbital period</span><strong id="investigation-live-period">—</strong></div>
+          <div><span>Mean motion</span><strong id="investigation-live-motion">—</strong></div>
+          <div><span>RAAN</span><strong id="investigation-live-raan">—</strong></div>
+          <div><span>Arg. perigee</span><strong id="investigation-live-arg">—</strong></div>
+          <div><span>Mean anomaly</span><strong id="investigation-live-anomaly">—</strong></div>
+          <div><span>Element age</span><strong id="investigation-live-age">—</strong></div>
+        </div>
+        <div class="investigation-live-epoch">Element epoch <b id="investigation-live-epoch">—</b></div>
+        <a id="investigation-live-source" href="https://tle.ivanstanojevic.me/api/tle/56987" target="_blank" rel="noopener noreferrer">Open NASA-cataloged TLE record ↗</a>
+        <details class="investigation-raw-tle"><summary>OPEN RAW TLE LINES</summary><code id="investigation-live-line1">—</code><code id="investigation-live-line2">—</code></details>
+      </div>
+
       <div style="margin-top: auto; padding-top: 1rem; display: flex; flex-direction: column; gap: 8px;">
         <a href="observe.html" class="n-btn n-btn--primary n-btn--sm" style="width: 100%;">
           Find Next Observation for this Candidate →
@@ -341,6 +497,151 @@
     `;
 
     initSpectrumCanvas();
+    renderLiveOrbitalCard();
+    renderOrbitalDeckInspector();
+  }
+
+  function renderLiveOrbitalCard() {
+    const card = document.getElementById('investigation-live-orbit-card');
+    if (!card) return;
+    const satelliteId = selectedNodeId.startsWith('obj-') ? selectedNodeId.replace('obj-', '') : '56987';
+    const record = liveTleRecords.get(satelliteId);
+    const live = record ? parseTleRecord(record) : null;
+    const status = document.getElementById('investigation-live-orbit-status');
+    if (status) {
+      status.textContent = live ? 'LIVE TLE' : 'AWAITING FEED';
+      status.classList.toggle('is-fallback', !live);
+    }
+    if (!live) return;
+    setLiveText('investigation-live-orbit-name', `${live.name} / NORAD ${live.satelliteId}`);
+    setLiveText('investigation-live-altitude', `${live.meanAltitudeKm.toFixed(1)} km mean`);
+    setLiveText('investigation-live-inclination', `${live.inclinationDeg.toFixed(4)}°`);
+    setLiveText('investigation-live-eccentricity', live.eccentricity.toFixed(7));
+    setLiveText('investigation-live-velocity', `${live.meanVelocityKms.toFixed(3)} km/s`);
+    setLiveText('investigation-live-perigee', `${live.perigeeKm.toFixed(1)} km`);
+    setLiveText('investigation-live-apogee', `${live.apogeeKm.toFixed(1)} km`);
+    setLiveText('investigation-live-period', `${live.periodMinutes.toFixed(2)} min`);
+    setLiveText('investigation-live-motion', `${live.meanMotionRevDay.toFixed(8)} rev/day`);
+    setLiveText('investigation-live-raan', `${live.raanDeg.toFixed(4)}°`);
+    setLiveText('investigation-live-arg', `${live.argPerigeeDeg.toFixed(4)}°`);
+    setLiveText('investigation-live-anomaly', `${live.meanAnomalyDeg.toFixed(4)}°`);
+    setLiveText('investigation-live-age', `${live.elementAgeDays.toFixed(2)} days`);
+    setLiveText('investigation-live-epoch', live.epochLabel);
+    setLiveText('investigation-live-line1', record.line1);
+    setLiveText('investigation-live-line2', record.line2);
+    const source = document.getElementById('investigation-live-source');
+    if (source) {
+      source.href = `${LIVE_TLE_ENDPOINT}/${live.satelliteId}`;
+      source.textContent = `Open NASA-cataloged TLE record / ${live.satelliteId} ↗`;
+    }
+  }
+
+  function setLiveText(id, value) {
+    const element = document.getElementById(id);
+    if (element) element.textContent = value;
+  }
+
+  function parseTleRecord(record) {
+    if (!record || !record.line1 || !record.line2) return null;
+    const line2 = record.line2;
+    const inclinationDeg = Number(line2.slice(8, 16));
+    const raanDeg = Number(line2.slice(17, 25));
+    const eccentricity = Number(`0.${line2.slice(26, 33).trim()}`);
+    const argPerigeeDeg = Number(line2.slice(34, 42));
+    const meanAnomalyDeg = Number(line2.slice(43, 51));
+    const meanMotionRevDay = Number(line2.slice(52, 63));
+    const meanMotionRadSec = meanMotionRevDay * 2 * Math.PI / 86400;
+    const semiMajorAxisKm = Math.pow(EARTH_MU_KM3_S2 / (meanMotionRadSec * meanMotionRadSec), 1 / 3);
+    const epochDate = parseTleEpoch(record.line1);
+    return {
+      satelliteId: record.satelliteId,
+      name: record.name || `NORAD ${record.satelliteId}`,
+      inclinationDeg,
+      raanDeg,
+      eccentricity,
+      argPerigeeDeg,
+      meanAnomalyDeg,
+      meanMotionRevDay,
+      meanAltitudeKm: semiMajorAxisKm - EARTH_MEAN_RADIUS_KM,
+      perigeeKm: semiMajorAxisKm * (1 - eccentricity) - EARTH_MEAN_RADIUS_KM,
+      apogeeKm: semiMajorAxisKm * (1 + eccentricity) - EARTH_MEAN_RADIUS_KM,
+      periodMinutes: 1440 / meanMotionRevDay,
+      meanVelocityKms: Math.sqrt(EARTH_MU_KM3_S2 / semiMajorAxisKm),
+      elementAgeDays: epochDate ? Math.max(0, (Date.now() - epochDate.getTime()) / 86400000) : 0,
+      epochLabel: epochDate ? `${formatUtc(epochDate)} · NASA TLE` : `${record.date || 'Unknown'} · NASA TLE`
+    };
+  }
+
+  function parseTleEpoch(line1) {
+    const year2 = Number(line1.slice(18, 20));
+    const day = Number(line1.slice(20, 32));
+    if (!Number.isFinite(year2) || !Number.isFinite(day)) return null;
+    const year = year2 < 57 ? 2000 + year2 : 1900 + year2;
+    return new Date(Date.UTC(year, 0, 1) + (day - 1) * 86400000);
+  }
+
+  function formatUtc(date) {
+    return date.toISOString().replace('T', ' ').replace(/\.\d{3}Z$/, ' UTC');
+  }
+
+  async function initLiveInvestigationFeed() {
+    if (liveRefreshTimer) window.clearInterval(liveRefreshTimer);
+    if (liveClockTimer) window.clearInterval(liveClockTimer);
+    updateInvestigationClock();
+    liveClockTimer = window.setInterval(updateInvestigationClock, 1000);
+    await refreshLiveInvestigationFeed();
+    liveRefreshTimer = window.setInterval(refreshLiveInvestigationFeed, LIVE_REFRESH_MS);
+  }
+
+  function updateInvestigationClock() {
+    const utc = new Date().toISOString().slice(11, 19);
+    const clock = document.getElementById('investigation-live-clock');
+    const deckClock = document.getElementById('investigation-deck-utc');
+    if (clock) clock.textContent = utc;
+    if (deckClock) deckClock.textContent = utc;
+  }
+
+  async function refreshLiveInvestigationFeed() {
+    setInvestigationFeedStatus('CONNECTING', false);
+    const ids = ['56987', '56983', '56991'];
+    const results = await Promise.allSettled(ids.map(async (id) => {
+      const response = await fetch(`${LIVE_TLE_ENDPOINT}/${id}`, { cache: 'no-store', headers: { Accept: 'application/json' } });
+      if (!response.ok) throw new Error(`TLE ${id} returned ${response.status}`);
+      return response.json();
+    }));
+    let successCount = 0;
+    results.forEach((result, index) => {
+      if (result.status === 'fulfilled' && result.value && result.value.line1 && result.value.line2) {
+        liveTleRecords.set(ids[index], result.value);
+        successCount += 1;
+      }
+    });
+    renderLiveOrbitalCard();
+    renderOrbitalDeckInspector();
+    if (successCount === ids.length) setInvestigationFeedStatus('LIVE / NASA TLE', true);
+    else if (successCount > 0) setInvestigationFeedStatus(`PARTIAL / ${successCount} OF ${ids.length}`, true);
+    else setInvestigationFeedStatus('FALLBACK / WORKSPACE DATA', false);
+  }
+
+  function setInvestigationFeedStatus(label, isLive) {
+    const status = document.getElementById('investigation-data-status');
+    const drawerStatus = document.getElementById('investigation-drawer-feed');
+    const referenceStatus = document.getElementById('investigation-reference-sync');
+    const graphStatus = document.getElementById('investigation-link-state');
+    const state = document.getElementById('investigation-state');
+    if (status) status.textContent = label;
+    if (drawerStatus) {
+      drawerStatus.textContent = isLive ? 'NASA LINK' : label;
+      drawerStatus.classList.toggle('is-fallback', !isLive);
+    }
+    if (referenceStatus) {
+      referenceStatus.textContent = isLive ? `SYNCED ${new Date().toISOString().slice(11, 19)} UTC` : label;
+      referenceStatus.classList.toggle('is-synced', isLive);
+    }
+    if (graphStatus) graphStatus.textContent = isLive ? 'NASA TLE / NOMINAL' : 'WORKSPACE FALLBACK';
+    if (state) state.textContent = isLive ? 'FUSION LIVE' : 'ANALYZING';
+    const stage = document.getElementById('investigation-live-orbit-status');
+    if (stage && !isLive) stage.classList.add('is-fallback');
   }
 
   function initSpectrumCanvas() {

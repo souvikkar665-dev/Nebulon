@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" data-motion="full">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#050611" />
-  <meta name="description" content="Nebulon Identity Investigation — Interactive multi-candidate identity graph, RF Doppler residuals, and evidence drawer." />
+  <meta name="description"
+    content="Nebulon Identity Investigation — Interactive multi-candidate identity graph, RF Doppler residuals, and evidence drawer." />
   <title>Identity Investigation — Nebulon</title>
 
   <!-- Core Design System -->
@@ -48,8 +50,15 @@
 
   <main id="main-content" tabindex="-1">
     <div class="n-container" style="padding-top: 1.5rem;">
+      <div class="investigation-status-rail" aria-label="Investigation system status">
+        <span><i></i> IDENTITY INVESTIGATION / MULTI-SENSOR FUSION</span>
+        <span>NASA FEED <b id="investigation-data-status">CONNECTING</b></span>
+        <span>UTC <b id="investigation-live-clock">--:--:--</b></span>
+      </div>
+
       <!-- Workspace Header -->
       <div class="n-panel investigate-header n-panel--strong">
+        <div class="investigate-header-scanline" aria-hidden="true"></div>
         <div class="investigate-target-lockup">
           <div class="investigate-target-icon">◈</div>
           <div>
@@ -58,7 +67,10 @@
           </div>
         </div>
 
-        <div style="display: flex; gap: 1.5rem; align-items: center; font-family: var(--n-font-mono); font-size: 0.8rem;">
+        <div class="investigate-header-metrics"
+          style="display: flex; gap: 1.5rem; align-items: center; font-family: var(--n-font-mono); font-size: 0.8rem;">
+          <div><span class="n-muted">Mission state:</span><strong id="investigation-state"
+              style="color: var(--n-cyan);">ANALYZING</strong></div>
           <div>
             <span class="n-muted">Target Spacecraft:</span>
             <strong style="color: var(--n-cyan);" id="inv-target-name">Aurora-1</strong>
@@ -73,25 +85,105 @@
       <!-- Graph & Evidence Drawer Layout -->
       <div class="investigate-layout">
         <!-- SVG Identity Graph -->
-        <div class="n-panel investigate-graph-panel n-panel--strong">
-          <div class="investigate-graph-toolbar">
-            <span class="n-chip n-chip--cyan">SVG Constellation Graph · Multi-Sensor Links</span>
-            <div style="display: flex; gap: 8px;">
-              <span class="n-chip" style="font-size: 0.68rem;">Cyan = Supporting</span>
-              <span class="n-chip" style="font-size: 0.68rem; color: var(--n-red);">Red = Conflict</span>
+        <div class="n-panel investigate-graph-panel orbital-intelligence-deck n-panel--strong">
+          <div class="orbital-deck-head">
+            <div>
+              <span class="n-kicker">ORBITAL INTELLIGENCE DECK / INVESTIGATION VIEW</span>
+              <h3>Live Target Fusion Console</h3>
+              <p>Inspect orbital context, sensor confidence, and candidate separation without leaving the active mission
+                state.</p>
             </div>
+            <div class="orbital-deck-head__state"><span id="investigation-deck-state"
+                class="orbital-deck-state is-live">LIVE FUSION</span><span>UTC <b
+                  id="investigation-deck-utc">--:--:--</b></span></div>
           </div>
 
-          <div class="investigate-svg-container" id="inv-svg-container">
-            <!-- Rendered by investigate.js -->
+          <div class="orbital-deck-toolbar" role="toolbar" aria-label="Orbital intelligence controls">
+            <button type="button" class="orbital-deck-tool is-active" data-deck-action="toggle-radar"><span
+                class="orbital-tool-dot"></span>Radar field <b data-deck-value="radar">ON</b></button>
+            <button type="button" class="orbital-deck-tool is-active" data-deck-action="toggle-heatmap"><span
+                class="orbital-tool-dot orbital-tool-dot--violet"></span>Evidence heatmap <b
+                data-deck-value="heatmap">ON</b></button>
+            <button type="button" class="orbital-deck-tool" data-deck-action="replay"><span
+                class="orbital-tool-icon">▶</span>Replay investigation</button>
+            <button type="button" class="orbital-deck-tool orbital-deck-tool--quiet" data-deck-action="reset">Reset
+              deck</button>
+          </div>
+
+          <div class="orbital-deck-main">
+            <aside class="orbital-deck-sensor-rail" aria-label="Sensor filters">
+              <div class="orbital-deck-rail-label">SENSOR LAYERS</div>
+              <button type="button" class="orbital-sensor-filter is-on" data-deck-sensor="rf"><span
+                  class="orbital-sensor-icon">⌁</span><span><b>RF / DOPPLER</b><small>Residual
+                    field</small></span><i></i></button>
+              <button type="button" class="orbital-sensor-filter is-on" data-deck-sensor="optical"><span
+                  class="orbital-sensor-icon">◉</span><span><b>OPTICAL</b><small>Track
+                    correlation</small></span><i></i></button>
+              <button type="button" class="orbital-sensor-filter is-on" data-deck-sensor="ground"><span
+                  class="orbital-sensor-icon">⌖</span><span><b>GROUND STATIONS</b><small>Pass
+                    visibility</small></span><i></i></button>
+              <button type="button" class="orbital-sensor-filter is-on" data-deck-sensor="catalog"><span
+                  class="orbital-sensor-icon">▣</span><span><b>CATALOG /
+                    TLE</b><small>NASA-cataloged</small></span><i></i></button>
+              <div class="orbital-deck-sensor-summary"><span>ACTIVE SOURCES</span><strong
+                  id="investigation-active-sensors">04 / 04</strong><small>Click to isolate a sensor family</small>
+              </div>
+            </aside>
+
+            <section class="orbital-deck-stage" aria-label="Interactive orbital intelligence view">
+              <div class="orbital-deck-stage-top"><span>FRAME <b>ECI / WGS84</b></span><span>LINK <b
+                    id="investigation-link-state">NOMINAL</b></span><span>FIELD <b
+                    id="investigation-field-state">ACTIVE</b></span></div>
+              <div class="orbital-deck-radar-sweep" aria-hidden="true"></div>
+              <div class="investigate-svg-container" id="inv-svg-container">
+                <!-- Rendered by investigate.js -->
+              </div>
+              <div class="orbital-deck-stage-bottom"><span><i
+                    class="orbital-legend-dot orbital-legend-dot--cyan"></i>supporting</span><span><i
+                    class="orbital-legend-dot orbital-legend-dot--violet"></i>catalog correlation</span><span><i
+                    class="orbital-legend-dot orbital-legend-dot--red"></i>conflict</span></div>
+            </section>
+
+            <aside class="orbital-deck-target" aria-label="Selected target inspector">
+              <div class="orbital-deck-rail-label">TARGET INSPECTOR</div>
+              <div class="orbital-target-orbit-mark"><span></span><i></i></div>
+              <span class="orbital-target-kicker">SELECTED NODE</span>
+              <strong id="investigation-selected-target">NORAD 56987</strong>
+              <small id="investigation-selected-id">OBJ-56987 / PRIMARY</small>
+              <div class="orbital-target-score"><span>FUSION CONFIDENCE</span><b
+                  id="investigation-selected-confidence">87.4%</b></div>
+              <div class="orbital-target-metrics">
+                <div><span>ALTITUDE</span><b id="investigation-selected-altitude">—</b></div>
+                <div><span>INCLINATION</span><b id="investigation-selected-inclination">—</b></div>
+                <div><span>VELOCITY</span><b id="investigation-selected-velocity">—</b></div>
+                <div><span>ELEMENT AGE</span><b id="investigation-selected-age">—</b></div>
+              </div>
+              <div class="orbital-target-source"><span>DATA PROVENANCE</span><b
+                  id="investigation-selected-source">WORKSPACE / NASA TLE</b></div>
+              <button type="button" class="orbital-target-focus" data-deck-action="focus-selected">Focus selected target
+                <span>↗</span></button>
+            </aside>
+          </div>
+
+          <div class="orbital-deck-timeline">
+            <div class="orbital-deck-timeline__head"><span>INVESTIGATION REPLAY</span><b
+                id="investigation-deck-timeline-value">T+58%</b><small id="investigation-deck-event">Current evidence
+                state</small></div>
+            <input id="investigation-deck-timeline" type="range" min="0" max="100" value="58" step="1"
+              aria-label="Investigation replay timeline" />
+            <div class="orbital-deck-timeline__scale"><span>INITIAL DETECTION</span><span>RF
+                CORRELATION</span><span>ORBIT MATCH</span><span>CURRENT STATE</span></div>
           </div>
         </div>
 
         <!-- Evidence & Observation Drawer (Right Side) -->
         <div class="n-panel investigate-drawer-panel n-panel--strong" id="inv-evidence-drawer">
           <div class="investigate-drawer-head">
-            <span class="n-kicker">EVIDENCE PROVENANCE</span>
+            <div class="investigate-drawer-head__top"><span class="n-kicker">EVIDENCE PROVENANCE</span><span
+                id="investigation-drawer-feed" class="investigation-feed-badge">LIVE LINK</span></div>
             <h3 style="font-size: 1.15rem; margin-top: 2px;">Candidate Telemetry</h3>
+            <p class="investigate-drawer-subtitle">RF residuals, physics evidence, and live orbital context in one
+              review surface.</p>
           </div>
           <div class="investigate-drawer-body" id="inv-evidence-drawer-body">
             <!-- Populated dynamically by investigate.js -->
@@ -106,7 +198,8 @@
             <span class="n-kicker">HYPOTHESIS ARBITER</span>
             <h3>Candidate Disambiguation & Separation</h3>
           </div>
-          <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.75rem;">Ranked by deterministic physics residual & multi-sensor evidence</span>
+          <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.75rem;">Ranked by deterministic
+            physics residual & multi-sensor evidence</span>
         </div>
 
         <div class="investigate-hypotheses-grid" id="inv-hypotheses-container">
@@ -114,16 +207,31 @@
         </div>
       </div>
 
+      <div class="investigation-reference-deck" aria-label="Investigation source references">
+        <div class="investigation-reference-deck__head"><span class="n-kicker">REFERENCE DECK / SOURCE STUDY</span><span
+            id="investigation-reference-sync">SYNC PENDING</span></div>
+        <a href="https://api.nasa.gov/" target="_blank" rel="noopener noreferrer"><span>NASA Open APIs</span><small>TLE
+            catalog & API guidance ↗</small></a>
+        <a href="https://sscweb.gsfc.nasa.gov/WebServices/REST/" target="_blank" rel="noopener noreferrer"><span>NASA
+            SSCWeb REST</span><small>Spacecraft ephemeris services ↗</small></a>
+        <a href="https://tle.ivanstanojevic.me/" target="_blank" rel="noopener noreferrer"><span>NASA-cataloged TLE
+            service</span><small>Raw JSON orbital elements ↗</small></a>
+        <a href="https://celestrak.org/NORAD/documentation/tle-fmt.php" target="_blank"
+          rel="noopener noreferrer"><span>CelesTrak TLE format</span><small>Element-field reference ↗</small></a>
+      </div>
+
       <!-- Accessible Semantic Table Fallback -->
       <section style="margin-top: 3rem; margin-bottom: 2rem;">
         <details class="n-panel" style="padding: 1.25rem;">
-          <summary style="font-family: var(--n-font-mono); font-size: 0.85rem; color: var(--n-text-soft); cursor: pointer;">
+          <summary
+            style="font-family: var(--n-font-mono); font-size: 0.85rem; color: var(--n-text-soft); cursor: pointer;">
             ▸ Accessible Screen-Reader & Data Table View
           </summary>
           <div style="margin-top: 1rem; overflow-x: auto;">
             <table aria-label="Spacecraft Hypotheses Table">
               <thead>
-                <tr style="text-align: left; font-family: var(--n-font-mono); font-size: 0.75rem; color: var(--n-muted); border-bottom: 1px solid var(--n-line);">
+                <tr
+                  style="text-align: left; font-family: var(--n-font-mono); font-size: 0.75rem; color: var(--n-muted); border-bottom: 1px solid var(--n-line);">
                   <th style="padding: 8px;">Rank</th>
                   <th style="padding: 8px;">Tracked Object</th>
                   <th style="padding: 8px;">Target Hypothesis</th>
@@ -153,4 +261,5 @@
   <script src="js/app-shell.js" defer></script>
   <script src="pages/investigate/investigate.js" defer></script>
 </body>
+
 </html>
