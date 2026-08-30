@@ -34,6 +34,119 @@
   };
 
   // --------------------------------------------------------------------------
+  // 1A. LIVE PLANETARY DATA — NASA/JPL HORIZONS
+  // --------------------------------------------------------------------------
+  // The visual catalog above remains the offline fallback. This additive layer
+  // refreshes physical/orbital fields from NASA/JPL Horizons when available.
+  const LIVE_PLANET_DATA = {
+    sun: { command: '10', source: 'NASA/JPL Horizons' },
+    mercury: { command: '199', source: 'NASA/JPL Horizons' },
+    venus: { command: '299', source: 'NASA/JPL Horizons' },
+    earth: { command: '399', source: 'NASA/JPL Horizons' },
+    mars: { command: '499', source: 'NASA/JPL Horizons' },
+    jupiter: { command: '599', source: 'NASA/JPL Horizons' },
+    saturn: { command: '699', source: 'NASA/JPL Horizons' },
+    uranus: { command: '799', source: 'NASA/JPL Horizons' },
+    neptune: { command: '899', source: 'NASA/JPL Horizons' },
+    pluto: { command: '999', source: 'NASA/JPL Horizons' }
+  };
+
+  const JPL_MEAN_RADII_KM = {
+    sun: 695700, mercury: 2439.4, venus: 6051.8, earth: 6371.0084,
+    mars: 3389.5, jupiter: 69911, saturn: 58232, uranus: 25362,
+    neptune: 24622, pluto: 1188.3
+  };
+
+  const LIVE_DATA_ENDPOINTS = {
+    horizons: 'https://ssd.jpl.nasa.gov/api/horizons.api',
+    physicalParameters: 'https://ssd.jpl.nasa.gov/planets/phys_par.html',
+    nasaPlanets: 'https://science.nasa.gov/solar-system/planets/',
+    esaMercury: 'https://www.esa.int/Science_Exploration/Space_Science/BepiColombo',
+    jaxaVenus: 'https://www.isas.jaxa.jp/en/missions/spacecraft/current/akatsuki.html'
+  };
+
+  function parseHorizonsNumber(record, label) {
+    const escapedLabel = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const match = record.match(new RegExp('(?:^|\\n)\\s*' + escapedLabel + '\\s*=\\s*([+-]?(?:\\d+\\.?\\d*|\\.\\d+)(?:[Ee][+-]?\\d+)?)', 'm'));
+    return match ? Number(match[1]) : null;
+  }
+
+  function formatLiveValue(value, suffix, decimals = 3) {
+    return Number.isFinite(value) ? `${value.toFixed(decimals)}${suffix}` : null;
+  }
+
+  async function fetchLivePlanetData(bodyId, config) {
+    const params = new URLSearchParams({
+      format: 'json',
+      COMMAND: `'${config.command}'`,
+      OBJ_DATA: 'NO',
+      MAKE_EPHEM: 'YES',
+      EPHEM_TYPE: 'ELEMENTS',
+      CENTER: "'500@0'",
+      TLIST: `'${new Date().toISOString().slice(0, 10)}'`,
+      OUT_UNITS: "'AU-D'",
+      REF_PLANE: "'ECLIPTIC'"
+    });
+
+    const response = await fetch(`${LIVE_DATA_ENDPOINTS.horizons}?${params.toString()}`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      cache: 'no-store'
+    });
+    if (!response.ok) throw new Error(`Horizons HTTP ${response.status}`);
+
+    const payload = await response.json();
+    const record = payload && typeof payload.result === 'string' ? payload.result : '';
+    if (!record || /No matches found|ERROR/i.test(record)) throw new Error('No Horizons record');
+
+    const body = BODIES[bodyId];
+    if (!body) return;
+
+    const semiMajorAu = parseHorizonsNumber(record, 'A');
+    const eccentricity = parseHorizonsNumber(record, 'EC');
+    const inclination = parseHorizonsNumber(record, 'IN');
+    const longitudeAscendingNode = parseHorizonsNumber(record, 'OM');
+    const periodDays = parseHorizonsNumber(record, 'PR');
+
+    if (Number.isFinite(semiMajorAu)) body.semiMajor = `${semiMajorAu.toFixed(3)} AU`;
+    if (Number.isFinite(eccentricity)) body.ecc = eccentricity.toFixed(4);
+    if (Number.isFinite(inclination)) body.inc_deg = Number(inclination.toFixed(3));
+    if (Number.isFinite(longitudeAscendingNode)) body.raan_deg = Number(longitudeAscendingNode.toFixed(3));
+    if (Number.isFinite(periodDays)) {
+      body.period = periodDays >= 365.25
+        ? `${(periodDays / 365.25).toFixed(3)} years`
+        : `${periodDays.toFixed(2)} days`;
+    }
+
+    body.meanRadiusKm = JPL_MEAN_RADII_KM[bodyId] || body.meanRadiusKm;
+    body.liveSemiMajorAu = semiMajorAu;
+    body.liveOrbitalSpeedKmS = Number.isFinite(semiMajorAu) && Number.isFinite(periodDays) && periodDays > 0
+      ? (2 * Math.PI * semiMajorAu * 149597870.7) / (periodDays * 86400)
+      : null;
+
+    body.liveData = true;
+    body.dataSource = config.source;
+    body.dataSourceUrl = LIVE_DATA_ENDPOINTS.horizons;
+    body.dataUpdatedAt = new Date().toISOString();
+  }
+
+  async function loadLivePlanetData() {
+    const entries = Object.entries(LIVE_PLANET_DATA);
+    const results = await Promise.allSettled(
+      entries.map(([bodyId, config]) => fetchLivePlanetData(bodyId, config))
+    );
+    const failed = results.filter(result => result.status === 'rejected').length;
+    if (failed) console.warn(`${failed} live planetary data request(s) unavailable; offline catalog retained.`);
+
+    // Refresh only existing UI state; no rendering or interaction function is replaced.
+    if (BODIES[currentTargetId]) {
+      updateTelemetryMatrixUI(BODIES[currentTargetId]);
+      updateCommandRailUI();
+      buildSidebarTree();
+    }
+  }
+
+  // --------------------------------------------------------------------------
   // 2. CELESTIAL BODIES DATA CATALOG (52 Cataloged Bodies)
   // --------------------------------------------------------------------------
   const BODIES = {
@@ -1287,6 +1400,9 @@
     setupKeyboardShortcuts();
     selectBody('sun', 'system');
 
+    // Additive live refresh; the existing offline catalog remains the fallback.
+    loadLivePlanetData();
+
     // 7. Start Render Loop
     window.addEventListener('resize', handleResize);
     animate(performance.now());
@@ -2438,6 +2554,16 @@
       const el = document.getElementById(id);
       if (el) el.textContent = val;
     };
+    const formatter = window.NebulonFormatters;
+    const telemetry = formatter && typeof formatter.formatPlanetaryTelemetry === 'function'
+      ? formatter.formatPlanetaryTelemetry(data)
+      : null;
+    const formatDeg = formatter && typeof formatter.formatDegrees === 'function'
+      ? formatter.formatDegrees
+      : (value) => Number.isFinite(Number(value)) ? `${Number(value).toFixed(3)}°` : '—';
+    const formatKm = formatter && typeof formatter.formatKm === 'function'
+      ? formatter.formatKm
+      : (value) => Number.isFinite(Number(value)) ? `${Number(value).toLocaleString()} km` : '—';
 
     const glyphEl = document.getElementById('hud-glyph');
     if (glyphEl) {
@@ -2451,27 +2577,26 @@
     setTxt('hud-body-name', data.name.toUpperCase());
     setTxt('hud-body-sub', data.desc);
     setTxt('hud-tag-class', data.type.toUpperCase());
+    setTxt('hud-orb-val', telemetry ? telemetry.orbital : `a: ${data.semiMajor} · e: ${data.ecc}`);
+    setTxt('hud-orb-sub', `i: ${formatDeg(data.inc_deg)} · Ω: ${formatDeg(data.raan_deg)} · Period: ${data.period || '—'}`);
 
-    setTxt('hud-orb-val', `a: ${data.semiMajor} · e: ${data.ecc}`);
-    setTxt('hud-orb-sub', `i: ${data.inc_deg}° · Period: ${data.period}`);
-
-    setTxt('hud-phys-val', `Radius: ${data.radius * 637.1} km`);
-    setTxt('hud-phys-sub', `Mass: ${data.mass} · Gravity: ${data.gravity}`);
-    setTxt('hud-tag-scale', data.mass);
+    const radiusKm = Number.isFinite(Number(data.meanRadiusKm)) ? formatKm(data.meanRadiusKm) : '—';
+    setTxt('hud-phys-val', `Radius: ${radiusKm}`);
+    setTxt('hud-phys-sub', `Mass: ${data.mass || '—'} · Gravity: ${data.gravity || '—'} · Tilt: ${formatDeg(data.tilt_deg)}`);
+    setTxt('hud-tag-scale', data.mass || '—');
 
     setTxt('hud-mission-val', data.status);
     setTxt('hud-mission-sub', data.statusDetail);
-
     setTxt('hud-agency-val', data.agency);
-    setTxt('hud-agency-sub', data.sourceTier);
+    setTxt('hud-agency-sub', telemetry ? telemetry.provenance : (data.sourceTier || 'Catalog fallback'));
 
-    setTxt('hud-spatial-val', `${data.dist * 0.008 + 0.1 > 0 ? (data.dist * 0.008).toFixed(2) : 0} AU from Sun`);
-    setTxt('hud-spatial-sub', `Orbital Speed: ${(data.orb_speed * 120).toFixed(1)} km/s`);
+    const spatial = telemetry ? telemetry.spatial : `${(data.dist * 0.008).toFixed(2)} AU from Sun`;
+    const speed = telemetry && telemetry.speed !== '—' ? telemetry.speed : `${(data.orb_speed * 120).toFixed(1)} km/s`;
+    setTxt('hud-spatial-val', spatial);
+    setTxt('hud-spatial-sub', `Orbital Speed: ${speed}`);
 
     const pods = document.querySelectorAll('.telemetry-pod');
-    pods.forEach(pod => {
-      pod.style.borderLeftColor = data.color;
-    });
+    pods.forEach(pod => { pod.style.borderLeftColor = data.color; });
   }
 
   function updateSidebarActiveState(bodyId) {
