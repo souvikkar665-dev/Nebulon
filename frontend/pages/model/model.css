@@ -70,3 +70,79 @@
     grid-template-columns: 1fr;
   }
 }
+/* AI Intelligence Button — violet/blue futuristic visual */
+.ai-intelligence-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 38px;
+  padding: 0.62rem 1rem;
+  border: 1px solid rgba(168, 85, 247, 0.8);
+  border-radius: 999px;
+  color: #ffffff;
+  background: linear-gradient(115deg, rgba(37, 99, 235, 0.32), rgba(168, 85, 247, 0.34));
+  box-shadow: 0 0 14px rgba(59, 130, 246, 0.28), inset 0 0 14px rgba(168, 85, 247, 0.16);
+  font-family: var(--n-font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.ai-intelligence-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  transform: translateX(-120%);
+  transition: transform 0.55s ease;
+}
+
+.ai-intelligence-btn:hover,
+.ai-intelligence-btn:focus-visible {
+  border-color: #00f0ff;
+  box-shadow: 0 0 22px rgba(0, 240, 255, 0.46), 0 0 34px rgba(168, 85, 247, 0.3), inset 0 0 16px rgba(0, 240, 255, 0.18);
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.ai-intelligence-btn:hover::before,
+.ai-intelligence-btn:focus-visible::before {
+  transform: translateX(120%);
+}
+
+.ai-intelligence-btn__signal {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00f0ff;
+  box-shadow: 0 0 8px #00f0ff, 0 0 15px #a855f7;
+  animation: ai-intelligence-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes ai-intelligence-pulse {
+
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
+@media (max-width: 640px) {
+  .ai-intelligence-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
