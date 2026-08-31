@@ -1226,15 +1226,15 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
       stars = [];
-      const count = Math.floor((w * h) / 4500);
+      const count = Math.floor((w * h) / 3800);
       for (let i = 0; i < count; i++) {
         stars.push({
           x: Math.random() * w,
           y: Math.random() * h,
-          r: Math.random() * 1.4 + 0.2,
-          speed: Math.random() * 0.3 + 0.05,
+          r: Math.random() * 1.5 + 0.2,
+          speed: Math.random() * 0.35 + 0.05,
           twinkle: Math.random() * Math.PI * 2,
-          hue: Math.random() > 0.6 ? '0, 240, 255' : (Math.random() > 0.5 ? '157, 92, 255' : '255, 255, 255')
+          color: Math.random() > 0.6 ? '192, 132, 252' : (Math.random() > 0.5 ? '217, 70, 239' : (Math.random() > 0.4 ? '6, 182, 212' : '255, 255, 255'))
         });
       }
     }
@@ -1245,10 +1245,10 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
     function draw() {
       ctx.clearRect(0, 0, w, h);
       for (const st of stars) {
-        st.twinkle += 0.025;
+        st.twinkle += 0.03;
         const alpha = 0.35 + Math.sin(st.twinkle) * 0.35;
         ctx.beginPath();
-        ctx.fillStyle = `rgba(${st.hue}, ${Math.max(alpha, 0.08)})`;
+        ctx.fillStyle = `rgba(${st.color}, ${Math.max(alpha, 0.08)})`;
         ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
         ctx.fill();
 
@@ -1269,18 +1269,17 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
     const ctx = canvas.getContext('2d');
     let angle = 0;
     const blips = [
-      { r: 0.32, theta: 1.15, label: 'GEO-04', color: '#00f0ff' },
-      { r: 0.58, theta: 3.42, label: 'JWST-L2', color: '#34d399' },
-      { r: 0.22, theta: 4.85, label: 'ISS-LEO', color: '#00f0ff' },
-      { r: 0.76, theta: 2.10, label: 'ARTEMIS', color: '#c499ff' },
-      { r: 0.44, theta: 0.45, label: 'DEBRIS-X', color: '#fbbf24' }
+      { r: 0.30, theta: 1.15, label: 'GEO-04', color: '#f59e0b', sub: '35.7K KM' },
+      { r: 0.55, theta: 3.42, label: 'JWST-L2', color: '#c084fc', sub: '482K KM' },
+      { r: 0.20, theta: 4.85, label: 'ISS-LEO', color: '#22d3ee', sub: '408 KM' },
+      { r: 0.72, theta: 2.10, label: 'ARTEMIS', color: '#f472b6', sub: '384K KM' },
+      { r: 0.42, theta: 0.45, label: 'NEO-2026', color: '#f43f5e', sub: '1.2M KM' }
     ];
 
     function resize() {
       const rect = canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
       const w = Math.max(200, Math.floor(rect.width || canvas.offsetWidth || 280));
-      const h = Math.max(80, Math.floor(rect.height || canvas.offsetHeight || 115));
+      const h = Math.max(80, Math.floor(rect.height || canvas.offsetHeight || 120));
       if (canvas.width !== w || canvas.height !== h) {
         canvas.width = w;
         canvas.height = h;
@@ -1292,36 +1291,46 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
 
     function drawRadar() {
       const w = canvas.width || 280;
-      const h = canvas.height || 115;
+      const h = canvas.height || 120;
       const cx = w / 2;
       const cy = h / 2;
       const maxR = Math.max(20, Math.min(cx, cy) - 6);
 
       ctx.clearRect(0, 0, w, h);
 
-      // Background subtle grid
-      ctx.fillStyle = 'rgba(2, 6, 20, 0.95)';
+      // Deep Obsidian Tactical Background
+      ctx.fillStyle = 'rgba(3, 1, 14, 0.96)';
       ctx.fillRect(0, 0, w, h);
 
-      // Range rings
+      // Subtle Background Cyber Hex / Radial Grid
+      ctx.strokeStyle = 'rgba(168, 85, 247, 0.1)';
       ctx.lineWidth = 1;
+      for (let d = 0; d < 8; d++) {
+        const rad = (d * Math.PI) / 4;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(rad) * maxR, cy + Math.sin(rad) * maxR);
+        ctx.stroke();
+      }
+
+      // Range rings
       for (let i = 1; i <= 3; i++) {
         const ringR = (maxR / 3) * i;
-        ctx.strokeStyle = i === 3 ? 'rgba(0, 240, 255, 0.45)' : 'rgba(0, 240, 255, 0.18)';
+        ctx.strokeStyle = i === 3 ? 'rgba(192, 132, 252, 0.5)' : 'rgba(168, 85, 247, 0.22)';
         ctx.beginPath();
         ctx.arc(cx, cy, ringR, 0, Math.PI * 2);
         ctx.stroke();
       }
 
-      // Range labels
+      // Range Scale Labels
       ctx.font = '7px "DM Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 240, 255, 0.45)';
+      ctx.fillStyle = 'rgba(192, 132, 252, 0.6)';
       ctx.fillText('100K', cx + (maxR / 3) + 2, cy - 2);
       ctx.fillText('250K', cx + (maxR * 2 / 3) + 2, cy - 2);
       ctx.fillText('500K KM', cx + maxR - 26, cy - 2);
 
-      // Crosshairs
-      ctx.strokeStyle = 'rgba(0, 240, 255, 0.22)';
+      // Tactical Crosshairs
+      ctx.strokeStyle = 'rgba(217, 70, 239, 0.28)';
       ctx.beginPath();
       ctx.moveTo(cx - maxR, cy);
       ctx.lineTo(cx + maxR, cy);
@@ -1329,65 +1338,79 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
       ctx.lineTo(cx, cy + maxR);
       ctx.stroke();
 
-      // Cardinal markers
+      // Cardinal Markers
       ctx.font = '8px "DM Mono", monospace';
-      ctx.fillStyle = '#00f0ff';
+      ctx.fillStyle = '#c084fc';
       ctx.fillText('N', cx - 3, cy - maxR + 9);
       ctx.fillText('S', cx - 3, cy + maxR - 2);
       ctx.fillText('E', cx + maxR - 8, cy + 3);
       ctx.fillText('W', cx - maxR + 2, cy + 3);
 
-      // Sweep Beam Gradient
+      // Rotating Cyber Doppler Sweep Beam
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(angle);
       const grad = ctx.createLinearGradient(0, 0, maxR, 0);
-      grad.addColorStop(0, 'rgba(0, 240, 255, 0.55)');
-      grad.addColorStop(0.7, 'rgba(0, 240, 255, 0.2)');
-      grad.addColorStop(1, 'rgba(0, 240, 255, 0)');
+      grad.addColorStop(0, 'rgba(217, 70, 239, 0.6)');
+      grad.addColorStop(0.6, 'rgba(139, 92, 246, 0.25)');
+      grad.addColorStop(1, 'rgba(6, 182, 212, 0)');
       ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.moveTo(0, 0);
-      ctx.arc(0, 0, maxR, -0.35, 0);
+      ctx.arc(0, 0, maxR, -0.4, 0);
       ctx.closePath();
       ctx.fill();
       ctx.restore();
 
-      // Center antenna core
-      ctx.fillStyle = '#00f0ff';
+      // Center Antenna Node
+      ctx.fillStyle = '#c084fc';
       ctx.beginPath();
       ctx.arc(cx, cy, 2.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // Radar Blips
+      // Dynamic Target Blips with Tracking Telemetry
       blips.forEach(b => {
         const blipR = b.r * maxR;
         const bx = cx + Math.cos(b.theta) * blipR;
         const by = cy + Math.sin(b.theta) * blipR;
 
-        // Angle difference to sweep beam for pulsing
+        // Proximity to beam for phosphor pulse
         let diff = (angle - b.theta) % (Math.PI * 2);
         if (diff < 0) diff += Math.PI * 2;
         const isNear = diff < 0.6;
         const alpha = isNear ? 1.0 : 0.45;
 
-        // Blip glow
-        ctx.fillStyle = b.color || '#00f0ff';
+        // Target dot
+        ctx.fillStyle = b.color;
         ctx.globalAlpha = alpha;
         ctx.beginPath();
         ctx.arc(bx, by, isNear ? 3.5 : 2.5, 0, Math.PI * 2);
         ctx.fill();
 
+        // Lock-on ring on sweep hit
         if (isNear) {
-          ctx.strokeStyle = b.color || '#00f0ff';
+          ctx.strokeStyle = b.color;
+          ctx.lineWidth = 1;
           ctx.beginPath();
-          ctx.arc(bx, by, 7, 0, Math.PI * 2);
+          ctx.arc(bx, by, 7.5, 0, Math.PI * 2);
+          ctx.stroke();
+
+          // Target reticle ticks
+          ctx.beginPath();
+          ctx.moveTo(bx - 10, by); ctx.lineTo(bx - 7, by);
+          ctx.moveTo(bx + 7, by); ctx.lineTo(bx + 10, by);
+          ctx.moveTo(bx, by - 10); ctx.lineTo(bx, by - 7);
+          ctx.moveTo(bx, by + 7); ctx.lineTo(bx, by + 10);
           ctx.stroke();
         }
 
+        // Target text labels
         ctx.font = '7.5px "DM Mono", monospace';
-        ctx.fillStyle = b.color || '#00f0ff';
-        ctx.fillText(b.label, bx + 5, by - 2);
+        ctx.fillStyle = b.color;
+        ctx.fillText(b.label, bx + 6, by - 2);
+        ctx.font = '6px "DM Mono", monospace';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+        ctx.fillText(b.sub, bx + 6, by + 6);
         ctx.globalAlpha = 1.0;
       });
 
@@ -1406,7 +1429,7 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
     function resize() {
       const rect = canvas.getBoundingClientRect();
       const w = Math.max(160, Math.floor(rect.width || canvas.offsetWidth || 260));
-      const h = Math.max(24, Math.floor(rect.height || canvas.offsetHeight || 34));
+      const h = Math.max(24, Math.floor(rect.height || canvas.offsetHeight || 38));
       if (canvas.width !== w || canvas.height !== h) {
         canvas.width = w;
         canvas.height = h;
@@ -1418,11 +1441,11 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
 
     function drawWave() {
       const w = canvas.width || 260;
-      const h = canvas.height || 34;
+      const h = canvas.height || 38;
       ctx.clearRect(0, 0, w, h);
 
-      // Dark background
-      ctx.fillStyle = 'rgba(4, 7, 20, 0.85)';
+      // Obsidian background
+      ctx.fillStyle = 'rgba(4, 1, 14, 0.95)';
       ctx.fillRect(0, 0, w, h);
 
       const isSpeaking = coreStageEl && coreStageEl.classList.contains('speaking');
@@ -1430,39 +1453,53 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
       const isThinking = coreStageEl && coreStageEl.classList.contains('thinking');
 
       let amplitude = 2.5;
-      let strokeColor = '#00f0ff';
+      let strokeColor = '#c084fc';
+      let barColor = 'rgba(139, 92, 246, 0.25)';
+
       if (isSpeaking) {
-        amplitude = 11;
-        strokeColor = '#c499ff';
-      } else if (isListening) {
         amplitude = 12;
-        strokeColor = '#34d399';
+        strokeColor = '#f472b6';
+        barColor = 'rgba(217, 70, 239, 0.5)';
+      } else if (isListening) {
+        amplitude = 13;
+        strokeColor = '#10b981';
+        barColor = 'rgba(16, 185, 129, 0.5)';
       } else if (isThinking) {
-        amplitude = 7;
-        strokeColor = '#fbbf24';
+        amplitude = 8;
+        strokeColor = '#f59e0b';
+        barColor = 'rgba(245, 158, 11, 0.5)';
       }
 
-      // Primary wave
+      // FFT Spectrum Columns (32 bands)
+      const numBars = 32;
+      const barWidth = w / numBars;
+      for (let i = 0; i < numBars; i++) {
+        const barHeight = Math.abs(Math.sin(i * 0.35 + phase * 1.5)) * (amplitude * 1.2) + 2;
+        ctx.fillStyle = barColor;
+        ctx.fillRect(i * barWidth + 1, h - barHeight - 2, barWidth - 2, barHeight);
+      }
+
+      // Smooth Primary Continuous Sine Wave
       ctx.beginPath();
       ctx.strokeStyle = strokeColor;
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1.6;
 
       for (let x = 0; x < w; x++) {
         const env = Math.sin((x / w) * Math.PI);
-        const y = h / 2 + Math.sin(x * 0.06 + phase) * amplitude * env;
+        const y = h / 2 + Math.sin(x * 0.055 + phase) * amplitude * env;
         if (x === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
-      // Harmonic faint wave
+      // Harmonic Secondary Wave
       ctx.beginPath();
-      ctx.strokeStyle = strokeColor;
-      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = '#22d3ee';
+      ctx.globalAlpha = 0.45;
       ctx.lineWidth = 1;
       for (let x = 0; x < w; x++) {
         const env = Math.sin((x / w) * Math.PI);
-        const y = h / 2 + Math.cos(x * 0.09 - phase * 1.3) * (amplitude * 0.6) * env;
+        const y = h / 2 + Math.cos(x * 0.08 - phase * 1.2) * (amplitude * 0.6) * env;
         if (x === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }

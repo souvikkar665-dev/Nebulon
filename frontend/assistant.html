@@ -31,8 +31,9 @@
 
 <body data-page="assistant">
 
-  <!-- Background Graphics -->
+  <!-- Deep Space Cyber Graphics Background -->
   <canvas id="stars-bg" aria-hidden="true"></canvas>
+  <div class="cyber-grid-overlay" aria-hidden="true"></div>
   <div class="aurora-layer" aria-hidden="true"></div>
   <div class="scanline-overlay" aria-hidden="true"></div>
 
@@ -41,21 +42,25 @@
 
     <!-- Top Command Header -->
     <header class="hud-header" role="banner">
+      <div class="hud-corner-bracket top-left"></div>
+      <div class="hud-corner-bracket top-right"></div>
+      
       <a href="index.html" class="hud-brand" aria-label="Return to Nebulon Gateway">
         <div class="brand-gyro">
-          <div class="gyro-ring"></div>
-          <div class="gyro-ring"></div>
+          <div class="gyro-ring ring-1"></div>
+          <div class="gyro-ring ring-2"></div>
+          <div class="gyro-ring ring-3"></div>
           <div class="gyro-core"></div>
         </div>
         <div class="brand-meta">
           <h1>NEBULON A.I.</h1>
-          <p>Deep Space Intelligence Core // NASA 2070 Standard</p>
+          <p>Deep Space Cyber Intelligence // NASA 2070 Quantum Standard</p>
         </div>
       </a>
 
       <!-- Telemetry Status Cluster -->
       <div class="header-telemetry-cluster">
-        <div class="telemetry-chip" title="Core Connection Status">
+        <div class="telemetry-chip cyber-chip" title="Quantum Core Connection Status">
           <span class="status-beacon" id="status-beacon"></span>
           <span id="status-chip-text">CORE NOMINAL</span>
         </div>
@@ -66,38 +71,43 @@
           </svg>
           <span>GEMINI 3.7 FLASH</span>
         </div>
+
+        <div class="telemetry-chip quantum-coherence-chip" title="Quantum Coherence Matrix">
+          <span class="coherence-dot"></span>
+          <span>COHERENCE 99.98%</span>
+        </div>
       </div>
 
       <!-- Quick Actions -->
       <div class="hud-nav-actions">
         <a href="model.html" class="hud-action-btn" title="Back to Intelligence Model Overview">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
           <span>MODEL ARCHITECTURE</span>
         </a>
         <a href="orbit.html" class="hud-action-btn" title="Open 3D Orbital Theater">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10" />
             <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
           </svg>
           <span>ORBITAL GLOBE</span>
         </a>
         <button type="button" class="hud-action-btn" id="hud-sfx-btn" title="Toggle Sci-Fi SFX">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
           </svg>
           <span>SFX</span>
         </button>
         <button type="button" class="hud-action-btn" id="hud-mute-btn" title="Toggle Voice Output">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
             <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
           </svg>
           <span>VOICE</span>
         </button>
         <button type="button" class="hud-action-btn" id="hud-settings-btn" title="API & System Settings">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="3" />
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
           </svg>
@@ -106,17 +116,22 @@
       </div>
     </header>
 
-    <!-- 3-Pane Aerospace Workspace -->
+    <!-- 3-Pane Cyber Workspace -->
     <div class="assistant-workspace">
 
-      <!-- Left HUD Panel: Telemetry & Voice Studio -->
+      <!-- Left HUD Panel: Telemetry, Voice Studio & Live Waveform Graphs -->
       <aside class="hud-side-panel" aria-label="System Telemetry and Voice Studio">
+        <div class="hud-corner-bracket top-left"></div>
+        <div class="hud-corner-bracket bottom-right"></div>
         
         <!-- Live Telemetry Card -->
-        <div class="hud-card">
+        <div class="hud-card cyber-telemetry-card">
           <div class="hud-card-head">
-            <span class="hud-card-title">CORE TELEMETRY</span>
-            <span class="hud-card-badge">ACTIVE</span>
+            <div class="head-left">
+              <span class="hud-card-icon">⚡</span>
+              <span class="hud-card-title">CORE TELEMETRY</span>
+            </div>
+            <span class="hud-card-badge">LIVE 2070</span>
           </div>
           <div class="telemetry-data-grid">
             <div class="telemetry-item">
@@ -128,21 +143,28 @@
               <div class="telemetry-item-value violet" id="telemetry-tokens">1,420 TKN</div>
             </div>
             <div class="telemetry-item">
-              <div class="telemetry-item-label">Orbit Altitude</div>
-              <div class="telemetry-item-value">408.2 KM</div>
+              <div class="telemetry-item-label">Orbital Alt</div>
+              <div class="telemetry-item-value magenta">408.2 KM</div>
             </div>
             <div class="telemetry-item">
               <div class="telemetry-item-label">SDA Precision</div>
               <div class="telemetry-item-value green">99.98%</div>
             </div>
           </div>
+          <!-- Live Telemetry Pulse Line -->
+          <div class="telemetry-pulse-bar">
+            <div class="pulse-glow-track"></div>
+          </div>
         </div>
 
         <!-- Voice & Multi-Language Studio -->
-        <div class="hud-card">
+        <div class="hud-card cyber-voice-card">
           <div class="hud-card-head">
-            <span class="hud-card-title">VOICE & LANGUAGE STUDIO</span>
-            <span class="hud-card-badge">SYNTH</span>
+            <div class="head-left">
+              <span class="hud-card-icon">🎙️</span>
+              <span class="hud-card-title">VOICE SYNTHESIS STUDIO</span>
+            </div>
+            <span class="hud-card-badge neon-violet">SYNTH</span>
           </div>
 
           <div class="voice-studio-group">
@@ -154,7 +176,7 @@
             </div>
 
             <div class="hud-field-group">
-              <label class="hud-field-label">AI Voice Persona</label>
+              <label class="hud-field-label">AI Neural Persona</label>
               <div class="voice-persona-grid">
                 <button type="button" class="persona-btn active" data-persona="jarvis">JARVIS CORE</button>
                 <button type="button" class="persona-btn" data-persona="eva">EVA ORBITAL</button>
@@ -165,41 +187,48 @@
 
             <div class="range-slider-group">
               <div class="hud-field-label">
-                <span>Speech Rate</span>
-                <span id="voice-rate-val" style="color:var(--as-cyan);">1.05x</span>
+                <span>Speed Flux</span>
+                <span id="voice-rate-val" class="val-cyan">1.05x</span>
               </div>
               <input type="range" id="voice-rate-slider" class="hud-range-slider" min="0.7" max="1.6" step="0.05" value="1.05" />
             </div>
 
             <div class="range-slider-group">
               <div class="hud-field-label">
-                <span>Frequency Pitch</span>
-                <span id="voice-pitch-val" style="color:var(--as-violet-bright);">0.95x</span>
+                <span>Pitch Frequency</span>
+                <span id="voice-pitch-val" class="val-violet">0.95x</span>
               </div>
               <input type="range" id="voice-pitch-slider" class="hud-range-slider" min="0.5" max="1.5" step="0.05" value="0.95" />
             </div>
 
-            <div>
-              <div class="hud-field-label" style="margin-bottom: 4px;">Live Waveform Spectrum</div>
+            <!-- High-Tech Cyber Waveform / Spectrum Analyzer -->
+            <div class="waveform-box">
+              <div class="hud-field-label">
+                <span>Live Audio Spectrum</span>
+                <span class="spectrum-freq-tag">FFT 64-CH // 44.1 KHZ</span>
+              </div>
               <canvas id="voice-waveform-canvas"></canvas>
             </div>
           </div>
         </div>
 
         <!-- Session Tools -->
-        <div class="hud-card">
+        <div class="hud-card cyber-session-card">
           <div class="hud-card-head">
-            <span class="hud-card-title">SESSION LOG TOOLS</span>
+            <div class="head-left">
+              <span class="hud-card-icon">💾</span>
+              <span class="hud-card-title">SESSION LOG TOOLS</span>
+            </div>
           </div>
-          <div style="display:flex; flex-direction:column; gap:8px;">
-            <button type="button" class="hud-action-btn" id="export-transcript-btn" style="width:100%; justify-content:center;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="session-actions-column">
+            <button type="button" class="hud-action-btn cyber-btn" id="export-transcript-btn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
               </svg>
               <span>EXPORT TRANSCRIPT (.MD)</span>
             </button>
-            <button type="button" class="hud-action-btn" id="clear-transcript-btn" style="width:100%; justify-content:center; border-color:rgba(244,63,94,0.3); color:#ffa3b5;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <button type="button" class="hud-action-btn cyber-btn danger" id="clear-transcript-btn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="3 6 5 6 21 6" />
                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
               </svg>
@@ -210,17 +239,76 @@
 
       </aside>
 
-      <!-- Center Stage: Holographic Core & Live Transcript -->
+      <!-- Center Stage: Holographic Core & Live Cyber Transcript -->
       <main class="hud-center-stage" role="main">
+        <div class="hud-corner-bracket top-left"></div>
+        <div class="hud-corner-bracket top-right"></div>
+        <div class="hud-corner-bracket bottom-left"></div>
+        <div class="hud-corner-bracket bottom-right"></div>
 
-        <!-- 3D Holographic Core Assembly -->
+        <!-- 3D Holographic Cyber Core Assembly with Tactical Pods -->
         <div class="core-assembly-wrapper">
-          <div class="holographic-core-stage" id="holographic-core-stage" title="Nebulon Intelligence Core Assembly">
-            <div class="core-orbit-ring ring-outer"></div>
-            <div class="core-orbit-ring ring-mid"></div>
-            <div class="core-orbit-ring ring-inner"></div>
-            <div class="quantum-core-sphere" id="quantum-core-sphere"></div>
-            <div class="core-status-marquee" id="core-status-marquee">STANDING BY FOR TRANSMISSION</div>
+          <div class="core-stage-row">
+            <!-- Left Cyber Telemetry Pod -->
+            <div class="cyber-core-pod pod-left">
+              <div class="pod-gauge">
+                <div class="pod-gauge-title">QUANTUM FLUX</div>
+                <div class="pod-gauge-val" id="pod-flux-val">0.998 Ψ</div>
+                <div class="pod-bar"><div class="pod-bar-fill flux"></div></div>
+              </div>
+              <div class="pod-meta">
+                <span>AZ: <strong class="val-violet">142.8°</strong></span>
+                <span>RAD: <strong class="val-cyan">0.98 AU</strong></span>
+              </div>
+            </div>
+
+            <!-- Holographic 3D Quantum Cyber Core Stage -->
+            <div class="holographic-core-stage" id="holographic-core-stage" title="Nebulon Intelligence Core Assembly">
+              <!-- Cyber HUD Reticle Crosshairs & Brackets -->
+              <div class="core-reticle-crosshair horiz"></div>
+              <div class="core-reticle-crosshair vert"></div>
+              <div class="core-reticle-bracket top-left"></div>
+              <div class="core-reticle-bracket top-right"></div>
+              <div class="core-reticle-bracket bottom-left"></div>
+              <div class="core-reticle-bracket bottom-right"></div>
+
+              <!-- Multi-Layer Gyroscopic Rings -->
+              <div class="core-orbit-ring ring-cyber-brackets"></div>
+              <div class="core-orbit-ring ring-outer"></div>
+              <div class="core-orbit-ring ring-mid"></div>
+              <div class="core-orbit-ring ring-inner"></div>
+              <div class="core-orbit-ring ring-nodes"></div>
+
+              <!-- Orbiting Quantum Satellites -->
+              <div class="core-photon-satellite sat-1"></div>
+              <div class="core-photon-satellite sat-2"></div>
+              <div class="core-photon-satellite sat-3"></div>
+
+              <!-- Central Quantum Core Sphere -->
+              <div class="quantum-core-sphere" id="quantum-core-sphere">
+                <div class="core-plasma-corona"></div>
+                <div class="core-quantum-nucleus"></div>
+              </div>
+            </div>
+
+            <!-- Right Cyber Telemetry Pod -->
+            <div class="cyber-core-pod pod-right">
+              <div class="pod-gauge">
+                <div class="pod-gauge-title">NEURAL COHERENCE</div>
+                <div class="pod-gauge-val" id="pod-coherence-val">99.98%</div>
+                <div class="pod-bar"><div class="pod-bar-fill coherence"></div></div>
+              </div>
+              <div class="pod-meta">
+                <span>LINK: <strong class="val-green">DIRECT</strong></span>
+                <span>BW: <strong class="val-magenta">10.4 GB/S</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dedicated Tactical Status Pill (Clean Separation, NEVER Overlaps!) -->
+          <div class="core-status-pill">
+            <span class="status-pill-pulse"></span>
+            <span class="core-status-marquee" id="core-status-marquee">STANDING BY FOR TRANSMISSION</span>
           </div>
         </div>
 
@@ -235,12 +323,12 @@
               <span style="font-family:var(--as-font-mono); font-size:0.62rem; color:var(--as-text-muted);">INITIALIZED</span>
             </div>
             <div class="msg-content">
-              <p>Greetings, Commander. I am <strong>Nebulon A.I.</strong>, your aerospace intelligence core powered directly by <strong>Google Gemini 3.7 Flash</strong>. I provide mathematically rigorous calculations and real-time mission analysis across:</p>
+              <p>Greetings, Commander. I am <strong>Nebulon A.I.</strong>, your aerospace cyber intelligence core powered directly by <strong>Google Gemini 3.7 Flash</strong>. I provide mathematically rigorous calculations and real-time mission analysis across:</p>
               <ul>
-                <li><strong>Spacecraft & Satellite Defect Diagnostics:</strong> ADCS reaction wheel failures, solar array delamination, thruster valve stiction, and single-event upsets.</li>
+                <li><strong>Spacecraft &amp; Satellite Defect Diagnostics:</strong> ADCS reaction wheel bearing jitter, solar array micro-cracks, thruster valve stiction, and single-event upsets.</li>
                 <li><strong>Orbital Mechanics:</strong> Keplerian elements, SGP4 propagation, Hohmann transfers, and Sun-Earth Lagrange point trajectories.</li>
-                <li><strong>Planetary & Lunar Science:</strong> Lunar South Pole ice distribution, Martian atmospheric ISRU, and cryovolcanic ocean worlds (Europa, Enceladus).</li>
-                <li><strong>Near-Earth Objects & Space Domain Awareness:</strong> Orbital tracking residuals and collision avoidance maneuvers.</li>
+                <li><strong>Planetary &amp; Lunar Science:</strong> Lunar South Pole ice distribution, Martian atmospheric ISRU, and cryovolcanic ocean worlds (Europa, Enceladus).</li>
+                <li><strong>Near-Earth Objects &amp; Space Domain Awareness:</strong> Orbital tracking residuals and collision avoidance maneuvers.</li>
               </ul>
               <p>Ask anything by voice or command line below, or select any radar prompt on your right.</p>
             </div>
@@ -249,22 +337,36 @@
 
       </main>
 
-      <!-- Right HUD Panel: Deep Space Radar & Quick-Scan -->
+      <!-- Right HUD Panel: Cyber Live Scanning Radar & Quick-Scan Prompts -->
       <aside class="hud-right-panel" aria-label="Deep Space Radar and Quick Prompts">
+        <div class="hud-corner-bracket top-left"></div>
+        <div class="hud-corner-bracket bottom-right"></div>
         
-        <!-- Radar Scope Card -->
-        <div class="hud-card">
+        <!-- Live Tactical Radar Scope Card -->
+        <div class="hud-card cyber-radar-card">
           <div class="hud-card-head">
-            <span class="hud-card-title">DEEP SPACE RADAR SCAN</span>
-            <span class="hud-card-badge">LIVE SDA</span>
+            <div class="head-left">
+              <span class="hud-card-icon">🛰️</span>
+              <span class="hud-card-title">DEEP SPACE RADAR SCAN</span>
+            </div>
+            <span class="hud-card-badge neon-cyan">LIVE SDA</span>
           </div>
-          <canvas id="radar-scope-canvas"></canvas>
+          <div class="radar-canvas-container">
+            <canvas id="radar-scope-canvas"></canvas>
+            <div class="radar-telemetry-overlay">
+              <span class="radar-tag-left">TRACKING: 5 TARGETS</span>
+              <span class="radar-tag-right">RANGE: 1,240,000 KM</span>
+            </div>
+          </div>
         </div>
 
         <!-- Quick Scan Prompts -->
-        <div class="hud-card">
+        <div class="hud-card cyber-prompts-card">
           <div class="hud-card-head">
-            <span class="hud-card-title">AEROSPACE RADAR QUERIES</span>
+            <div class="head-left">
+              <span class="hud-card-icon">🎯</span>
+              <span class="hud-card-title">AEROSPACE RADAR QUERIES</span>
+            </div>
             <span class="hud-card-badge">ONE-CLICK</span>
           </div>
           <div class="quick-scan-list" id="quick-scan-list">
@@ -273,9 +375,12 @@
         </div>
 
         <!-- Query History -->
-        <div class="hud-card">
+        <div class="hud-card cyber-history-card">
           <div class="hud-card-head">
-            <span class="hud-card-title">RECENT TRANSMISSIONS</span>
+            <div class="head-left">
+              <span class="hud-card-icon">📡</span>
+              <span class="hud-card-title">RECENT TRANSMISSIONS</span>
+            </div>
           </div>
           <div class="history-session-list" id="history-session-list">
             <!-- Populated dynamically -->
@@ -286,8 +391,10 @@
 
     </div>
 
-    <!-- Bottom Command Dock & Follow-Up Suggestions -->
+    <!-- Bottom Command Dock & Dynamic Follow-Ups -->
     <footer class="hud-bottom-dock" role="contentinfo">
+      <div class="hud-corner-bracket bottom-left"></div>
+      <div class="hud-corner-bracket bottom-right"></div>
       
       <!-- Consecutive Dynamic Follow-Up Suggestions Ribbon -->
       <div class="followup-ribbon" id="followup-ribbon" aria-label="Consecutive Follow-Up Queries">
@@ -296,7 +403,7 @@
 
       <!-- Command Console Input Bar -->
       <div class="command-console-bar">
-        <button type="button" class="tactical-btn" id="mic-trigger-btn" title="Voice Input (Speech-to-Text)">
+        <button type="button" class="tactical-btn" id="mic-trigger-btn" title="Voice Input (Continuous Speech-to-Text)">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 14a3 3 0 003-3V6a3 3 0 10-6 0v5a3 3 0 003 3z" />
             <path d="M19 11a7 7 0 01-14 0H3a9 9 0 008 8.94V22h2v-2.06A9 9 0 0021 11h-2z" />
