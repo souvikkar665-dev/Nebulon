@@ -1,957 +1,377 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-motion="full">
 
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>NEBULON A.I. — Deep Space Intelligence</title>
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link
-      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap"
-      rel="stylesheet">
-   <style>
-      :root {
-         --void: #05040d;
-         --void-deep: #020208;
-         --panel: rgba(20, 16, 46, 0.55);
-         --panel-border: rgba(139, 92, 246, 0.35);
-         --violet: #8b5cf6;
-         --violet-bright: #b794f6;
-         --violet-dim: #4c2f8f;
-         --blue: #22d3ee;
-         --blue-deep: #0ea5e9;
-         --text: #e8e5ff;
-         --muted: #8983ad;
-         --danger: #ff5c7a;
-      }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#02030a" />
+  <meta name="description"
+    content="Nebulon A.I. Deep Space Intelligence Core — Advanced aerospace intelligence powered natively by Google Gemini 3.7 Flash with multi-language voice synthesis, satellite defect diagnostics, and orbital mechanics calculations." />
+  <title>NEBULON A.I. — Deep Space Intelligence Core (Gemini 3.7 Flash)</title>
 
-      * {
-         box-sizing: border-box;
-         margin: 0;
-         padding: 0;
-      }
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
 
-      html,
-      body {
-         height: 100%;
-         background: var(--void);
-         color: var(--text);
-         font-family: 'Rajdhani', sans-serif;
-         overflow: hidden;
-      }
+  <!-- Core Design System -->
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/typography.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/motion.css" />
+  <link rel="stylesheet" href="css/accessibility.css" />
 
-      body {
-         background:
-            radial-gradient(ellipse at 20% 15%, rgba(139, 92, 246, 0.14), transparent 45%),
-            radial-gradient(ellipse at 85% 80%, rgba(34, 211, 238, 0.12), transparent 50%),
-            radial-gradient(circle at 50% 50%, #0a0620 0%, var(--void-deep) 75%);
-         position: relative;
-      }
-
-      /* starfield */
-      #stars,
-      #stars2,
-      #stars3 {
-         position: fixed;
-         inset: 0;
-         z-index: 0;
-         pointer-events: none;
-      }
-
-      .app {
-         position: relative;
-         z-index: 2;
-         display: grid;
-         grid-template-rows: auto 1fr auto;
-         height: 100vh;
-         max-width: 900px;
-         margin: 0 auto;
-         padding: 22px 20px 16px;
-      }
-
-      /* ---------- HEADER ---------- */
-      header {
-         display: flex;
-         align-items: center;
-         justify-content: space-between;
-         padding-bottom: 14px;
-         border-bottom: 1px solid rgba(139, 92, 246, 0.18);
-      }
-
-      .brand {
-         display: flex;
-         align-items: center;
-         gap: 12px;
-      }
-
-      .brand-mark {
-         width: 34px;
-         height: 34px;
-         border-radius: 50%;
-         background: conic-gradient(from 0deg, var(--violet), var(--blue), var(--violet));
-         box-shadow: 0 0 18px rgba(139, 92, 246, 0.7), 0 0 30px rgba(34, 211, 238, 0.35);
-         animation: spin 6s linear infinite;
-      }
-
-      @keyframes spin {
-         to {
-            transform: rotate(360deg);
-         }
-      }
-
-      .brand-text h1 {
-         font-family: 'Orbitron', sans-serif;
-         font-size: 1.15rem;
-         font-weight: 700;
-         letter-spacing: 3px;
-         background: linear-gradient(90deg, var(--violet-bright), var(--blue));
-         -webkit-background-clip: text;
-         background-clip: text;
-         color: transparent;
-      }
-
-      .brand-text p {
-         font-size: 0.68rem;
-         letter-spacing: 2px;
-         color: var(--muted);
-         text-transform: uppercase;
-         margin-top: 2px;
-      }
-
-      .status-chip {
-         display: flex;
-         align-items: center;
-         gap: 8px;
-         font-family: 'Orbitron', sans-serif;
-         font-size: 0.62rem;
-         letter-spacing: 1.5px;
-         text-transform: uppercase;
-         padding: 6px 14px;
-         border-radius: 999px;
-         border: 1px solid var(--panel-border);
-         background: var(--panel);
-         color: var(--blue);
-      }
-
-      .status-dot {
-         width: 7px;
-         height: 7px;
-         border-radius: 50%;
-         background: var(--blue);
-         box-shadow: 0 0 8px var(--blue);
-         animation: pulse-dot 1.6s ease-in-out infinite;
-      }
-
-      @keyframes pulse-dot {
-
-         0%,
-         100% {
-            opacity: 1;
-         }
-
-         50% {
-            opacity: 0.35;
-         }
-      }
-
-      /* ---------- MAIN / CORE ---------- */
-      main {
-         display: flex;
-         flex-direction: column;
-         align-items: center;
-         justify-content: center;
-         gap: 18px;
-         overflow: hidden;
-         padding: 10px 0;
-      }
-
-      .core-wrap {
-         position: relative;
-         width: 220px;
-         height: 220px;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         flex-shrink: 0;
-      }
-
-      .ring {
-         position: absolute;
-         border-radius: 50%;
-         border: 1px solid rgba(139, 92, 246, 0.35);
-      }
-
-      .ring1 {
-         width: 100%;
-         height: 100%;
-         animation: rotate-cw 14s linear infinite;
-         border-top-color: var(--blue);
-         border-right-color: var(--blue);
-      }
-
-      .ring2 {
-         width: 78%;
-         height: 78%;
-         animation: rotate-ccw 10s linear infinite;
-         border-bottom-color: var(--violet-bright);
-      }
-
-      .ring3 {
-         width: 58%;
-         height: 58%;
-         animation: rotate-cw 7s linear infinite;
-         border-left-color: var(--blue);
-      }
-
-      @keyframes rotate-cw {
-         to {
-            transform: rotate(360deg);
-         }
-      }
-
-      @keyframes rotate-ccw {
-         to {
-            transform: rotate(-360deg);
-         }
-      }
-
-      .core {
-         width: 96px;
-         height: 96px;
-         border-radius: 50%;
-         background: radial-gradient(circle at 35% 30%, var(--violet-bright), var(--violet) 45%, var(--blue-deep) 100%);
-         box-shadow:
-            0 0 30px 6px rgba(139, 92, 246, 0.55),
-            0 0 60px 20px rgba(34, 211, 238, 0.25),
-            inset 0 0 20px rgba(255, 255, 255, 0.25);
-         animation: breathe 3.2s ease-in-out infinite;
-         transition: box-shadow 0.3s ease, transform 0.3s ease;
-      }
-
-      @keyframes breathe {
-
-         0%,
-         100% {
-            transform: scale(1);
-         }
-
-         50% {
-            transform: scale(1.06);
-         }
-      }
-
-      .core-wrap.listening .core {
-         animation: breathe 0.9s ease-in-out infinite;
-         box-shadow:
-            0 0 45px 12px rgba(34, 211, 238, 0.75),
-            0 0 90px 30px rgba(139, 92, 246, 0.4),
-            inset 0 0 20px rgba(255, 255, 255, 0.4);
-      }
-
-      .core-wrap.speaking .core {
-         animation: breathe 0.5s ease-in-out infinite;
-         box-shadow:
-            0 0 50px 14px rgba(183, 148, 246, 0.85),
-            0 0 100px 34px rgba(34, 211, 238, 0.4),
-            inset 0 0 24px rgba(255, 255, 255, 0.5);
-      }
-
-      .core-wrap.listening .ring1,
-      .core-wrap.listening .ring2,
-      .core-wrap.listening .ring3,
-      .core-wrap.speaking .ring1,
-      .core-wrap.speaking .ring2,
-      .core-wrap.speaking .ring3 {
-         border-width: 2px;
-      }
-
-      .status-text {
-         font-family: 'Orbitron', sans-serif;
-         font-size: 0.72rem;
-         letter-spacing: 3px;
-         text-transform: uppercase;
-         color: var(--muted);
-         text-align: center;
-         min-height: 18px;
-      }
-
-      /* ---------- TRANSCRIPT ---------- */
-      .transcript {
-         width: 100%;
-         max-width: 640px;
-         height: 100%;
-         max-height: 240px;
-         overflow-y: auto;
-         padding: 6px 10px;
-         display: flex;
-         flex-direction: column;
-         gap: 10px;
-         scrollbar-width: thin;
-         scrollbar-color: var(--violet-dim) transparent;
-      }
-
-      .transcript::-webkit-scrollbar {
-         width: 5px;
-      }
-
-      .transcript::-webkit-scrollbar-thumb {
-         background: var(--violet-dim);
-         border-radius: 4px;
-      }
-
-      .msg {
-         max-width: 86%;
-         padding: 10px 14px;
-         border-radius: 14px;
-         font-size: 0.95rem;
-         line-height: 1.4;
-         font-weight: 500;
-         animation: fade-in 0.35s ease;
-         border: 1px solid transparent;
-      }
-
-      @keyframes fade-in {
-         from {
-            opacity: 0;
-            transform: translateY(6px);
-         }
-
-         to {
-            opacity: 1;
-            transform: none;
-         }
-      }
-
-      .msg.user {
-         align-self: flex-end;
-         background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(34, 211, 238, 0.06));
-         border-color: rgba(34, 211, 238, 0.35);
-         color: #d7fbff;
-         border-bottom-right-radius: 3px;
-      }
-
-      .msg.bot {
-         align-self: flex-start;
-         background: linear-gradient(135deg, rgba(139, 92, 246, 0.22), rgba(139, 92, 246, 0.06));
-         border-color: rgba(139, 92, 246, 0.4);
-         color: var(--text);
-         border-bottom-left-radius: 3px;
-      }
-
-      .msg.system {
-         align-self: center;
-         color: var(--muted);
-         font-size: 0.78rem;
-         font-family: 'Orbitron', sans-serif;
-         letter-spacing: 1px;
-         background: none;
-         border: none;
-         text-align: center;
-      }
-
-      .msg .tag {
-         display: block;
-         font-family: 'Orbitron', sans-serif;
-         font-size: 0.58rem;
-         letter-spacing: 2px;
-         text-transform: uppercase;
-         opacity: 0.6;
-         margin-bottom: 4px;
-      }
-
-      /* ---------- FOOTER / CONTROLS ---------- */
-      footer {
-         padding-top: 14px;
-         border-top: 1px solid rgba(139, 92, 246, 0.18);
-      }
-      .brand-text a {
-         color: inherit;
-         text-decoration: none;
-      }
-
-      .brand-text a:focus-visible {
-         outline: 2px solid var(--n-cyan, #00f0ff);
-         outline-offset: 4px;
-         border-radius: 4px;
-      }
-
-      .input-row {
-         display: flex;
-         align-items: center;
-         gap: 10px;
-      }
-
-      .text-input {
-         flex: 1;
-         background: var(--panel);
-         border: 1px solid var(--panel-border);
-         border-radius: 999px;
-         padding: 12px 18px;
-         color: var(--text);
-         font-family: 'Rajdhani', sans-serif;
-         font-size: 0.95rem;
-         outline: none;
-         transition: border-color 0.2s, box-shadow 0.2s;
-      }
-
-      .text-input::placeholder {
-         color: var(--muted);
-      }
-
-      .text-input:focus {
-         border-color: var(--blue);
-         box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.12);
-      }
-
-      .icon-btn {
-         width: 46px;
-         height: 46px;
-         border-radius: 50%;
-         border: 1px solid var(--panel-border);
-         background: var(--panel);
-         color: var(--blue);
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         cursor: pointer;
-         flex-shrink: 0;
-         transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-      }
-
-      .icon-btn:hover {
-         transform: translateY(-1px);
-         box-shadow: 0 0 14px rgba(34, 211, 238, 0.35);
-      }
-
-      .icon-btn:active {
-         transform: translateY(0);
-      }
-
-      .icon-btn svg {
-         width: 20px;
-         height: 20px;
-      }
-
-      #mic-btn {
-         width: 52px;
-         height: 52px;
-         border: none;
-         background: linear-gradient(135deg, var(--violet), var(--blue-deep));
-         color: #fff;
-         box-shadow: 0 0 16px rgba(139, 92, 246, 0.5);
-      }
-
-      #mic-btn.active {
-         box-shadow: 0 0 0 0 rgba(255, 92, 122, 0.6);
-         background: linear-gradient(135deg, var(--danger), #ff9a5c);
-         animation: mic-pulse 1.4s infinite;
-      }
-
-      @keyframes mic-pulse {
-         0% {
-            box-shadow: 0 0 0 0 rgba(255, 92, 122, 0.55);
-         }
-
-         70% {
-            box-shadow: 0 0 0 14px rgba(255, 92, 122, 0);
-         }
-
-         100% {
-            box-shadow: 0 0 0 0 rgba(255, 92, 122, 0);
-         }
-      }
-
-      .footnote {
-         text-align: center;
-         color: var(--muted);
-         font-size: 0.65rem;
-         letter-spacing: 1.5px;
-         margin-top: 10px;
-         font-family: 'Orbitron', sans-serif;
-         text-transform: uppercase;
-      }
-
-      .footnote span {
-         color: var(--blue);
-      }
-
-      @media (max-width:520px) {
-         .core-wrap {
-            width: 170px;
-            height: 170px;
-         }
-
-         .core {
-            width: 76px;
-            height: 76px;
-         }
-
-         header {
-            flex-wrap: wrap;
-            gap: 10px;
-         }
-      }
-   </style>
+  <!-- Modular Assistant Stylesheet -->
+  <link rel="stylesheet" href="pages/assistant/assistant.css" />
 </head>
 
-<body>
+<body data-page="assistant">
 
-   <canvas id="stars"></canvas>
+  <!-- Background Graphics -->
+  <canvas id="stars-bg" aria-hidden="true"></canvas>
+  <div class="aurora-layer" aria-hidden="true"></div>
+  <div class="scanline-overlay" aria-hidden="true"></div>
 
-   <div class="app">
+  <!-- App Viewport -->
+  <div class="assistant-viewport">
 
-      <header>
-         <div class="brand">
-            <div class="brand-mark"></div>
-            <div class="brand-text">
-               <a href="model.html" aria-label="Open NEBULON A.I. Model Intelligence page">
-                  <h1>NEBULON A.I.</h1>
-                  <p>Deep-Space Intelligence Core</p>
-               </a>
+    <!-- Top Command Header -->
+    <header class="hud-header" role="banner">
+      <a href="index.html" class="hud-brand" aria-label="Return to Nebulon Gateway">
+        <div class="brand-gyro">
+          <div class="gyro-ring"></div>
+          <div class="gyro-ring"></div>
+          <div class="gyro-core"></div>
+        </div>
+        <div class="brand-meta">
+          <h1>NEBULON A.I.</h1>
+          <p>Deep Space Intelligence Core // NASA 2070 Standard</p>
+        </div>
+      </a>
+
+      <!-- Telemetry Status Cluster -->
+      <div class="header-telemetry-cluster">
+        <div class="telemetry-chip" title="Core Connection Status">
+          <span class="status-beacon" id="status-beacon"></span>
+          <span id="status-chip-text">CORE NOMINAL</span>
+        </div>
+
+        <div class="model-badge" title="Active Intelligence Engine">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+          </svg>
+          <span>GEMINI 3.7 FLASH</span>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="hud-nav-actions">
+        <a href="model.html" class="hud-action-btn" title="Back to Intelligence Model Overview">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          <span>MODEL ARCHITECTURE</span>
+        </a>
+        <a href="orbit.html" class="hud-action-btn" title="Open 3D Orbital Theater">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+          </svg>
+          <span>ORBITAL GLOBE</span>
+        </a>
+        <button type="button" class="hud-action-btn" id="hud-sfx-btn" title="Toggle Sci-Fi SFX">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+          </svg>
+          <span>SFX</span>
+        </button>
+        <button type="button" class="hud-action-btn" id="hud-mute-btn" title="Toggle Voice Output">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+          </svg>
+          <span>VOICE</span>
+        </button>
+        <button type="button" class="hud-action-btn" id="hud-settings-btn" title="API & System Settings">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+          <span>CONFIG</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 3-Pane Aerospace Workspace -->
+    <div class="assistant-workspace">
+
+      <!-- Left HUD Panel: Telemetry & Voice Studio -->
+      <aside class="hud-side-panel" aria-label="System Telemetry and Voice Studio">
+        
+        <!-- Live Telemetry Card -->
+        <div class="hud-card">
+          <div class="hud-card-head">
+            <span class="hud-card-title">CORE TELEMETRY</span>
+            <span class="hud-card-badge">ACTIVE</span>
+          </div>
+          <div class="telemetry-data-grid">
+            <div class="telemetry-item">
+              <div class="telemetry-item-label">Inference Latency</div>
+              <div class="telemetry-item-value cyan" id="telemetry-latency">128ms</div>
             </div>
-         </div>
-
-         <div class="status-chip">
-            <span class="status-dot"></span>
-            <span id="status-chip-text">SYSTEMS NOMINAL</span>
-         </div>
-      </header>
-
-      <main>
-         <div class="core-wrap" id="core-wrap">
-            <div class="ring ring1"></div>
-            <div class="ring ring2"></div>
-            <div class="ring ring3"></div>
-            <div class="core"></div>
-         </div>
-         <div class="status-text" id="status-text">STANDING BY FOR TRANSMISSION</div>
-
-         <div class="transcript" id="transcript">
-            <div class="msg system">— NEBULON A.I. link established —</div>
-            <div class="msg bot">
-               <span class="tag">Nebulon</span>
-               Greetings, Commander. I am Nebulon, your deep-space intelligence core — cross-linked to NASA archives,
-               orbital mechanics databases and mission records. Ask me about spacecraft, satellites, planets, or any
-               active NASA research, by voice or by text.
+            <div class="telemetry-item">
+              <div class="telemetry-item-label">Context Tokens</div>
+              <div class="telemetry-item-value violet" id="telemetry-tokens">1,420 TKN</div>
             </div>
-         </div>
+            <div class="telemetry-item">
+              <div class="telemetry-item-label">Orbit Altitude</div>
+              <div class="telemetry-item-value">408.2 KM</div>
+            </div>
+            <div class="telemetry-item">
+              <div class="telemetry-item-label">SDA Precision</div>
+              <div class="telemetry-item-value green">99.98%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Voice & Multi-Language Studio -->
+        <div class="hud-card">
+          <div class="hud-card-head">
+            <span class="hud-card-title">VOICE & LANGUAGE STUDIO</span>
+            <span class="hud-card-badge">SYNTH</span>
+          </div>
+
+          <div class="voice-studio-group">
+            <div class="hud-field-group">
+              <label class="hud-field-label" for="voice-lang-select">Transmission Language</label>
+              <select id="voice-lang-select" class="hud-select" aria-label="Select voice language">
+                <!-- Dynamically populated -->
+              </select>
+            </div>
+
+            <div class="hud-field-group">
+              <label class="hud-field-label">AI Voice Persona</label>
+              <div class="voice-persona-grid">
+                <button type="button" class="persona-btn active" data-persona="jarvis">JARVIS CORE</button>
+                <button type="button" class="persona-btn" data-persona="eva">EVA ORBITAL</button>
+                <button type="button" class="persona-btn" data-persona="hal">HAL DEEP</button>
+                <button type="button" class="persona-btn" data-persona="aria">ARIA QUANTUM</button>
+              </div>
+            </div>
+
+            <div class="range-slider-group">
+              <div class="hud-field-label">
+                <span>Speech Rate</span>
+                <span id="voice-rate-val" style="color:var(--as-cyan);">1.05x</span>
+              </div>
+              <input type="range" id="voice-rate-slider" class="hud-range-slider" min="0.7" max="1.6" step="0.05" value="1.05" />
+            </div>
+
+            <div class="range-slider-group">
+              <div class="hud-field-label">
+                <span>Frequency Pitch</span>
+                <span id="voice-pitch-val" style="color:var(--as-violet-bright);">0.95x</span>
+              </div>
+              <input type="range" id="voice-pitch-slider" class="hud-range-slider" min="0.5" max="1.5" step="0.05" value="0.95" />
+            </div>
+
+            <div>
+              <div class="hud-field-label" style="margin-bottom: 4px;">Live Waveform Spectrum</div>
+              <canvas id="voice-waveform-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Session Tools -->
+        <div class="hud-card">
+          <div class="hud-card-head">
+            <span class="hud-card-title">SESSION LOG TOOLS</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <button type="button" class="hud-action-btn" id="export-transcript-btn" style="width:100%; justify-content:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+              </svg>
+              <span>EXPORT TRANSCRIPT (.MD)</span>
+            </button>
+            <button type="button" class="hud-action-btn" id="clear-transcript-btn" style="width:100%; justify-content:center; border-color:rgba(244,63,94,0.3); color:#ffa3b5;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+              </svg>
+              <span>RESET SESSION BUFFER</span>
+            </button>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- Center Stage: Holographic Core & Live Transcript -->
+      <main class="hud-center-stage" role="main">
+
+        <!-- 3D Holographic Core Assembly -->
+        <div class="core-assembly-wrapper">
+          <div class="holographic-core-stage" id="holographic-core-stage" title="Nebulon Intelligence Core Assembly">
+            <div class="core-orbit-ring ring-outer"></div>
+            <div class="core-orbit-ring ring-mid"></div>
+            <div class="core-orbit-ring ring-inner"></div>
+            <div class="quantum-core-sphere" id="quantum-core-sphere"></div>
+            <div class="core-status-marquee" id="core-status-marquee">STANDING BY FOR TRANSMISSION</div>
+          </div>
+        </div>
+
+        <!-- Chat Stream -->
+        <div class="transcript-stream" id="transcript-stream" role="log" aria-live="polite">
+          <div class="msg-bubble system-alert">
+            <span>— NEBULON A.I. DEEP SPACE INTELLIGENCE ONLINE // GEMINI 3.7 FLASH DIRECT LINK ACTIVE —</span>
+          </div>
+          <div class="msg-bubble bot">
+            <div class="msg-bubble-meta">
+              <span>NEBULON A.I. // GEMINI 3.7 FLASH CORE</span>
+              <span style="font-family:var(--as-font-mono); font-size:0.62rem; color:var(--as-text-muted);">INITIALIZED</span>
+            </div>
+            <div class="msg-content">
+              <p>Greetings, Commander. I am <strong>Nebulon A.I.</strong>, your aerospace intelligence core powered directly by <strong>Google Gemini 3.7 Flash</strong>. I provide mathematically rigorous calculations and real-time mission analysis across:</p>
+              <ul>
+                <li><strong>Spacecraft & Satellite Defect Diagnostics:</strong> ADCS reaction wheel failures, solar array delamination, thruster valve stiction, and single-event upsets.</li>
+                <li><strong>Orbital Mechanics:</strong> Keplerian elements, SGP4 propagation, Hohmann transfers, and Sun-Earth Lagrange point trajectories.</li>
+                <li><strong>Planetary & Lunar Science:</strong> Lunar South Pole ice distribution, Martian atmospheric ISRU, and cryovolcanic ocean worlds (Europa, Enceladus).</li>
+                <li><strong>Near-Earth Objects & Space Domain Awareness:</strong> Orbital tracking residuals and collision avoidance maneuvers.</li>
+              </ul>
+              <p>Ask anything by voice or command line below, or select any radar prompt on your right.</p>
+            </div>
+          </div>
+        </div>
+
       </main>
 
-      <footer>
-         <div class="input-row">
-            <button class="icon-btn" id="mic-btn" title="Speak to Nebulon">
-               <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 14a3 3 0 003-3V6a3 3 0 10-6 0v5a3 3 0 003 3z" />
-                  <path d="M19 11a7 7 0 01-14 0H3a9 9 0 008 8.94V22h2v-2.06A9 9 0 0021 11h-2z" />
-               </svg>
-            </button>
-            <input type="text" id="text-input" class="text-input"
-               placeholder="Transmit a query about space, spacecraft, satellites or NASA…" autocomplete="off">
-            <button class="icon-btn" id="send-btn" title="Send">
-               <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M2 21l21-9L2 3v7l15 2-15 2z" />
-               </svg>
-            </button>
-            <button class="icon-btn" id="mute-btn" title="Toggle voice reply">
-               <svg viewBox="0 0 24 24" fill="currentColor" id="mute-icon">
-                  <path d="M3 10v4h4l5 5V5L7 10H3z" />
-                  <path d="M16.5 12a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z" />
-                  <path
-                     d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-               </svg>
-            </button>
-         </div>
-         <div class="footnote">Unknown queries route to <span>Google Gemini</span> in a new tab</div>
-      </footer>
+      <!-- Right HUD Panel: Deep Space Radar & Quick-Scan -->
+      <aside class="hud-right-panel" aria-label="Deep Space Radar and Quick Prompts">
+        
+        <!-- Radar Scope Card -->
+        <div class="hud-card">
+          <div class="hud-card-head">
+            <span class="hud-card-title">DEEP SPACE RADAR SCAN</span>
+            <span class="hud-card-badge">LIVE SDA</span>
+          </div>
+          <canvas id="radar-scope-canvas"></canvas>
+        </div>
 
-   </div>
+        <!-- Quick Scan Prompts -->
+        <div class="hud-card">
+          <div class="hud-card-head">
+            <span class="hud-card-title">AEROSPACE RADAR QUERIES</span>
+            <span class="hud-card-badge">ONE-CLICK</span>
+          </div>
+          <div class="quick-scan-list" id="quick-scan-list">
+            <!-- Populated dynamically by assistant.js -->
+          </div>
+        </div>
 
-   <script>
-      /* =========================================================
-         NEBULON A.I. — Space / Spacecraft / Satellite / NASA core
-         ========================================================= */
+        <!-- Query History -->
+        <div class="hud-card">
+          <div class="hud-card-head">
+            <span class="hud-card-title">RECENT TRANSMISSIONS</span>
+          </div>
+          <div class="history-session-list" id="history-session-list">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
 
-      /* ---------- Starfield background ---------- */
-      (function starfield() {
-         const canvas = document.getElementById('stars');
-         const ctx = canvas.getContext('2d');
-         let w, h, stars = [];
+      </aside>
 
-         function resize() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
-            stars = [];
-            const count = Math.floor((w * h) / 6000);
-            for (let i = 0; i < count; i++) {
-               stars.push({
-                  x: Math.random() * w,
-                  y: Math.random() * h,
-                  r: Math.random() * 1.3 + 0.2,
-                  s: Math.random() * 0.4 + 0.05,
-                  tw: Math.random() * Math.PI * 2,
-                  hue: Math.random() > 0.5 ? '139,92,246' : '34,211,238'
-               });
-            }
-         }
-         window.addEventListener('resize', resize);
-         resize();
+    </div>
 
-         function draw() {
-            ctx.clearRect(0, 0, w, h);
-            for (const st of stars) {
-               st.tw += 0.02;
-               const alpha = 0.4 + Math.sin(st.tw) * 0.4;
-               ctx.beginPath();
-               ctx.fillStyle = `rgba(${st.hue},${Math.max(alpha, 0.05)})`;
-               ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
-               ctx.fill();
-               st.y += st.s;
-               if (st.y > h) { st.y = 0; st.x = Math.random() * w; }
-            }
-            requestAnimationFrame(draw);
-         }
-         draw();
-      })();
+    <!-- Bottom Command Dock & Follow-Up Suggestions -->
+    <footer class="hud-bottom-dock" role="contentinfo">
+      
+      <!-- Consecutive Dynamic Follow-Up Suggestions Ribbon -->
+      <div class="followup-ribbon" id="followup-ribbon" aria-label="Consecutive Follow-Up Queries">
+        <!-- Populated dynamically after each query -->
+      </div>
 
-      /* ---------- Knowledge base ---------- */
-      /* Each entry: keywords[] used for matching, and a spoken/written answer */
-      const KB = [
-         {
-            kw: ['international space station', 'iss', 'space station'],
-            a: "The International Space Station is a habitable satellite in low Earth orbit, roughly four hundred kilometers up, built jointly by NASA, Roscosmos, ESA, JAXA and the Canadian Space Agency. It has hosted a continuous human presence since November 2000 and orbits Earth about every ninety minutes, completing roughly sixteen orbits a day."
-         },
-         {
-            kw: ['hubble', 'hubble telescope', 'hubble space telescope'],
-            a: "The Hubble Space Telescope launched in 1990 aboard the Space Shuttle Discovery. Orbiting above Earth's atmosphere, it captures visible, ultraviolet and near-infrared images with extraordinary clarity, and has reshaped our understanding of galaxy formation, the expansion rate of the universe, and exoplanet atmospheres."
-         },
-         {
-            kw: ['james webb', 'jwst', 'webb telescope'],
-            a: "The James Webb Space Telescope, launched December 2021, is the largest infrared observatory ever sent to space. Positioned near the Sun-Earth Lagrange point L2, about one point five million kilometers from Earth, it studies the earliest galaxies, star formation, and the atmospheres of distant exoplanets."
-         },
-         {
-            kw: ['voyager', 'voyager 1', 'voyager 2'],
-            a: "NASA's Voyager 1 and Voyager 2 probes launched in 1977 to explore the outer planets. Voyager 1 is now the most distant human-made object, having crossed into interstellar space in 2012, while Voyager 2 followed in 2018. Both still transmit data using their Golden Record and nuclear power sources."
-         },
-         {
-            kw: ['artemis', 'artemis program', 'moon mission', 'return to the moon'],
-            a: "Artemis is NASA's program to return humans to the Moon, using the Space Launch System rocket and the Orion spacecraft. Artemis I flew an uncrewed test around the Moon in 2022, and future missions aim to land the first woman and person of color near the lunar south pole, building toward a sustainable presence and eventual Mars missions."
-         },
-         {
-            kw: ['perseverance', 'mars 2020', 'perseverance rover'],
-            a: "Perseverance is a car-sized NASA rover that landed in Jezero Crater on Mars in February 2021. It searches for signs of ancient microbial life, collects rock and soil samples for future return to Earth, and carried the Ingenuity helicopter, the first aircraft to achieve powered flight on another planet."
-         },
-         {
-            kw: ['curiosity', 'curiosity rover', 'msl'],
-            a: "Curiosity, part of the Mars Science Laboratory mission, landed in Gale Crater in August 2012. Roughly the size of a small car, it studies Martian geology and climate to assess whether the environment ever supported microbial life, and continues to operate over a decade after landing."
-         },
-         {
-            kw: ['spacex', 'falcon 9', 'starship', 'crew dragon'],
-            a: "SpaceX, founded by Elon Musk in 2002, develops reusable launch vehicles including the Falcon 9 and the fully reusable Starship. Its Crew Dragon capsule ferries NASA astronauts to the International Space Station, and the company also operates the Starlink satellite internet constellation."
-         },
-         {
-            kw: ['satellite', 'satellites', 'types of satellites'],
-            a: "Satellites are objects placed in orbit for communication, navigation, weather observation, Earth imaging, or scientific research. They typically fly in low Earth orbit, medium Earth orbit, or geostationary orbit, each suited to different tasks such as GPS positioning, television broadcast, or climate monitoring."
-         },
-         {
-            kw: ['geostationary orbit', 'geostationary', 'geo satellite'],
-            a: "A geostationary orbit sits about thirty five thousand seven hundred and eighty six kilometers above the equator, where a satellite's orbital period matches Earth's rotation, so it appears fixed over one point on the ground. This is ideal for weather satellites and television broadcast satellites."
-         },
-         {
-            kw: ['black hole', 'black holes'],
-            a: "A black hole is a region of spacetime where gravity is so intense that nothing, not even light, can escape once past its event horizon. They form from the collapse of massive stars or exist as supermassive black holes at the centers of galaxies, including Sagittarius A star at the heart of the Milky Way."
-         },
-         {
-            kw: ['moon landing', 'apollo 11', 'apollo program', 'neil armstrong'],
-            a: "Apollo 11 achieved the first crewed Moon landing on July 20th, 1969. Neil Armstrong and Buzz Aldrin walked on the lunar surface while Michael Collins orbited above in the Command Module. The broader Apollo program, running from 1961 to 1972, landed twelve astronauts on the Moon across six missions."
-         },
-         {
-            kw: ['solar system', 'planets', 'how many planets'],
-            a: "Our solar system contains eight recognized planets: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune, orbiting the Sun along with dwarf planets like Pluto, countless asteroids, comets, and moons, all bound by the Sun's gravity."
-         },
-         {
-            kw: ['nasa history', 'when was nasa founded', 'nasa founded'],
-            a: "NASA, the National Aeronautics and Space Administration, was established on October 1st, 1958, succeeding the earlier NACA, in response to the Soviet launch of Sputnik. It has since led human spaceflight, planetary exploration, and Earth science research for the United States."
-         },
-         {
-            kw: ['sputnik', 'first satellite'],
-            a: "Sputnik 1, launched by the Soviet Union on October 4th, 1957, was the first artificial satellite to orbit Earth. Its success triggered the Space Race and directly led to the creation of NASA the following year."
-         },
-         {
-            kw: ['exoplanet', 'exoplanets', 'kepler telescope', 'tess'],
-            a: "Exoplanets are planets orbiting stars beyond our Sun. Missions like NASA's Kepler space telescope and its successor TESS, the Transiting Exoplanet Survey Satellite, detect them mainly by watching for tiny dips in starlight as a planet passes in front of its star, and have confirmed thousands of such worlds."
-         },
-         {
-            kw: ['rocket propulsion', 'how rockets work', 'rocket engine'],
-            a: "Rockets work on Newton's third law: burning propellant expels hot gas out of an engine nozzle at high speed, and the equal and opposite reaction pushes the rocket forward. Liquid-fuel engines, like those on the Falcon 9 and SLS, mix fuel and oxidizer for controllable, powerful, and often reusable thrust."
-         },
-         {
-            kw: ['gravity assist', 'slingshot'],
-            a: "A gravity assist, or slingshot maneuver, uses a planet's gravity and orbital motion to change a spacecraft's speed and trajectory without expending fuel. Missions like Voyager, Cassini, and New Horizons have relied on these maneuvers to reach the outer solar system efficiently."
-         },
-         {
-            kw: ['iss orbit', 'how fast does the iss travel', 'iss speed'],
-            a: "The International Space Station travels at roughly twenty eight thousand kilometers per hour, fast enough to circle the Earth in about ninety three minutes, giving the crew aboard around sixteen sunrises and sunsets every single day."
-         },
-         {
-            kw: ['new horizons', 'pluto flyby'],
-            a: "NASA's New Horizons spacecraft launched in 2006 and performed the first close flyby of Pluto in July 2015, revealing its heart-shaped nitrogen ice plain, before continuing into the Kuiper Belt to study the ancient object Arrokoth in 2019."
-         },
-         {
-            kw: ['cassini', 'saturn mission'],
-            a: "The Cassini-Huygens mission studied Saturn and its moons from 2004 to 2017. The Huygens probe landed on Titan in 2005, the only landing ever made in the outer solar system, while Cassini discovered water plumes erupting from the moon Enceladus before deliberately diving into Saturn's atmosphere to end its mission."
-         },
-         {
-            kw: ['starlink'],
-            a: "Starlink is SpaceX's satellite internet constellation, made up of thousands of small satellites in low Earth orbit working together to provide broadband internet access, including to remote and rural regions of the world."
-         },
-         {
-            kw: ['space shuttle'],
-            a: "NASA's Space Shuttle program operated from 1981 to 2011, flying reusable orbiters including Columbia, Challenger, Discovery, Atlantis and Endeavour. It launched satellites, built the International Space Station, and served as the backbone of American human spaceflight for three decades."
-         },
-         {
-            kw: ['orion spacecraft', 'orion capsule'],
-            a: "The Orion spacecraft is NASA's crew capsule designed for deep-space missions under the Artemis program, capable of carrying astronauts beyond low Earth orbit to the Moon and, eventually, toward Mars, with a launch abort system and heat shield rated for lunar-return re-entry speeds."
-         },
-         {
-            kw: ['mars mission', 'mission to mars', 'humans on mars'],
-            a: "NASA envisions crewed Mars missions as a long-term goal following the Artemis lunar missions, using lessons in life support, propulsion and radiation shielding gained at the Moon. Robotic missions like Perseverance are already caching samples for eventual return to Earth ahead of any human landing."
-         },
-         {
-            kw: ['light year', 'how far is a light year'],
-            a: "A light year is the distance light travels in one year through the vacuum of space, about nine point four six trillion kilometers. It's a unit of distance, not time, used to measure the vast scale between stars and galaxies."
-         },
-         {
-            kw: ['who are you', 'what are you', 'your name'],
-            a: "I am Nebulon, an artificial intelligence voice assistant built to answer questions on space, spacecraft, satellites, and NASA research, cross-referencing an onboard knowledge core and, when needed, escalating to Google Gemini for anything beyond my archive."
-         }
-      ];
+      <!-- Command Console Input Bar -->
+      <div class="command-console-bar">
+        <button type="button" class="tactical-btn" id="mic-trigger-btn" title="Voice Input (Speech-to-Text)">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 14a3 3 0 003-3V6a3 3 0 10-6 0v5a3 3 0 003 3z" />
+            <path d="M19 11a7 7 0 01-14 0H3a9 9 0 008 8.94V22h2v-2.06A9 9 0 0021 11h-2z" />
+          </svg>
+        </button>
 
-      /* ---------- Matching engine ---------- */
-      function findAnswer(query) {
-         const q = query.toLowerCase();
-         let best = null, bestScore = 0;
-         for (const entry of KB) {
-            for (const kw of entry.kw) {
-               if (q.includes(kw)) {
-                  const score = kw.length;
-                  if (score > bestScore) { bestScore = score; best = entry; }
-               }
-            }
-         }
-         return best ? best.a : null;
-      }
+        <div class="console-input-wrapper">
+          <input type="text" id="command-input" class="hud-command-input"
+            placeholder="Transmit an aerospace query on satellites, orbital defects, Keplerian physics, moons, or probes…"
+            autocomplete="off" spellcheck="false" />
+          <button type="button" class="clear-input-btn" id="clear-input-btn" title="Clear input">×</button>
+        </div>
 
-      /* ---------- UI wiring ---------- */
-      const transcript = document.getElementById('transcript');
-      const coreWrap = document.getElementById('core-wrap');
-      const statusText = document.getElementById('status-text');
-      const statusChipText = document.getElementById('status-chip-text');
-      const textInput = document.getElementById('text-input');
-      const sendBtn = document.getElementById('send-btn');
-      const micBtn = document.getElementById('mic-btn');
-      const muteBtn = document.getElementById('mute-btn');
-      const muteIcon = document.getElementById('mute-icon');
+        <button type="button" class="tactical-btn" id="send-command-btn" title="Transmit Query (Enter)">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M2 21l21-9L2 3v7l15 2-15 2z" />
+          </svg>
+        </button>
+      </div>
 
-      let voiceEnabled = true;
+      <!-- Footnote Status Bar -->
+      <div class="console-footnote-bar">
+        <div class="footnote-left">
+          <span>MODEL: <strong class="footnote-tag">GEMINI 3.7 FLASH</strong></span>
+          <span>PROTOCOL: <strong class="footnote-tag">NASA 2070 / REST v1beta</strong></span>
+          <span>VOICE: <strong class="footnote-tag">WEB SPEECH &amp; AUDIO SYNTH</strong></span>
+        </div>
+        <div>
+          <span>POWERED BY <strong class="footnote-tag">GOOGLE GEMINI 3.7 FLASH</strong></span>
+        </div>
+      </div>
 
-      function addMessage(text, who) {
-         const div = document.createElement('div');
-         div.className = 'msg ' + who;
-         if (who !== 'system') {
-            const tag = document.createElement('span');
-            tag.className = 'tag';
-            tag.textContent = who === 'user' ? 'Commander' : 'Nebulon';
-            div.appendChild(tag);
-            div.appendChild(document.createTextNode(text));
-         } else {
-            div.textContent = text;
-         }
-         transcript.appendChild(div);
-         transcript.scrollTop = transcript.scrollHeight;
-      }
+    </footer>
 
-      function setState(state) {
-         coreWrap.classList.remove('listening', 'speaking');
-         if (state === 'listening') {
-            coreWrap.classList.add('listening');
-            statusText.textContent = 'RECEIVING TRANSMISSION…';
-            statusChipText.textContent = 'LISTENING';
-         } else if (state === 'speaking') {
-            coreWrap.classList.add('speaking');
-            statusText.textContent = 'TRANSMITTING RESPONSE…';
-            statusChipText.textContent = 'RESPONDING';
-         } else {
-            statusText.textContent = 'STANDING BY FOR TRANSMISSION';
-            statusChipText.textContent = 'SYSTEMS NOMINAL';
-         }
-      }
+  </div>
 
-      function speak(text) {
-         if (!voiceEnabled || !('speechSynthesis' in window)) return;
-         window.speechSynthesis.cancel();
-         const utter = new SpeechSynthesisUtterance(text);
-         utter.rate = 1;
-         utter.pitch = 1;
-         utter.volume = 1;
-         const voices = window.speechSynthesis.getVoices();
-         const preferred = voices.find(v => /en-US|en-GB/.test(v.lang) && /Google|Microsoft/.test(v.name)) || voices.find(v => v.lang && v.lang.startsWith('en'));
-         if (preferred) utter.voice = preferred;
-         utter.onstart = () => setState('speaking');
-         utter.onend = () => setState('idle');
-         window.speechSynthesis.speak(utter);
-      }
+  <!-- Settings & API Key Configuration Modal -->
+  <div class="hud-modal-backdrop" id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
+    <div class="hud-modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="settings-modal-title">NEBULON A.I. CORE CONFIGURATION</h2>
+        <button type="button" class="modal-close-btn" id="modal-close-btn" aria-label="Close Settings">×</button>
+      </div>
 
-      /* Gemini's web app is a single-page app that reads from its own internal
-         state, not from URL query params — so there is no supported way to
-         auto-fill its search box from an external link. The reliable workaround
-         is to copy the question to the clipboard and open the tab, so the user
-         only has to paste (Ctrl+V / Cmd+V) and press Enter. */
-      async function openInGemini(query) {
-         let copied = false;
-         try {
-            await navigator.clipboard.writeText(query);
-            copied = true;
-         } catch (e) {
-            copied = false;
-         }
-         window.open('https://gemini.google.com/app', '_blank');
-         return copied;
-      }
+      <div class="modal-body">
+        <div class="modal-form-group">
+          <label for="modal-api-key-input">Gemini 3.7 Flash API Key</label>
+          <input type="password" id="modal-api-key-input" class="modal-input" placeholder="Enter Gemini API Key (e.g. AQ.Ab8RN...)" />
+          <span style="font-family:var(--as-font-mono); font-size:0.65rem; color:var(--as-text-muted); display:block; margin-top:4px;">
+            Pre-configured with Gemini 3.7 Flash. All communications execute directly with Google Generative Language endpoints.
+          </span>
+        </div>
 
-      function showPasteFallback(query) {
-         const wrap = document.createElement('div');
-         wrap.className = 'msg system';
-         wrap.style.textAlign = 'left';
-         wrap.style.alignSelf = 'center';
-         wrap.style.maxWidth = '90%';
+        <div class="modal-form-group">
+          <label>Inference Model Standard</label>
+          <input type="text" class="modal-input" value="models/gemini-3.7-flash (Exclusive Target)" readonly style="opacity:0.8; color:var(--as-cyan);" />
+        </div>
 
-         const label = document.createElement('div');
-         label.textContent = 'Clipboard access was blocked — copy this manually:';
-         label.style.marginBottom = '6px';
-         wrap.appendChild(label);
+        <div class="modal-form-group">
+          <label>Security &amp; Storage</label>
+          <div style="font-family:var(--as-font-mono); font-size:0.72rem; color:var(--as-text-muted); line-height:1.4;">
+            Keys are cached locally in your browser's encrypted sandbox storage and sent directly to Google Gemini via HTTPS headers.
+          </div>
+        </div>
+      </div>
 
-         const box = document.createElement('input');
-         box.type = 'text';
-         box.readOnly = true;
-         box.value = query;
-         box.className = 'text-input';
-         box.style.fontSize = '0.85rem';
-         box.onclick = () => box.select();
-         wrap.appendChild(box);
+      <div class="modal-actions">
+        <button type="button" class="hud-action-btn" onclick="document.getElementById('settings-modal').classList.remove('open')">CANCEL</button>
+        <button type="button" class="hud-action-btn active" id="modal-save-btn">SAVE &amp; RECONNECT CORE</button>
+      </div>
+    </div>
+  </div>
 
-         transcript.appendChild(wrap);
-         transcript.scrollTop = transcript.scrollHeight;
-         box.focus();
-         box.select();
-      }
-
-      function handleQuery(rawQuery) {
-         const query = rawQuery.trim();
-         if (!query) return;
-         addMessage(query, 'user');
-
-         const answer = findAnswer(query);
-
-         if (answer) {
-            addMessage(answer, 'bot');
-            speak(answer);
-         } else {
-            const fallbackMsg = "That query lies outside my onboard archive. I've copied it to your clipboard and I'm opening Google Gemini in a new tab — just paste it in and press enter.";
-            addMessage(fallbackMsg, 'bot');
-            speak(fallbackMsg);
-            addMessage('↗ Escalated to Google Gemini: "' + query + '"', 'system');
-            openInGemini(query).then(copied => {
-               if (!copied) {
-                  addMessage("I couldn't access your clipboard automatically — here's the query to copy by hand:", 'system');
-                  showPasteFallback(query);
-               }
-            });
-            setState('idle');
-         }
-      }
-
-      sendBtn.addEventListener('click', () => {
-         const val = textInput.value;
-         textInput.value = '';
-         handleQuery(val);
-      });
-
-      textInput.addEventListener('keydown', (e) => {
-         if (e.key === 'Enter') {
-            const val = textInput.value;
-            textInput.value = '';
-            handleQuery(val);
-         }
-      });
-
-      muteBtn.addEventListener('click', () => {
-         voiceEnabled = !voiceEnabled;
-         if (!voiceEnabled) {
-            window.speechSynthesis.cancel();
-            muteIcon.innerHTML = '<path d="M16.5 12L21 7.5M21 12l-4.5-4.5"/><path d="M3 10v4h4l5 5V5L7 10H3z"/>';
-            muteBtn.style.color = 'var(--danger)';
-         } else {
-            muteIcon.innerHTML = '<path d="M3 10v4h4l5 5V5L7 10H3z"/><path d="M16.5 12a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/><path d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
-            muteBtn.style.color = 'var(--blue)';
-         }
-      });
-
-      /* ---------- Speech recognition (voice input) ---------- */
-      const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
-      let recognition = null;
-      let isListening = false;
-
-      if (SpeechRecognitionAPI) {
-         recognition = new SpeechRecognitionAPI();
-         recognition.continuous = false;
-         recognition.interimResults = false;
-         recognition.lang = 'en-US';
-
-         recognition.onstart = () => {
-            isListening = true;
-            micBtn.classList.add('active');
-            setState('listening');
-         };
-
-         recognition.onresult = (event) => {
-            const said = event.results[0][0].transcript;
-            handleQuery(said);
-         };
-
-         recognition.onerror = () => {
-            addMessage('Voice reception interrupted. Please try again or type your query.', 'system');
-            setState('idle');
-         };
-
-         recognition.onend = () => {
-            isListening = false;
-            micBtn.classList.remove('active');
-            if (!coreWrap.classList.contains('speaking')) setState('idle');
-         };
-
-         micBtn.addEventListener('click', () => {
-            if (isListening) {
-               recognition.stop();
-            } else {
-               try { recognition.start(); }
-               catch (e) { /* already started */ }
-            }
-         });
-      } else {
-         micBtn.addEventListener('click', () => {
-            addMessage('Voice recognition is not supported in this browser. Try Chrome or Edge, or type your query below.', 'system');
-         });
-         micBtn.style.opacity = '0.5';
-      }
-
-      /* Warm up voice list (some browsers load async) */
-      if ('speechSynthesis' in window) {
-         window.speechSynthesis.getVoices();
-         window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-      }
-
-      setState('idle');
-   </script>
+  <!-- Modular Assistant Core Script -->
+  <script src="pages/assistant/assistant.js"></script>
 </body>
 
 </html>
