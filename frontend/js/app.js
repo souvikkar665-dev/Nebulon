@@ -2,9 +2,14 @@ const state = { hypotheses: [], opportunities: [], timeline: [], health: null };
 const $ = (selector) => document.querySelector(selector);
 
 async function api(path, options = {}) {
+  const headers = { "Content-Type": "application/json" };
+  const token = sessionStorage.getItem("nebulon_access_token");
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
   const response = await fetch(path, {
-    headers: { "Content-Type": "application/json" },
     ...options,
+    headers: { ...headers, ...(options.headers || {}) },
   });
   if (!response.ok) throw new Error(`Request failed: ${response.status}`);
   return response.json();

@@ -348,6 +348,10 @@ window.NebulonAPI = (function () {
 
   async function rawFetch(endpoint, options = {}) {
     const defaultHeaders = { 'Content-Type': 'application/json' };
+    const token = sessionStorage.getItem('nebulon_access_token');
+    if (token) {
+      defaultHeaders['Authorization'] = `Bearer ${token}`;
+    }
     const mergedOptions = {
       ...options,
       headers: { ...defaultHeaders, ...(options.headers || {}) }

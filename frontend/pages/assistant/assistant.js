@@ -164,6 +164,33 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
       const apiKey = state.apiKey.trim();
 
       if (!apiKey) {
+        try {
+          const token = sessionStorage.getItem('nebulon_access_token');
+          const headers = { 'Content-Type': 'application/json' };
+          if (token) headers['Authorization'] = `Bearer ${token}`;
+
+          const proxyRes = await fetch('/api/v1/assistant/query', {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({
+              prompt: promptText,
+              conversation_history: state.conversationHistory
+            })
+          });
+          if (proxyRes.ok) {
+            const pData = await proxyRes.json();
+            state.activeModelUsed = pData.model_used || 'gemini-3.7-flash (Backend Proxy)';
+            state.lastLatencyMs = pData.latency_ms || Math.round(performance.now() - startTime);
+            return {
+              answer: pData.response,
+              followUps: pData.suggestions || [],
+              latencyMs: state.lastLatencyMs,
+              modelUsed: state.activeModelUsed
+            };
+          }
+        } catch (e) {
+          console.warn('Backend proxy assistant query failed:', e);
+        }
         throw new Error('API Key missing. Please provide a valid Gemini API key in settings.');
       }
 

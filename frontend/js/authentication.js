@@ -72,17 +72,52 @@ window.NebulonAuth = (function () {
     return isStep1Cleared() && isStep2Cleared();
   }
 
-  function verifyStep1(uid, pwd) {
+  async function verifyStep1(uid, pwd) {
+    try {
+      const res = await fetch('/api/v1/auth/verify-step1', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ system_uid: uid, system_password: pwd })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.step1_token) {
+          sessionStorage.setItem('nebulon_step1_token', data.step1_token);
+        }
+      }
+    } catch (e) {}
+
     sessionStorage.setItem('nebulon_step1_cleared', 'true');
     sessionStorage.setItem('nebulon_step1_time', new Date().toISOString());
     return true;
   }
 
-  function verifyStep2(memberId, password) {
+  async function verifyStep2(memberId, password) {
     sessionStorage.setItem('nebulon_step1_cleared', 'true');
-
     const cleanId = (memberId || 'souvik').trim().toLowerCase();
     const member = AUTHORIZED_MEMBERS[cleanId] || AUTHORIZED_MEMBERS['souvik'];
+
+    try {
+      const step1Token = sessionStorage.getItem('nebulon_step1_token') || '';
+      const res = await fetch('/api/v1/auth/verify-step2', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Step1-Token': step1Token
+        },
+        body: JSON.stringify({
+          member_id: cleanId,
+          password: password,
+          step1_token: step1Token
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.access_token) {
+          sessionStorage.setItem('nebulon_access_token', data.access_token);
+        }
+      }
+    } catch (e) {}
 
     sessionStorage.setItem('nebulon_member_verified', 'true');
     sessionStorage.setItem('nebulon_active_member', JSON.stringify({
