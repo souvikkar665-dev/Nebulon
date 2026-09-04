@@ -348,40 +348,172 @@
   margin: 0;
 }
 
-/* Review Badge */
+/* ==========================================================================
+   REVIEW BADGE (DYNAMIC MULTI-TIER CYBERTECH STATUS)
+   Tier 0: Nominal Green (REVIEW 0)
+   Tier 1-3: Caution Yellow (REVIEW 1-3)
+   Tier 4+: Critical Alert Red (REVIEW 4+)
+   ========================================================================== */
 .n-nav-review-badge {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 4px 8px;
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.45);
+  gap: 6px;
+  padding: 4px 9px;
   border-radius: var(--n-radius-sm);
-  color: var(--n-amber);
   font-family: var(--n-font-mono);
   font-size: 0.72rem;
   font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: all 0.2s ease;
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  cursor: pointer;
 }
 
-.n-nav-review-badge:hover {
-  background: rgba(245, 158, 11, 0.25);
-  border-color: var(--n-amber);
-  box-shadow: 0 0 25px rgba(245, 158, 11, 0.5);
-  color: #ffffff;
+.n-nav-review-badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.n-nav-review-badge__label {
+  letter-spacing: 0.04em;
 }
 
 .n-nav-review-badge__count {
-  background: var(--n-amber);
-  color: #03050c;
-  padding: 1px 5px;
+  padding: 1px 6px;
   border-radius: 3px;
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-weight: 800;
+  line-height: 1.2;
+  transition: all 0.2s ease;
+}
+
+/* Tier 0: Nominal Green (0 pending reviews) */
+.n-nav-review-badge--zero {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  color: #10b981;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.2);
+}
+
+.n-nav-review-badge--zero .n-nav-review-badge__dot {
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.n-nav-review-badge--zero .n-nav-review-badge__count {
+  background: #10b981;
+  color: #021a0d;
+}
+
+.n-nav-review-badge--zero:hover {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: #10b981;
+  box-shadow: 0 0 24px rgba(16, 185, 129, 0.5);
+  color: #ffffff;
+}
+
+/* Tier 1-3: Caution Yellow (some pending reviews) */
+.n-nav-review-badge--caution {
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(245, 158, 11, 0.55);
+  color: #f59e0b;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
+  animation: n-caution-glow 2.8s infinite ease-in-out;
+}
+
+.n-nav-review-badge--caution .n-nav-review-badge__dot {
+  background: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
+}
+
+.n-nav-review-badge--caution .n-nav-review-badge__count {
+  background: #f59e0b;
+  color: #0a0601;
+}
+
+.n-nav-review-badge--caution:hover {
+  background: rgba(245, 158, 11, 0.28);
+  border-color: #f59e0b;
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.55);
+  color: #ffffff;
+}
+
+/* Tier 4+: Critical Alert Red (many pending reviews) */
+.n-nav-review-badge--critical {
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(239, 68, 68, 0.75);
+  color: #f87171;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.45);
+  animation: n-critical-pulse 1.4s infinite ease-in-out;
+}
+
+.n-nav-review-badge--critical .n-nav-review-badge__dot {
+  background: #ef4444;
+  box-shadow: 0 0 10px #ef4444;
+}
+
+.n-nav-review-badge--critical .n-nav-review-badge__count {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.n-nav-review-badge--critical:hover {
+  background: rgba(239, 68, 68, 0.32);
+  border-color: #ef4444;
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.75);
+  color: #ffffff;
+}
+
+/* Center Rail Review link status indicator pip */
+.n-nav-review-pip {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-left: 4px;
+  vertical-align: middle;
+  transition: all 0.2s ease;
+}
+
+.n-nav-review-pip--zero {
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+}
+
+.n-nav-review-pip--caution {
+  background: #f59e0b;
+  box-shadow: 0 0 6px #f59e0b;
+}
+
+.n-nav-review-pip--critical {
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+  animation: n-critical-pulse 1.4s infinite ease-in-out;
+}
+
+@keyframes n-caution-glow {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(245, 158, 11, 0.45);
+  }
+}
+
+@keyframes n-critical-pulse {
+  0%, 100% {
+    box-shadow: 0 0 14px rgba(239, 68, 68, 0.35);
+    border-color: rgba(239, 68, 68, 0.65);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(239, 68, 68, 0.75);
+    border-color: #ef4444;
+  }
 }
 
 /* Active Operator Profile Capsule */

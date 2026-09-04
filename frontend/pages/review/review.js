@@ -27,6 +27,89 @@
     bindDecisionOptions();
     bindSubmitButton();
     bindReportExport();
+    initReviewStatusBanner();
+  }
+
+  function initReviewStatusBanner() {
+    updateReviewStatusBanner();
+
+    // Event listener for cross-tab or component updates
+    window.addEventListener('nebulon:reviews-updated', function () {
+      updateReviewStatusBanner();
+    });
+
+    // Wire simulation buttons
+    document.querySelectorAll('.review-sim-btn[data-sim-count]').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const count = parseInt(this.getAttribute('data-sim-count'), 10);
+        if (window.NebulonReviews) {
+          window.NebulonReviews.setSimulatedCount(count);
+          if (window.NebulonApp) {
+            window.NebulonApp.showToast(
+              'Review Queue Updated',
+              `Simulated queue state set to ${count} pending review${count === 1 ? '' : 's'}.`,
+              count === 0 ? 'success' : count <= 3 ? 'warning' : 'error'
+            );
+          }
+        }
+      });
+    });
+
+    // Wire reset button
+    const resetBtn = document.getElementById('review-reset-nominal-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function () {
+        if (window.NebulonReviews) {
+          window.NebulonReviews.resetToNominal();
+          if (window.NebulonApp) {
+            window.NebulonApp.showToast(
+              'Queue Cleared',
+              'All reviews resolved. Queue reset to Nominal 0 (Green).',
+              'success'
+            );
+          }
+        }
+      });
+    }
+  }
+
+  function updateReviewStatusBanner() {
+    const banner = document.getElementById('review-status-banner');
+    const beacon = document.getElementById('review-status-beacon');
+    const title = document.getElementById('review-status-title');
+    const desc = document.getElementById('review-status-desc');
+    if (!banner || !beacon || !title || !desc || !window.NebulonReviews) return;
+
+    const count = window.NebulonReviews.getPendingCount();
+    const tier = window.NebulonReviews.getTier();
+
+    // Update banner styling
+    banner.classList.remove('review-status-banner--zero', 'review-status-banner--caution', 'review-status-banner--critical');
+    beacon.classList.remove('review-status-beacon--zero', 'review-status-beacon--caution', 'review-status-beacon--critical');
+    banner.classList.add('review-status-banner--' + tier);
+    beacon.classList.add('review-status-beacon--' + tier);
+
+    // Update text according to tier
+    if (tier === 'zero') {
+      title.textContent = `STATUS: 0 REVIEWS PENDING // SYSTEM NOMINAL`;
+      desc.textContent = `All candidate spacecraft identities corroborated. Zero unresolved contradictions in orbital backlog.`;
+    } else if (tier === 'caution') {
+      title.textContent = `STATUS: ${count} REVIEW${count > 1 ? 'S' : ''} PENDING // CAUTION ADVISORY`;
+      desc.textContent = `${count} unresolved orbital identity conflict${count > 1 ? 's' : ''} require human arbiter confirmation.`;
+    } else {
+      title.textContent = `STATUS: ${count} REVIEWS PENDING // CRITICAL BACKLOG ALERT`;
+      desc.textContent = `High-volume contradiction backlog detected. Human arbiter verification required immediately.`;
+    }
+
+    // Update simulation button active state
+    document.querySelectorAll('.review-sim-btn[data-sim-count]').forEach(btn => {
+      const btnCount = parseInt(btn.getAttribute('data-sim-count'), 10);
+      if (btnCount === count) {
+        btn.classList.add('is-active');
+      } else {
+        btn.classList.remove('is-active');
+      }
+    });
   }
 
   async function loadHypothesis() {
@@ -103,6 +186,9 @@
         const res = await window.NebulonAPI.recordReview(currentHypothesis.id, { decision: selectedDecision, notes, reviewer });
         const review = { ...res, reviewer, verification_name: verificationName, notes, operator_id: member.id, selected_records: readEvidenceSelection() };
         localStorage.setItem(`nebulon_review_${member.id}`, JSON.stringify(review));
+        if (window.NebulonReviews && currentHypothesis) {
+          window.NebulonReviews.resolveReview(currentHypothesis.id);
+        }
         showVerificationSeal(review); renderReport(review);
         if (window.NebulonApp) window.NebulonApp.showToast('Verification Recorded', res.message, 'success');
       } catch (err) { console.error(err); if (window.NebulonApp) window.NebulonApp.showToast('Review Error', 'The verification could not be recorded.', 'error'); }

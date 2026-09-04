@@ -55,6 +55,40 @@
         <!-- Populated by review.js -->
       </div>
 
+      <!-- Live Review Queue Status Banner -->
+      <div class="n-panel review-status-banner" id="review-status-banner">
+        <div class="review-status-banner__left">
+          <div class="review-status-beacon review-status-beacon--zero" id="review-status-beacon">
+            <span class="review-status-beacon__dot"></span>
+            <span class="review-status-beacon__ring"></span>
+          </div>
+          <div>
+            <div class="review-status-banner__kicker">LIVE REVIEW SYSTEM TELEMETRY // NASA VERIFICATION ARBITER</div>
+            <div class="review-status-banner__title" id="review-status-title">STATUS: 0 REVIEWS PENDING // SYSTEM NOMINAL</div>
+            <div class="review-status-banner__desc" id="review-status-desc">All candidate spacecraft identities corroborated. Zero unresolved contradictions in orbital backlog.</div>
+          </div>
+        </div>
+        <div class="review-status-banner__right">
+          <div class="review-status-banner__sim">
+            <span class="n-label-micro">LIVE QUEUE SIMULATION:</span>
+            <div class="review-sim-btn-group">
+              <button type="button" class="review-sim-btn review-sim-btn--zero is-active" data-sim-count="0" title="Simulate 0 pending reviews (Nominal Green)">
+                <span class="review-sim-dot review-sim-dot--green"></span> 0 Nominal
+              </button>
+              <button type="button" class="review-sim-btn review-sim-btn--caution" data-sim-count="2" title="Simulate 2 pending reviews (Caution Yellow)">
+                <span class="review-sim-dot review-sim-dot--yellow"></span> 2 Caution
+              </button>
+              <button type="button" class="review-sim-btn review-sim-btn--critical" data-sim-count="5" title="Simulate 5 pending reviews (Critical Red)">
+                <span class="review-sim-dot review-sim-dot--red"></span> 5 Critical
+              </button>
+              <button type="button" class="review-sim-btn review-sim-btn--reset" id="review-reset-nominal-btn" title="Reset queue to 0 Nominal">
+                ↺ Reset
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Split-Screen Review Layout -->
       <div class="review-layout">
         <!-- Left: Supporting Multi-Sensor Evidence -->

@@ -256,3 +256,270 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   DYNAMIC LIVE REVIEW STATUS BANNER & SIMULATION CONTROLS
+   ========================================================================== */
+.review-status-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 1.4rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  background: rgba(8, 14, 34, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: var(--n-radius-md);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 240, 255, 0.04);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.review-status-banner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #10b981, #00f0ff);
+  transition: background 0.35s ease;
+}
+
+.review-status-banner--caution {
+  border-color: rgba(245, 158, 11, 0.45);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(245, 158, 11, 0.08);
+}
+.review-status-banner--caution::after {
+  background: linear-gradient(90deg, #f59e0b, #eab308);
+}
+
+.review-status-banner--critical {
+  border-color: rgba(239, 68, 68, 0.6);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 0 25px rgba(239, 68, 68, 0.12);
+}
+.review-status-banner--critical::after {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.review-status-banner__left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.review-status-beacon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.review-status-beacon__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  z-index: 2;
+}
+
+.review-status-beacon__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid #10b981;
+  opacity: 0.6;
+  animation: n-beacon-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes n-beacon-ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Beacon Tiers */
+.review-status-beacon--zero .review-status-beacon__dot {
+  background: #10b981;
+  box-shadow: 0 0 12px #10b981;
+}
+.review-status-beacon--zero .review-status-beacon__ring {
+  border-color: #10b981;
+}
+
+.review-status-beacon--caution .review-status-beacon__dot {
+  background: #f59e0b;
+  box-shadow: 0 0 14px #f59e0b;
+}
+.review-status-beacon--caution .review-status-beacon__ring {
+  border-color: #f59e0b;
+}
+
+.review-status-beacon--critical .review-status-beacon__dot {
+  background: #ef4444;
+  box-shadow: 0 0 16px #ef4444;
+}
+.review-status-beacon--critical .review-status-beacon__ring {
+  border-color: #ef4444;
+  animation-duration: 1s;
+}
+
+.review-status-banner__kicker {
+  font-family: var(--n-font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--n-muted);
+  text-transform: uppercase;
+}
+
+.review-status-banner__title {
+  font-family: var(--n-font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #10b981;
+  margin-top: 2px;
+  transition: color 0.3s ease;
+}
+
+.review-status-banner--caution .review-status-banner__title {
+  color: #f59e0b;
+}
+
+.review-status-banner--critical .review-status-banner__title {
+  color: #f87171;
+}
+
+.review-status-banner__desc {
+  font-family: var(--n-font-mono);
+  font-size: 0.72rem;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.review-status-banner__right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.review-status-banner__sim {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(5, 10, 24, 0.6);
+  padding: 6px 10px;
+  border-radius: var(--n-radius-sm);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+}
+
+.review-sim-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.review-sim-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: var(--n-radius-sm);
+  font-family: var(--n-font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: rgba(14, 20, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.review-sim-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.review-sim-btn.is-active {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.review-sim-btn--zero.is-active {
+  background: rgba(16, 185, 129, 0.22);
+  border-color: #10b981;
+  color: #10b981;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.review-sim-btn--caution.is-active {
+  background: rgba(245, 158, 11, 0.22);
+  border-color: #f59e0b;
+  color: #f59e0b;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.review-sim-btn--critical.is-active {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: #ef4444;
+  color: #ef4444;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.35);
+}
+
+.review-sim-btn--reset {
+  color: var(--n-cyan);
+  border-color: rgba(0, 240, 255, 0.3);
+}
+.review-sim-btn--reset:hover {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: var(--n-cyan);
+  color: #ffffff;
+}
+
+.review-sim-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.review-sim-dot--green {
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+}
+
+.review-sim-dot--yellow {
+  background: #f59e0b;
+  box-shadow: 0 0 6px #f59e0b;
+}
+
+.review-sim-dot--red {
+  background: #ef4444;
+  box-shadow: 0 0 6px #ef4444;
+}
+
+@media (max-width: 900px) {
+  .review-status-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .review-status-banner__sim {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+}

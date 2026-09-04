@@ -1,4 +1,106 @@
 /**
+ * NEBULON REVIEW STATE CONTROLLER
+ * Manages dynamic pending review count with multi-tier color status.
+ * Synchronizes across all pages via localStorage + custom events.
+ */
+window.NebulonReviews = (function () {
+  'use strict';
+
+  const STORAGE_KEY = 'nebulon_review_state';
+
+  function loadState() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) { /* ignore */ }
+    return { pendingCount: 0, tickets: [], resolvedIds: [] };
+  }
+
+  function saveState(state) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) { /* ignore */ }
+  }
+
+  var state = loadState();
+
+  function getPendingCount() {
+    return state.pendingCount;
+  }
+
+  function getTier() {
+    if (state.pendingCount <= 0) return 'zero';
+    if (state.pendingCount <= 3) return 'caution';
+    return 'critical';
+  }
+
+  function getPendingTickets() {
+    return state.tickets || [];
+  }
+
+  function setSimulatedCount(n) {
+    state.pendingCount = Math.max(0, n);
+    state.tickets = [];
+    for (var i = 0; i < state.pendingCount; i++) {
+      state.tickets.push({
+        id: 'SIM-' + (i + 1),
+        label: 'Simulated Review Ticket #' + (i + 1),
+        severity: i < 2 ? 'caution' : 'critical'
+      });
+    }
+    saveState(state);
+    broadcast();
+  }
+
+  function resolveReview(ticketId) {
+    state.tickets = (state.tickets || []).filter(function (t) { return t.id !== ticketId; });
+    if (!state.resolvedIds) state.resolvedIds = [];
+    state.resolvedIds.push(ticketId);
+    state.pendingCount = Math.max(0, state.tickets.length);
+    saveState(state);
+    broadcast();
+  }
+
+  function resolveAll() {
+    state.tickets = [];
+    state.pendingCount = 0;
+    state.resolvedIds = [];
+    saveState(state);
+    broadcast();
+  }
+
+  function resetToNominal() {
+    state = { pendingCount: 0, tickets: [], resolvedIds: [] };
+    saveState(state);
+    broadcast();
+  }
+
+  function broadcast() {
+    window.dispatchEvent(new CustomEvent('nebulon:reviews-updated', {
+      detail: { pendingCount: state.pendingCount, tier: getTier() }
+    }));
+  }
+
+  // Cross-tab synchronization via storage events
+  window.addEventListener('storage', function (e) {
+    if (e.key === STORAGE_KEY) {
+      state = loadState();
+      broadcast();
+    }
+  });
+
+  return {
+    getPendingCount: getPendingCount,
+    getTier: getTier,
+    getPendingTickets: getPendingTickets,
+    setSimulatedCount: setSimulatedCount,
+    resolveReview: resolveReview,
+    resolveAll: resolveAll,
+    resetToNominal: resetToNominal
+  };
+})();
+
+/**
  * NEBULON APP SHELL — NASA 2070 / JARVIS MISSION CONTROL ORCHESTRATOR
  */
 
@@ -124,9 +226,10 @@ window.NebulonApp = (function () {
             <span id="n-nav-pulse-text">LIVE</span>
           </div>
 
-          <a href="review.html" class="n-nav-review-badge" title="Unresolved Contradictions">
-            <span>REVIEW</span>
-            <span class="n-nav-review-badge__count" id="n-contradiction-count">1</span>
+          <a href="review.html" class="n-nav-review-badge" id="n-nav-review-badge" title="Pending Reviews">
+            <span class="n-nav-review-badge__dot"></span>
+            <span class="n-nav-review-badge__label">REVIEW</span>
+            <span class="n-nav-review-badge__count" id="n-contradiction-count">0</span>
           </a>
 
           <!-- Active Operator Badge & Prominent Logout Button -->
@@ -154,7 +257,9 @@ window.NebulonApp = (function () {
 
     updateNavIndicator();
     setupNavHoverGlide();
+    updateNavReviewBadge();
     window.addEventListener('resize', () => updateNavIndicator());
+    window.addEventListener('nebulon:reviews-updated', () => updateNavReviewBadge());
 
     // Populate active operator name
     if (window.NebulonAuth) {
@@ -185,6 +290,43 @@ window.NebulonApp = (function () {
 
     // Mobile Toggle
     document.getElementById('n-mobile-toggle').addEventListener('click', toggleMobileDrawer);
+  }
+
+  function updateNavReviewBadge() {
+    const badge = document.getElementById('n-nav-review-badge');
+    const countEl = document.getElementById('n-contradiction-count');
+    if (!badge || !countEl || !window.NebulonReviews) return;
+
+    const count = window.NebulonReviews.getPendingCount();
+    const tier = window.NebulonReviews.getTier();
+
+    // Update count text
+    countEl.textContent = count;
+
+    // Remove all tier classes, then apply current
+    badge.classList.remove('n-nav-review-badge--zero', 'n-nav-review-badge--caution', 'n-nav-review-badge--critical');
+    badge.classList.add('n-nav-review-badge--' + tier);
+
+    // Update tooltip
+    if (count === 0) {
+      badge.title = 'All Reviews Cleared — Nominal';
+    } else if (count <= 3) {
+      badge.title = count + ' Pending Review' + (count > 1 ? 's' : '') + ' — Caution';
+    } else {
+      badge.title = count + ' Pending Reviews — Critical Backlog';
+    }
+
+    // Update center rail Review link pip if present
+    const reviewLink = document.querySelector('.n-nav-link[data-route="review"]');
+    if (reviewLink) {
+      var pip = reviewLink.querySelector('.n-nav-review-pip');
+      if (!pip) {
+        pip = document.createElement('span');
+        pip.className = 'n-nav-review-pip';
+        reviewLink.appendChild(pip);
+      }
+      pip.className = 'n-nav-review-pip n-nav-review-pip--' + tier;
+    }
   }
 
   function startClockAndMet() {
