@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" data-motion="full">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#050611" />
-  <meta name="description" content="Nebulon Observation Forge — Rank Next-Best Observation opportunities that maximize information gain and Doppler separation." />
+  <meta name="description"
+    content="Nebulon Observation Forge — Rank Next-Best Observation opportunities that maximize information gain and Doppler separation." />
   <title>Observation Forge — Nebulon</title>
 
   <!-- Core Design System -->
@@ -54,7 +56,8 @@
             <span class="n-kicker">ACTIVE EXPERIMENT SELECTION</span>
             <h2>Next-Best Observation Engine</h2>
           </div>
-          <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.75rem;">Optimizing sensor information gain across global ground stations</span>
+          <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.75rem;">Optimizing sensor
+            information gain across global ground stations</span>
         </div>
       </div>
 
@@ -92,12 +95,73 @@
             <canvas class="observe-radar-canvas" id="observe-radar-canvas"></canvas>
           </div>
 
-          <div style="margin-top: auto; border-top: 1px solid var(--n-line); padding-top: 1rem; font-family: var(--n-font-mono); font-size: 0.75rem; color: var(--n-muted);">
+          <!-- Additive futuristic parametric readout -->
+          <section class="observe-parametric-console" aria-labelledby="observe-parametric-title">
+            <div class="observe-console-heading">
+              <div>
+                <span class="n-label-micro">EXTREME PARAMETRIC READOUT</span>
+                <h4 id="observe-parametric-title">Observation Pressure Field</h4>
+              </div>
+              <span class="observe-live-status"><span class="observe-live-dot"></span>DERIVED / LIVE</span>
+            </div>
+
+            <div class="observe-pressure-layout">
+              <div class="observe-pressure-gauge" aria-label="Observation pressure index">
+                <div class="observe-pressure-gauge__dial" id="observe-pressure-dial">
+                  <div class="observe-pressure-gauge__core">
+                    <strong id="observe-pressure-index">--</strong>
+                    <span>PRESSURE</span>
+                  </div>
+                </div>
+                <span id="observe-pressure-label" class="observe-pressure-label">Calculating field</span>
+              </div>
+
+              <div class="observe-parametric-grid" aria-live="polite">
+                <div class="observe-parametric-cell"><span>INFO / SEC</span><strong id="observe-info-rate">--</strong>
+                </div>
+                <div class="observe-parametric-cell"><span>DOPPLER INDEX</span><strong
+                    id="observe-doppler-index">--</strong></div>
+                <div class="observe-parametric-cell"><span>CONFIDENCE LIFT</span><strong
+                    id="observe-confidence-lift">--</strong></div>
+                <div class="observe-parametric-cell"><span>LATENCY RISK</span><strong
+                    id="observe-latency-risk">--</strong></div>
+              </div>
+            </div>
+
+            <div class="observe-signal-strip" aria-label="Sensor signal status">
+              <div class="observe-signal"><span class="observe-signal__label">RF</span><span
+                  class="observe-signal__track"><i id="observe-signal-rf"></i></span><strong
+                  id="observe-signal-rf-value">--</strong></div>
+              <div class="observe-signal"><span class="observe-signal__label">OPT</span><span
+                  class="observe-signal__track"><i id="observe-signal-optical"></i></span><strong
+                  id="observe-signal-optical-value">--</strong></div>
+              <div class="observe-signal"><span class="observe-signal__label">TIME</span><span
+                  class="observe-signal__track"><i id="observe-signal-time"></i></span><strong
+                  id="observe-signal-time-value">--</strong></div>
+            </div>
+          </section>
+
+          <div
+            style="margin-top: auto; border-top: 1px solid var(--n-line); padding-top: 1rem; font-family: var(--n-font-mono); font-size: 0.75rem; color: var(--n-muted);">
             <div>Recommendation Engine: <strong style="color: var(--n-cyan);">Nebula-InfoGain-v3</strong></div>
             <div style="margin-top: 4px;">Sensor Network: <strong>SatNOGS Global + Partner Relays</strong></div>
           </div>
         </div>
       </div>
+
+      <!-- Additive cross-station parametric comparison -->
+      <section class="n-panel observe-comparison-panel" aria-labelledby="observe-comparison-title">
+        <div class="observe-comparison-head">
+          <div>
+            <span class="n-kicker">PARAMETRIC STATION COMPARISON</span>
+            <h3 id="observe-comparison-title">Mission Discrimination Envelope</h3>
+            <p class="n-muted">Relative information density and timing pressure across every available observation
+              window.</p>
+          </div>
+          <span class="n-chip n-chip--cyan" id="observe-comparison-badge">3 WINDOWS · NORMALIZED</span>
+        </div>
+        <div id="observe-comparison-grid" class="observe-comparison-grid" aria-live="polite"></div>
+      </section>
     </div>
   </main>
 
@@ -113,4 +177,5 @@
   <script src="js/app-shell.js" defer></script>
   <script src="pages/observe/observe.js" defer></script>
 </body>
+
 </html>

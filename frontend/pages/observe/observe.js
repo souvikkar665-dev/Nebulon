@@ -28,6 +28,8 @@
 
       renderHeroRecommendation();
       renderOpportunitiesList();
+      renderParametricConsole();
+      renderComparisonMatrix();
       startRadarAnimation();
     } catch (e) {
       console.error(e);
@@ -126,8 +128,95 @@
         selectedOpp = opportunities.find(o => o.id === id);
         renderHeroRecommendation();
         renderOpportunitiesList();
+        renderParametricConsole();
+        renderComparisonMatrix();
       });
     });
+  }
+
+  function parseDopplerSeparation(value) {
+    const match = String(value || '').replace(',', '').match(/[-+]?\d*\.?\d+/);
+    return match ? Number(match[0]) : 0;
+  }
+
+  function clamp(value, min = 0, max = 100) {
+    return Math.max(min, Math.min(max, Number(value) || 0));
+  }
+
+  function getParametrics(opp) {
+    const factors = opp.value_factors || {};
+    const dopplerKHz = parseDopplerSeparation(opp.predicted_doppler_separation);
+    const latency = Number(factors.latency_seconds) || 0;
+    const independence = Number(factors.sensor_independence) || 0;
+    const dopplerWeight = Number(factors.doppler_separation_weight) || 0;
+    const infoGain = clamp(opp.expected_information_gain);
+    const feasibility = clamp((Number(opp.station_feasibility) || 0) * 100);
+    const latencyRisk = clamp((latency / 20) * 100);
+    const pressure = clamp((infoGain * 0.36) + (dopplerWeight * 100 * 0.28) + (latencyRisk * 0.2) + ((100 - feasibility) * 0.16));
+    const infoRate = latency > 0 ? infoGain / latency : infoGain;
+    const discrimination = clamp((dopplerKHz / 5) * 60 + (dopplerWeight * 40));
+    const confidenceLift = clamp(infoGain * 0.55 + independence * 100 * 0.45);
+    return {
+      dopplerKHz,
+      latency,
+      pressure,
+      infoRate,
+      discrimination,
+      confidenceLift,
+      latencyRisk,
+      rf: clamp(dopplerWeight * 100),
+      optical: clamp(independence * 100),
+      timing: clamp(100 - latencyRisk)
+    };
+  }
+
+  function setText(id, value) {
+    const element = document.getElementById(id);
+    if (element) element.textContent = value;
+  }
+
+  function renderParametricConsole() {
+    if (!selectedOpp) return;
+    const metrics = getParametrics(selectedOpp);
+    const pressureColor = metrics.pressure >= 75 ? 'var(--n-red)' : metrics.pressure >= 50 ? 'var(--n-amber)' : 'var(--n-cyan)';
+    const dial = document.getElementById('observe-pressure-dial');
+    if (dial) {
+      const angle = metrics.pressure * 3.6;
+      dial.style.background = `conic-gradient(${pressureColor} 0deg ${angle}deg, rgba(255, 255, 255, 0.08) ${angle}deg 360deg)`;
+      dial.style.boxShadow = `0 0 24px ${pressureColor}, inset 0 0 12px rgba(0, 0, 0, 0.5)`;
+    }
+    setText('observe-pressure-index', metrics.pressure.toFixed(0));
+    setText('observe-pressure-label', metrics.pressure >= 75 ? 'CRITICAL WINDOW' : metrics.pressure >= 50 ? 'HIGH LEVERAGE' : 'STABLE WINDOW');
+    setText('observe-info-rate', `${metrics.infoRate.toFixed(1)}%/s`);
+    setText('observe-doppler-index', `${metrics.discrimination.toFixed(0)}/100`);
+    setText('observe-confidence-lift', `+${metrics.confidenceLift.toFixed(0)}%`);
+    setText('observe-latency-risk', `${metrics.latencyRisk.toFixed(0)}%`);
+    [['observe-signal-rf', 'observe-signal-rf-value', metrics.rf], ['observe-signal-optical', 'observe-signal-optical-value', metrics.optical], ['observe-signal-time', 'observe-signal-time-value', metrics.timing]].forEach(([barId, valueId, value]) => {
+      const bar = document.getElementById(barId);
+      if (bar) bar.style.width = `${value}%`;
+      setText(valueId, `${value.toFixed(0)}%`);
+    });
+  }
+
+  function renderComparisonMatrix() {
+    const grid = document.getElementById('observe-comparison-grid');
+    if (!grid || !opportunities.length) return;
+    const maxInfo = Math.max(...opportunities.map(item => Number(item.expected_information_gain) || 0), 1);
+    const maxDoppler = Math.max(...opportunities.map(item => getParametrics(item).dopplerKHz), 1);
+    grid.innerHTML = opportunities.map((opp, index) => {
+      const metrics = getParametrics(opp);
+      const infoWidth = clamp((Number(opp.expected_information_gain) / maxInfo) * 100);
+      const dopplerWidth = clamp((metrics.dopplerKHz / maxDoppler) * 100);
+      return `<article class="observe-comparison-card ${selectedOpp && selectedOpp.id === opp.id ? 'is-selected' : ''}">
+        <div class="observe-comparison-card__top"><strong>${opp.station_id}</strong><span class="observe-comparison-card__rank">RANK ${String(index + 1).padStart(2, '0')}</span></div>
+        <div class="observe-comparison-card__metric"><span>INFO GAIN</span><strong>${opp.expected_information_gain}%</strong></div>
+        <div class="observe-comparison-bar"><i style="width: ${infoWidth}%"></i></div>
+        <div class="observe-comparison-card__metric"><span>DOPPLER FIELD</span><strong>${opp.predicted_doppler_separation}</strong></div>
+        <div class="observe-comparison-bar"><i style="width: ${dopplerWidth}%"></i></div>
+        <div class="observe-comparison-card__footer"><span>PRESSURE ${metrics.pressure.toFixed(0)}</span><span>${metrics.latency.toFixed(1)}s LATENCY</span></div>
+      </article>`;
+    }).join('');
+    setText('observe-comparison-badge', `${opportunities.length} WINDOWS · NORMALIZED`);
   }
 
   function setupRadarCanvas() {

@@ -97,8 +97,342 @@
   height: 100%;
 }
 
+/* Additive futuristic parametric console */
+.observe-parametric-console {
+  position: relative;
+  margin-top: 0.25rem;
+  padding: 1rem;
+  border: 1px solid rgba(98, 232, 255, 0.28);
+  border-radius: var(--n-radius-md);
+  background: linear-gradient(145deg, rgba(6, 18, 42, 0.92), rgba(13, 10, 38, 0.88));
+  overflow: hidden;
+}
+
+.observe-parametric-console::before,
+.observe-comparison-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: linear-gradient(rgba(98, 232, 255, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(98, 232, 255, 0.08) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(to bottom, black, transparent 80%);
+}
+
+.observe-console-heading,
+.observe-comparison-head {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.observe-console-heading h4 {
+  margin-top: 3px;
+  color: var(--n-text);
+  font-size: 0.95rem;
+}
+
+.observe-live-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--n-green);
+  font-family: var(--n-font-mono);
+  font-size: 0.62rem;
+  white-space: nowrap;
+}
+
+.observe-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--n-green);
+  box-shadow: 0 0 10px var(--n-green);
+  animation: observe-pulse 1.5s ease-in-out infinite;
+}
+
+.observe-pressure-layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.observe-pressure-gauge {
+  text-align: center;
+}
+
+.observe-pressure-gauge__dial {
+  display: grid;
+  place-items: center;
+  width: 104px;
+  height: 104px;
+  margin: 0 auto 6px;
+  border-radius: 50%;
+  background: conic-gradient(var(--n-cyan) 0deg, var(--n-cyan) 0deg, rgba(255, 255, 255, 0.08) 0deg 360deg);
+  box-shadow: 0 0 24px rgba(98, 232, 255, 0.15), inset 0 0 12px rgba(0, 0, 0, 0.5);
+  transition: background 0.45s ease, box-shadow 0.45s ease;
+}
+
+.observe-pressure-gauge__core {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: #070b1b;
+  border: 1px solid rgba(98, 232, 255, 0.3);
+}
+
+.observe-pressure-gauge__core strong {
+  color: var(--n-cyan);
+  font-family: var(--n-font-mono);
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.observe-pressure-gauge__core span,
+.observe-pressure-label {
+  color: var(--n-muted);
+  font-family: var(--n-font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+}
+
+.observe-pressure-label {
+  display: block;
+  color: var(--n-text-soft);
+  white-space: nowrap;
+}
+
+.observe-parametric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.observe-parametric-cell {
+  padding: 8px;
+  border-left: 2px solid rgba(98, 232, 255, 0.55);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.observe-parametric-cell span {
+  display: block;
+  color: var(--n-muted);
+  font-family: var(--n-font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+}
+
+.observe-parametric-cell strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--n-text);
+  font-family: var(--n-font-mono);
+  font-size: 0.84rem;
+}
+
+.observe-signal-strip {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 7px;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--n-line);
+}
+
+.observe-signal {
+  display: grid;
+  grid-template-columns: 30px 1fr 38px;
+  gap: 7px;
+  align-items: center;
+  color: var(--n-muted);
+  font-family: var(--n-font-mono);
+  font-size: 0.58rem;
+}
+
+.observe-signal__label,
+.observe-signal strong {
+  color: var(--n-text-soft);
+}
+
+.observe-signal strong {
+  text-align: right;
+  font-size: 0.6rem;
+}
+
+.observe-signal__track {
+  height: 5px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.observe-signal__track i {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--n-blue), var(--n-cyan), var(--n-green));
+  box-shadow: 0 0 10px rgba(98, 232, 255, 0.8);
+  transition: width 0.45s ease;
+}
+
+/* Additive cross-station comparison */
+.observe-comparison-panel {
+  position: relative;
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  overflow: hidden;
+  background: var(--n-panel-strong);
+}
+
+.observe-comparison-head {
+  border-bottom: 1px solid var(--n-line);
+  padding-bottom: 1rem;
+}
+
+.observe-comparison-head h3 {
+  margin-top: 3px;
+  color: var(--n-text);
+}
+
+.observe-comparison-head p {
+  margin-top: 5px;
+  font-size: 0.78rem;
+}
+
+.observe-comparison-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.observe-comparison-card {
+  position: relative;
+  padding: 1rem;
+  border: 1px solid var(--n-line);
+  border-radius: var(--n-radius-sm);
+  background: rgba(9, 14, 34, 0.78);
+  overflow: hidden;
+}
+
+.observe-comparison-card.is-selected {
+  border-color: var(--n-cyan);
+  box-shadow: 0 0 20px rgba(98, 232, 255, 0.12);
+}
+
+.observe-comparison-card__top,
+.observe-comparison-card__metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.observe-comparison-card__top strong {
+  color: var(--n-text);
+  font-size: 0.8rem;
+}
+
+.observe-comparison-card__rank {
+  color: var(--n-cyan);
+  font-family: var(--n-font-mono);
+  font-size: 0.62rem;
+}
+
+.observe-comparison-card__metric {
+  margin-top: 0.85rem;
+  color: var(--n-muted);
+  font-family: var(--n-font-mono);
+  font-size: 0.62rem;
+}
+
+.observe-comparison-card__metric strong {
+  color: var(--n-text-soft);
+}
+
+.observe-comparison-bar {
+  height: 8px;
+  margin-top: 6px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.observe-comparison-bar i {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--n-violet), var(--n-cyan));
+  transition: width 0.55s ease;
+}
+
+.observe-comparison-card__footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.85rem;
+  color: var(--n-muted);
+  font-family: var(--n-font-mono);
+  font-size: 0.6rem;
+}
+
+@keyframes observe-pulse {
+
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
 @media (max-width: 1024px) {
   .observe-layout {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+
+  .observe-pressure-layout,
+  .observe-comparison-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .observe-pressure-gauge {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: left;
+  }
+
+  .observe-pressure-gauge__dial {
+    flex: 0 0 auto;
+    margin: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .observe-live-dot {
+    animation: none;
   }
 }
