@@ -83,15 +83,34 @@
 
         <!-- Right: Multi-Factor Radar Evaluation Panel -->
         <div class="n-panel observe-radar-panel n-panel--strong">
-          <div>
-            <span class="n-kicker">VALUE ARBITRATION MATRIX</span>
-            <h3 style="font-size: 1.2rem; margin-top: 2px;">Decision Weight Radar</h3>
+          <div class="observe-radar-header">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; flex-wrap: wrap;">
+              <div>
+                <span class="n-kicker">VALUE ARBITRATION MATRIX</span>
+                <h3 style="font-size: 1.25rem; margin-top: 2px;">Decision Weight Radar</h3>
+              </div>
+              <div class="observe-radar-chips">
+                <span class="observe-radar-chip">SYS: <b style="color: var(--n-cyan);">NOMINAL</b></span>
+                <span class="observe-radar-chip">PRF: <b style="color: var(--n-cyan);">1200 Hz</b></span>
+              </div>
+            </div>
             <p class="n-muted" style="font-size: 0.8rem; margin-top: 4px;">
               Balancing Doppler separation, station feasibility, latency, and sensor independence.
             </p>
+            <div class="observe-radar-controls">
+              <div class="observe-radar-btn-group">
+                <button type="button" class="observe-radar-btn is-active" id="observe-mode-weight">◈ DECISION MATRIX</button>
+                <button type="button" class="observe-radar-btn" id="observe-mode-skypass">◎ TACTICAL SKY PASS</button>
+              </div>
+              <span class="observe-radar-coords" id="observe-radar-coords">AZ: 048° · RNG: 68% · EL: 68.4°</span>
+            </div>
           </div>
 
           <div class="observe-radar-canvas-wrap">
+            <div class="radar-tech-corner radar-tech-tl"></div>
+            <div class="radar-tech-corner radar-tech-tr"></div>
+            <div class="radar-tech-corner radar-tech-bl"></div>
+            <div class="radar-tech-corner radar-tech-br"></div>
             <canvas class="observe-radar-canvas" id="observe-radar-canvas"></canvas>
           </div>
 
