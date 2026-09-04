@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" data-motion="full">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#050611" />
-  <meta name="description" content="Nebulon Evidence Vault — Trustworthy multi-source provenance, CelesTrak, SatNOGS, and 4-tier timestamps." />
+  <meta name="description"
+    content="Nebulon Evidence Vault — Trustworthy multi-source provenance, CelesTrak, SatNOGS, and 4-tier timestamps." />
   <title>Evidence Vault — Nebulon</title>
 
   <!-- Core Design System -->
@@ -54,7 +56,8 @@
             <span class="n-kicker">PROVENANCE & AUDIT ARCHIVE</span>
             <h2>Multi-Source Evidence Vault</h2>
           </div>
-          <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.75rem;">Strict timestamp separation and upstream cryptographic auditability</span>
+          <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.75rem;">Strict timestamp separation
+            and upstream cryptographic auditability</span>
         </div>
       </div>
 
@@ -85,13 +88,26 @@
               <span class="n-chip">Static</span>
             </button>
           </div>
+
+          <div class="evidence-selection-box" aria-labelledby="evidence-selection-title">
+            <span class="n-label-micro" id="evidence-selection-title">ADD TO REVIEW EVIDENCE</span>
+            <p class="n-muted evidence-selection-help">Choose records from Observation and Investigation to include in
+              the operator review.</p>
+            <div id="evidence-selection-container" class="evidence-selection-list">
+              <!-- Rendered by evidence.js -->
+            </div>
+            <button type="button" class="n-btn n-btn--primary n-btn--sm" id="evidence-save-selection"
+              style="width: 100%; margin-top: 12px;">Save Evidence Selection</button>
+            <span class="n-muted evidence-selection-status" id="evidence-selection-status" role="status"></span>
+          </div>
         </aside>
 
         <!-- Center: Evidence Chronological Timeline -->
         <div class="n-panel evidence-timeline-panel n-panel--strong">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <span class="n-chip n-chip--cyan">Chronological Audit Sequence</span>
-            <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.72rem;">Click any record to inspect provenance</span>
+            <span class="n-muted" style="font-family: var(--n-font-mono); font-size: 0.72rem;">Click any record to
+              inspect provenance</span>
           </div>
 
           <div class="evidence-timeline-list" id="evidence-timeline-container">
@@ -121,4 +137,5 @@
   <script src="js/app-shell.js" defer></script>
   <script src="pages/evidence/evidence.js" defer></script>
 </body>
+
 </html>

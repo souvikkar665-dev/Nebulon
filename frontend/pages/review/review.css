@@ -88,6 +88,134 @@
   outline: none;
 }
 
+.review-operator-help {
+  display: block;
+  margin-top: 5px;
+  font-family: var(--n-font-mono);
+  font-size: 0.65rem;
+}
+
+.review-report-panel {
+  margin: 0 0 3rem;
+  padding: 1.5rem;
+  background: var(--n-panel-strong);
+  border: 1px solid var(--n-line-bright);
+  border-radius: var(--n-radius-md);
+}
+
+.review-report-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--n-line);
+  padding-bottom: 1rem;
+}
+
+.review-report-head h3 {
+  margin-top: 3px;
+  color: var(--n-text);
+}
+
+.review-report-head p {
+  margin-top: 6px;
+  max-width: 720px;
+  font-size: 0.78rem;
+}
+
+.review-report-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.review-report-block {
+  padding: 12px;
+  border: 1px solid var(--n-line);
+  border-radius: var(--n-radius-sm);
+  background: rgba(10, 14, 32, 0.55);
+}
+
+.review-report-block--wide {
+  grid-column: 1 / -1;
+}
+
+.review-report-block dt {
+  color: var(--n-muted);
+  font-family: var(--n-font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+}
+
+.review-report-block dd {
+  margin: 5px 0 0;
+  color: var(--n-text);
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+}
+
+.review-report-records {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--n-text-soft);
+  font-size: 0.75rem;
+}
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+
+  #review-report-panel,
+  #review-report-panel * {
+    visibility: visible !important;
+  }
+
+  #review-report-panel {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 24px;
+    color: #111;
+    background: #fff;
+    border: 0;
+  }
+
+  #review-report-panel .review-report-head {
+    border-color: #bbb;
+  }
+
+  #review-report-panel .n-kicker,
+  #review-report-panel h3,
+  #review-report-panel p,
+  #review-report-panel dt,
+  #review-report-panel dd,
+  #review-report-panel li {
+    color: #111 !important;
+  }
+
+  #review-report-panel button {
+    display: none;
+  }
+
+  .review-report-block {
+    background: #fff;
+    border-color: #bbb;
+  }
+}
+
+@media (max-width: 640px) {
+  .review-report-body {
+    grid-template-columns: 1fr;
+  }
+
+  .review-report-block--wide {
+    grid-column: auto;
+  }
+}
+
 /* Verification Seal */
 .review-seal-overlay {
   display: none;

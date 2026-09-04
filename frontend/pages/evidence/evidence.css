@@ -42,6 +42,61 @@
   color: var(--n-cyan);
 }
 
+.evidence-selection-box {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--n-line);
+}
+
+.evidence-selection-help {
+  display: block;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  margin: 8px 0 10px;
+}
+
+.evidence-selection-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  max-height: 245px;
+  overflow-y: auto;
+}
+
+.evidence-selection-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--n-line);
+  border-radius: var(--n-radius-sm);
+  background: rgba(10, 14, 32, 0.55);
+  color: var(--n-text-soft);
+  font-family: var(--n-font-mono);
+  font-size: 0.68rem;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.evidence-selection-item:hover,
+.evidence-selection-item:has(input:checked) {
+  border-color: var(--n-cyan);
+  color: var(--n-text);
+}
+
+.evidence-selection-item input {
+  accent-color: var(--n-cyan);
+  margin-top: 2px;
+}
+
+.evidence-selection-status {
+  display: block;
+  min-height: 1.1rem;
+  margin-top: 8px;
+  font-family: var(--n-font-mono);
+  font-size: 0.65rem;
+}
+
 /* Main Timeline (Center) */
 .evidence-timeline-panel {
   display: flex;
