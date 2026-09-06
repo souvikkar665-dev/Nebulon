@@ -114,7 +114,7 @@ def test_logout():
     s1_res = client.post("/api/v1/auth/verify-step1", json={"system_uid": "nebulon", "system_password": "nebulon@2070"})
     step1_token = s1_res.json()["step1_token"]
 
-    s2_res = client.post("/api/v1/auth/verify-step2", json={"member_id": "adrika", "password": "adrika@2070", "step1_token": step1_token})
+    s2_res = client.post("/api/v1/auth/verify-step2", json={"member_id": "arunima", "password": "arunima@2070", "step1_token": step1_token})
     access_token = s2_res.json()["access_token"]
 
     # Perform logout

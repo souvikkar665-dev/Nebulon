@@ -40,9 +40,9 @@ VALUES
     'Hartebeesthoek Southern Array (GS-044)'
 ),
 (
-    'adrika',
-    'Adrika',
-    'adrika@2070',
+    'arunima',
+    'Arunima',
+    'arunima@2070',
     'Quantum RF & Doppler Specialist',
     'DELTA-SPECIALIST',
     'Kiruna Arctic Ground Segment (GS-204)'

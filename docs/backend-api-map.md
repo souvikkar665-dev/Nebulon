@@ -55,7 +55,7 @@ The frontend consumes API endpoints via `frontend/js/api-client.js`, `frontend/j
 - `MOCK_OPPORTUNITIES` (GS-142 Svalbard, GS-088 Hawaii, GS-044 Hartebeesthoek)
 - `MOCK_TIMELINE` (SatNOGS, CelesTrak, Space-Track, Manifest events)
 - `MOCK_HEALTH` & `MOCK_MODEL_STATUS`
-- `AUTHORIZED_MEMBERS` (Souvik Kar, Debangshu, Sneha Maiti, Adrika)
+- `AUTHORIZED_MEMBERS` (Souvik Kar, Debangshu, Sneha Maiti, Arunima)
 
 ---
 

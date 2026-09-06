@@ -13,7 +13,7 @@ class Step1VerifyResponse(BaseModel):
     message: str = "Step 1 System Clearance Verified"
 
 class Step2VerifyRequest(BaseModel):
-    member_id: str = Field(..., description="Authorized team member ID (souvik, debangshu, sneha, adrika)")
+    member_id: str = Field(..., description="Authorized team member ID (souvik, debangshu, sneha, arunima)")
     password: str = Field(..., description="Member access password")
     step1_token: Optional[str] = Field(None, description="Optional Step 1 clearance token in body if not in header")
 

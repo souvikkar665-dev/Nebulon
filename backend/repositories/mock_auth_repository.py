@@ -49,10 +49,10 @@ class MockAuthRepository(BaseAuthRepository):
                 "ground_segment": "Hartebeesthoek Southern Array (GS-044)",
                 "is_active": True
             },
-            "adrika": {
-                "member_id": "adrika",
-                "callsign": "Adrika",
-                "password": "adrika@2070",
+            "arunima": {
+                "member_id": "arunima",
+                "callsign": "Arunima",
+                "password": "arunima@2070",
                 "role": "Quantum RF & Doppler Specialist",
                 "clearance_badge": "DELTA-SPECIALIST",
                 "ground_segment": "Kiruna Arctic Ground Segment (GS-204)",

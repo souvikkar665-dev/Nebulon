@@ -1,6 +1,6 @@
 /**
  * NEBULON TWO-STEP VERIFICATION & ULTRON ACCESS CONTROLLER
- * Fixed Master System Key & 4 Authorized Members Database (Souvik, Debangshu, Sneha, Adrika)
+ * Fixed Master System Key & 4 Authorized Members Database (Souvik, Debangshu, Sneha, Arunima)
  */
 
 window.NebulonAuth = (function () {
@@ -50,10 +50,10 @@ window.NebulonAuth = (function () {
       badge: 'SIGMA-COMMANDER',
       station: 'Hartebeesthoek Southern Array (GS-044)'
     },
-    'adrika': {
-      id: 'adrika',
-      name: 'Adrika',
-      pass: 'adrika@2070',
+    'arunima': {
+      id: 'arunima',
+      name: 'Arunima',
+      pass: 'arunima@2070',
       role: 'Quantum RF & Doppler Specialist',
       badge: 'DELTA-SPECIALIST',
       station: 'Kiruna Arctic Ground Segment (GS-204)'
