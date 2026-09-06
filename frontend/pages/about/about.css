@@ -1,53 +1,1284 @@
 /* ==========================================================================
-   NEBULON PROTOCOL (ABOUT) STYLES
+   NEBULON PROTOCOL COMMAND CENTER — NASA 2070 & JARVIS HUD SPECIFICATION
+   $700,000 Ultra-Dense Cybertech Visuals & Interactive Multi-Stage Engine
    ========================================================================== */
 
-.about-pipeline-section {
-  margin-block: 2.5rem;
-}
-
-.about-pipeline-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.25rem;
-  margin-top: 1.5rem;
+/* --------------------------------------------------------------------------
+   TACTICAL CORNER BRACKETS & HUD PRIMITIVES
+   -------------------------------------------------------------------------- */
+.n-cyber-corner {
   position: relative;
 }
 
-.about-pipeline-card {
-  padding: 1.5rem;
-  background: var(--n-panel-strong);
-  border: 1px solid var(--n-line);
-  border-radius: var(--n-radius-md);
-  position: relative;
-  transition: all 0.3s var(--n-ease-orbit);
-}
-
-.about-pipeline-card:hover {
+.n-cyber-corner::before,
+.n-cyber-corner::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
   border-color: var(--n-cyan);
-  transform: translateY(-3px);
-  box-shadow: var(--n-shadow-glow-cyan);
+  pointer-events: none;
+  z-index: 2;
+  transition: all 0.3s ease;
 }
 
-.about-step-number {
+.n-cyber-corner::before {
+  top: 0;
+  left: 0;
+  border-top: 2px solid var(--n-cyan);
+  border-left: 2px solid var(--n-cyan);
+}
+
+.n-cyber-corner::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid var(--n-cyan);
+  border-right: 2px solid var(--n-cyan);
+}
+
+.n-cyber-corner:hover::before,
+.n-cyber-corner:hover::after {
+  width: 16px;
+  height: 16px;
+  border-color: #ffffff;
+  filter: drop-shadow(0 0 6px var(--n-cyan));
+}
+
+/* --------------------------------------------------------------------------
+   HERO COMMAND HEADER & METRICS
+   -------------------------------------------------------------------------- */
+.protocol-hero {
+  position: relative;
+  padding: 2rem 2.2rem;
+  background: rgba(6, 12, 32, 0.88);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  border-radius: var(--n-radius-lg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85), inset 0 0 40px rgba(0, 240, 255, 0.06);
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.protocol-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #00f0ff, #3b82f6, #a855f7, #10b981);
+}
+
+.protocol-hero-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 2.2rem;
+  align-items: center;
+}
+
+.protocol-hero-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.protocol-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  border-radius: var(--n-radius-full);
   font-family: var(--n-font-mono);
-  font-size: 1.8rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #10b981;
+  letter-spacing: 0.06em;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+}
+
+.protocol-radar-beacon {
+  position: relative;
+  width: 10px;
+  height: 10px;
+}
+
+.protocol-radar-beacon__dot {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+}
+
+.protocol-radar-beacon__ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid #10b981;
+  animation: n-beacon-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* 16-Band Cyber Audio Spectrum Equalizer */
+.protocol-equalizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 22px;
+  padding: 2px 6px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  border: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.eq-bar {
+  width: 3px;
+  background: linear-gradient(0deg, #10b981, #00f0ff);
+  border-radius: 1px;
+  animation: n-eq-pulse 1.2s ease-in-out infinite alternate;
+}
+
+.eq-bar:nth-child(2n) { animation-duration: 0.9s; animation-delay: 0.2s; }
+.eq-bar:nth-child(3n) { animation-duration: 1.4s; animation-delay: 0.4s; }
+.eq-bar:nth-child(4n) { animation-duration: 0.7s; animation-delay: 0.1s; }
+
+@keyframes n-eq-pulse {
+  0% { height: 15%; opacity: 0.5; }
+  50% { height: 95%; opacity: 1; filter: drop-shadow(0 0 4px #00f0ff); }
+  100% { height: 40%; opacity: 0.7; }
+}
+
+.protocol-hero-title {
+  font-family: var(--n-font-display);
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+  margin-bottom: 0.6rem;
+}
+
+.protocol-hero-subtitle {
+  font-family: var(--n-font-body);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--n-text-soft);
+  max-width: 660px;
+}
+
+/* Tactical Telemetry Metrics Pods */
+.protocol-metrics-pod-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+}
+
+.protocol-metric-pod {
+  background: rgba(10, 16, 42, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.22);
+  border-radius: var(--n-radius-md);
+  padding: 1rem 1.1rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.protocol-metric-pod:hover {
+  border-color: var(--n-cyan);
+  background: rgba(14, 22, 56, 0.95);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.protocol-metric-pod__label {
+  font-family: var(--n-font-mono);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--n-muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.protocol-metric-pod__val {
+  font-family: var(--n-font-display);
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.protocol-metric-pod__sub {
+  font-family: var(--n-font-mono);
+  font-size: 0.7rem;
+  color: var(--n-cyan);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   ULTRA-DENSE CYBERTECH PIPELINE PANEL (NO LONGER EMPTY!)
+   -------------------------------------------------------------------------- */
+.protocol-pipeline-card {
+  background: rgba(5, 10, 28, 0.92);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  border-radius: var(--n-radius-lg);
+  padding: 1.8rem 2rem;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), inset 0 0 40px rgba(0, 240, 255, 0.04);
+  margin-bottom: 2.5rem;
+}
+
+.pipeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.6rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.pipeline-header__title {
+  font-family: var(--n-font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-top: 2px;
+}
+
+.pipeline-header__telemetry {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--n-font-mono);
+  font-size: 0.72rem;
+}
+
+/* 5-STAGE CYBER ENGINE GRID */
+.cyber-pipeline-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
+  position: relative;
+  margin-bottom: 1.6rem;
+}
+
+/* Pipeline Stage Card */
+.pipeline-stage-card {
+  background: rgba(8, 15, 38, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 3px solid var(--n-cyan);
+  border-radius: var(--n-radius-md);
+  padding: 1.1rem 1rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.pipeline-stage-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 240, 255, 0.6);
+  background: rgba(12, 22, 54, 0.98);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 240, 255, 0.25);
+}
+
+.pipeline-stage-card.is-active-stage {
+  border-color: var(--n-cyan);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.1);
+  background: rgba(14, 26, 62, 0.98);
+}
+
+.stage-card--s1 { border-top-color: #3b82f6; }
+.stage-card--s2 { border-top-color: #00f0ff; }
+.stage-card--s3 { border-top-color: #a855f7; }
+.stage-card--s4 { border-top-color: #10b981; }
+.stage-card--s5 { border-top-color: #00f0ff; }
+
+.stage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.6rem;
+}
+
+.stage-badge {
+  font-family: var(--n-font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: rgba(0, 240, 255, 0.12);
+  color: var(--n-cyan);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+}
+
+.stage-step-no {
+  font-family: var(--n-font-mono);
+  font-size: 0.65rem;
+  color: var(--n-muted);
+  font-weight: 700;
+}
+
+.stage-title {
+  font-family: var(--n-font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.25;
+  margin-bottom: 0.65rem;
+}
+
+/* --------------------------------------------------------------------------
+   STAGE SPECIFIC CYBERTECH MINI-WIDGETS (HIGH-DENSITY VISUALS)
+   -------------------------------------------------------------------------- */
+
+/* Stage 1: Mini Radar Sweep Screen */
+.mini-radar-container {
+  width: 100%;
+  height: 80px;
+  background: radial-gradient(circle, rgba(6, 18, 48, 0.9) 0%, rgba(2, 6, 20, 0.95) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.mini-radar-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radar-ring {
+  position: absolute;
+  border: 1px dashed rgba(59, 130, 246, 0.3);
+  border-radius: 50%;
+}
+.radar-ring--1 { width: 30px; height: 30px; }
+.radar-ring--2 { width: 60px; height: 60px; }
+.radar-ring--3 { width: 90px; height: 90px; border-style: solid; opacity: 0.15; }
+
+.radar-sweep-beam {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  transform-origin: 0 0;
+  background: conic-gradient(from 0deg, rgba(59, 130, 246, 0.7) 0deg, transparent 60deg);
+  border-radius: 50%;
+  animation: n-radar-sweep 3s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes n-radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.radar-blip {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #60a5fa;
+  box-shadow: 0 0 8px #60a5fa;
+  animation: n-blip-pulse 2s infinite ease-in-out;
+}
+.radar-blip--1 { top: 30%; left: 35%; }
+.radar-blip--2 { top: 60%; left: 70%; animation-delay: 0.8s; }
+
+@keyframes n-blip-pulse {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.4); }
+}
+
+/* Stage 2: Multiplexer Ingest Stream Bar */
+.multiplexer-container {
+  height: 80px;
+  background: #030716;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 4px;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.mux-stream-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--n-font-mono);
+  font-size: 0.62rem;
+  color: var(--n-text-soft);
+}
+
+.mux-bar-bg {
+  width: 60px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.mux-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0088ff, #00f0ff);
+  border-radius: 2px;
+  animation: n-mux-scan 2s infinite ease-in-out alternate;
+}
+
+@keyframes n-mux-scan {
+  0% { width: 35%; }
+  100% { width: 95%; }
+}
+
+/* Stage 3: Doppler vs SGP4 Mini-Oscilloscope */
+.oscilloscope-container {
+  width: 100%;
+  height: 80px;
+  background: #020512;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.oscilloscope-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-size: 16px 16px;
+  background-image: linear-gradient(to right, rgba(168, 85, 247, 0.1) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(168, 85, 247, 0.1) 1px, transparent 1px);
+  pointer-events: none;
+}
+
+.oscilloscope-svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+.wave-path-sgp4 {
+  stroke: #a855f7;
+  stroke-width: 1.5;
+  fill: none;
+  stroke-dasharray: 4 2;
+}
+
+.wave-path-satnogs {
+  stroke: #00f0ff;
+  stroke-width: 2;
+  fill: none;
+  filter: drop-shadow(0 0 3px #00f0ff);
+}
+
+/* Stage 4: Neural Evidence Mesh Mini-Graph */
+.graph-mesh-container {
+  width: 100%;
+  height: 80px;
+  background: #03081a;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.mesh-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.mesh-node {
+  fill: #10b981;
+  stroke: #ffffff;
+  stroke-width: 1;
+}
+
+.mesh-edge {
+  stroke: rgba(16, 185, 129, 0.45);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 3;
+}
+
+/* Stage 5: Holographic Rotating Cryptographic Seal */
+.seal-container {
+  width: 100%;
+  height: 80px;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, rgba(2, 6, 20, 0.95) 80%);
+  border: 1px solid rgba(0, 240, 255, 0.5);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.seal-ring-outer {
+  width: 58px;
+  height: 58px;
+  border: 1.5px dashed var(--n-cyan);
+  border-radius: 50%;
+  position: absolute;
+  animation: n-seal-spin 12s linear infinite;
+}
+
+.seal-ring-inner {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #10b981;
+  border-radius: 50%;
+  position: absolute;
+  animation: n-seal-spin-rev 8s linear infinite;
+}
+
+.seal-center-core {
+  font-size: 1.1rem;
+  color: var(--n-cyan);
+  font-weight: 800;
+  text-shadow: 0 0 10px var(--n-cyan);
+  z-index: 2;
+}
+
+@keyframes n-seal-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes n-seal-spin-rev {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Stage Card Telemetry Text Readouts */
+.stage-readout-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-family: var(--n-font-mono);
+  font-size: 0.65rem;
+}
+
+.stage-readout-item {
+  display: flex;
+  justify-content: space-between;
+  color: var(--n-muted);
+}
+
+.stage-readout-item strong {
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   PIPELINE TELEMETRY SUMMARY STRIP (BOTTOM OF PANEL)
+   -------------------------------------------------------------------------- */
+.pipeline-summary-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.pipeline-summary-item {
+  background: rgba(8, 14, 36, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--n-radius-sm);
+  padding: 8px 10px;
+}
+
+.pipeline-summary-label {
+  font-family: var(--n-font-mono);
+  font-size: 0.6rem;
+  color: var(--n-muted);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.pipeline-summary-val {
+  font-family: var(--n-font-mono);
+  font-size: 0.8rem;
   font-weight: 700;
   color: var(--n-cyan);
-  opacity: 0.4;
+}
+
+/* --------------------------------------------------------------------------
+   FILTER CONTROLS & SEARCH RAIL
+   -------------------------------------------------------------------------- */
+.protocol-control-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.8rem;
+  flex-wrap: wrap;
+  padding: 0.8rem 1.2rem;
+  background: rgba(8, 14, 36, 0.75);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: var(--n-radius-md);
+  backdrop-filter: blur(16px);
+}
+
+.protocol-filter-chips {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.protocol-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--n-radius-full);
+  font-family: var(--n-font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: rgba(14, 22, 48, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--n-text-soft);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.protocol-chip-btn:hover {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: var(--n-cyan);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+}
+
+.protocol-chip-btn.is-active {
+  background: rgba(0, 240, 255, 0.25);
+  border-color: var(--n-cyan);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.35);
+  font-weight: 700;
+}
+
+.protocol-chip-count {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  font-size: 0.65rem;
+  color: var(--n-cyan);
+}
+
+.protocol-search-box {
+  position: relative;
+  min-width: 260px;
+  flex-shrink: 0;
+}
+
+.protocol-search-input {
+  width: 100%;
+  height: 38px;
+  padding: 0 14px 0 36px;
+  background: rgba(6, 11, 28, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: var(--n-radius-full);
+  font-family: var(--n-font-mono);
+  font-size: 0.78rem;
+  color: #ffffff;
+  transition: all 0.25s ease;
+}
+
+.protocol-search-input:focus {
+  outline: none;
+  border-color: var(--n-cyan);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+  background: rgba(10, 18, 44, 0.95);
+}
+
+.protocol-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--n-muted);
+  pointer-events: none;
+  font-size: 0.85rem;
+}
+
+/* --------------------------------------------------------------------------
+   TACTICAL WORKSPACE: PROTOCOL GRID + STICKY LIVE INSPECTOR HUD
+   -------------------------------------------------------------------------- */
+.protocol-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(380px, 460px);
+  gap: 1.75rem;
+  align-items: start;
+  margin-bottom: 3rem;
+}
+
+/* Protocol Grid */
+.protocol-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+
+.protocol-card {
+  position: relative;
+  background: rgba(8, 14, 34, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 3px solid var(--n-cyan);
+  border-radius: var(--n-radius-md);
+  padding: 1.35rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.protocol-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 240, 255, 0.5);
+  background: rgba(12, 20, 48, 0.9);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 240, 255, 0.2);
+}
+
+.protocol-card.is-selected {
+  border-color: var(--n-cyan);
+  background: rgba(14, 25, 60, 0.95);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.35), inset 0 0 20px rgba(0, 240, 255, 0.08);
+}
+
+.protocol-card--ccsds { border-left-color: #00f0ff; }
+.protocol-card--nasa { border-left-color: #a855f7; }
+.protocol-card--military { border-left-color: #3b82f6; }
+.protocol-card--esa { border-left-color: #f59e0b; }
+.protocol-card--nebulon { border-left-color: #10b981; }
+
+.protocol-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.protocol-card__id {
+  font-family: var(--n-font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--n-cyan);
+}
+
+.protocol-card__authority {
+  font-family: var(--n-font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--n-radius-sm);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+}
+
+.protocol-card__title {
+  font-family: var(--n-font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.3;
   margin-bottom: 0.5rem;
 }
 
-.about-principles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1.5rem;
+.protocol-card__desc {
+  font-family: var(--n-font-body);
+  font-size: 0.8rem;
+  color: var(--n-text-soft);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  flex-grow: 1;
 }
 
-.about-principle-card {
+.protocol-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--n-font-mono);
+  font-size: 0.68rem;
+  color: var(--n-muted);
+}
+
+.protocol-status-pip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+}
+
+.protocol-status-pip__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+}
+
+/* --------------------------------------------------------------------------
+   STICKY LIVE PROTOCOL INSPECTOR & HEX DECODER HUD
+   -------------------------------------------------------------------------- */
+.protocol-inspector-hud {
+  position: sticky;
+  top: calc(var(--n-navbar-height) + 16px);
+  background: rgba(6, 12, 30, 0.9);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  border-radius: var(--n-radius-lg);
+  padding: 1.6rem;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 240, 255, 0.15);
+  overflow: hidden;
+}
+
+.protocol-inspector-hud::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #00f0ff, #10b981);
+}
+
+.inspector-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.inspector-kicker {
+  font-family: var(--n-font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--n-cyan);
+  text-transform: uppercase;
+}
+
+.inspector-title {
+  font-family: var(--n-font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-top: 2px;
+}
+
+.inspector-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.inspector-meta-item {
+  background: rgba(10, 16, 38, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--n-radius-sm);
+  padding: 8px 10px;
+}
+
+.inspector-meta-label {
+  font-family: var(--n-font-mono);
+  font-size: 0.6rem;
+  color: var(--n-muted);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.inspector-meta-val {
+  font-family: var(--n-font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Packet Anatomy Diagram */
+.packet-anatomy-block {
+  margin-bottom: 1.25rem;
+}
+
+.packet-anatomy-title {
+  font-family: var(--n-font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--n-text-soft);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.packet-anatomy-rail {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.packet-block {
+  padding: 7px 4px;
+  background: rgba(12, 20, 48, 0.8);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: var(--n-radius-sm);
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.packet-block:hover {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: var(--n-cyan);
+}
+
+.packet-block__name {
+  font-family: var(--n-font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--n-cyan);
+  display: block;
+}
+
+.packet-block__bytes {
+  font-family: var(--n-font-mono);
+  font-size: 0.58rem;
+  color: var(--n-muted);
+}
+
+/* Live Hex Wire Stream Terminal */
+.hex-terminal {
+  background: #02040b;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: var(--n-radius-sm);
+  padding: 10px 12px;
+  font-family: var(--n-font-mono);
+  font-size: 0.72rem;
+  color: #8be9fd;
+  margin-bottom: 1.25rem;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.9);
+  position: relative;
+  overflow: hidden;
+}
+
+.hex-terminal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px);
+  pointer-events: none;
+}
+
+.hex-stream-code {
+  line-height: 1.5;
+  word-break: break-all;
+  display: block;
+}
+
+.hex-byte--header { color: #50fa7b; font-weight: 700; }
+.hex-byte--meta { color: #8be9fd; }
+.hex-byte--payload { color: #f1fa8c; }
+.hex-byte--seal { color: #ff79c6; font-weight: 700; }
+
+.hex-legend {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+  font-size: 0.6rem;
+  color: var(--n-muted);
+}
+
+.hex-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hex-legend-pip {
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+}
+
+/* Simulator Actions */
+.inspector-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inspector-sim-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(16, 185, 129, 0.2));
+  border: 1px solid var(--n-cyan);
+  border-radius: var(--n-radius-sm);
+  font-family: var(--n-font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+.inspector-sim-btn:hover {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.35), rgba(16, 185, 129, 0.35));
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.inspector-sim-btn:active {
+  transform: translateY(0);
+}
+
+.inspector-sub-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.inspector-sub-btn {
+  flex: 1;
+  padding: 6px 10px;
+  background: rgba(14, 22, 48, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--n-radius-sm);
+  font-family: var(--n-font-mono);
+  font-size: 0.68rem;
+  color: var(--n-text-soft);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.inspector-sub-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   REAL-TIME PROTOCOL HANDSHAKE TELEMETRY STREAM (TERMINAL TICKER)
+   -------------------------------------------------------------------------- */
+.protocol-stream-section {
+  margin-bottom: 3rem;
+}
+
+.protocol-stream-card {
+  background: rgba(4, 8, 22, 0.9);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: var(--n-radius-lg);
   padding: 1.5rem;
-  background: rgba(10, 14, 32, 0.65);
-  border: 1px solid var(--n-line-dim);
-  border-radius: var(--n-radius-md);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8), inset 0 0 30px rgba(0, 0, 0, 0.7);
+  position: relative;
+  overflow: hidden;
+}
+
+.protocol-stream-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.protocol-stream-terminal {
+  height: 200px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 6px;
+  font-family: var(--n-font-mono);
+  font-size: 0.75rem;
+  padding-right: 6px;
+}
+
+.protocol-stream-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px;
+  border-radius: var(--n-radius-sm);
+  background: rgba(10, 16, 38, 0.4);
+  animation: n-stream-fade 0.4s ease-out;
+}
+
+@keyframes n-stream-fade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stream-time {
+  color: var(--n-muted);
+  flex-shrink: 0;
+  font-size: 0.68rem;
+}
+
+.stream-badge {
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.stream-badge--ccsds { background: rgba(0, 240, 255, 0.15); color: var(--n-cyan); }
+.stream-badge--nasa { background: rgba(168, 85, 247, 0.15); color: var(--n-violet); }
+.stream-badge--18th { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+.stream-badge--satnogs { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+.stream-badge--neb { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+
+.stream-msg {
+  color: #e2e8f0;
+  flex-grow: 1;
+}
+
+.stream-status {
+  color: #10b981;
+  font-weight: 700;
+  font-size: 0.68rem;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   STANDARDIZATION & COMPLIANCE MATRIX TABLE
+   -------------------------------------------------------------------------- */
+.protocol-matrix-section {
+  margin-bottom: 3.5rem;
+}
+
+.protocol-matrix-card {
+  background: rgba(6, 12, 30, 0.78);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: var(--n-radius-lg);
+  padding: 1.8rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
+  overflow-x: auto;
+}
+
+.protocol-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--n-font-mono);
+  font-size: 0.78rem;
+}
+
+.protocol-table th {
+  text-align: left;
+  padding: 12px 14px;
+  background: rgba(10, 18, 44, 0.8);
+  color: var(--n-cyan);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+  white-space: nowrap;
+}
+
+.protocol-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--n-text-soft);
+  vertical-align: middle;
+}
+
+.protocol-table tr:hover td {
+  background: rgba(0, 240, 255, 0.05);
+  color: #ffffff;
+}
+
+.compliance-badge-pass {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #10b981;
+  font-weight: 700;
+}
+
+/* Responsive Overrides */
+@media (max-width: 1200px) {
+  .cyber-pipeline-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .pipeline-summary-strip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1100px) {
+  .protocol-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .protocol-workspace {
+    grid-template-columns: 1fr;
+  }
+  .protocol-inspector-hud {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .cyber-pipeline-grid {
+    grid-template-columns: 1fr;
+  }
+  .pipeline-summary-strip {
+    grid-template-columns: 1fr;
+  }
+  .protocol-metrics-pod-grid {
+    grid-template-columns: 1fr;
+  }
+  .protocol-hero-title {
+    font-size: 1.8rem;
+  }
+  .packet-anatomy-rail {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
