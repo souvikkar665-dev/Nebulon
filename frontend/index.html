@@ -118,115 +118,124 @@
         </div>
       </aside>
 
-      <!-- Center Hero Content -->
+      <!-- Gateway Command Deck -->
       <div class="n-container home-hero__content">
+        <div class="gateway-command-layout">
+          <div class="gateway-command-main">
+            <div class="jarvis-status-pill gateway-status-pill">
+              <span class="jarvis-pill-icon">⏣</span>
+              <span class="jarvis-pill-text">NEBULON GATEWAY // ORBITAL INTELLIGENCE ONLINE</span>
+              <span class="jarvis-pill-live"><span class="n-live-dot"></span> SYS: OPTIMAL</span>
+            </div>
 
-        <!-- Top Jarvis Header Capsule -->
-        <div class="jarvis-status-pill">
-          <span class="jarvis-pill-icon">⏣</span>
-          <span class="jarvis-pill-text">AUTONOMOUS ORBITAL INTELLIGENCE MATRIX // SGP4 KEPLERIAN VERIFICATION</span>
-          <span class="jarvis-pill-live"><span class="n-live-dot"></span> SYS: OPTIMAL</span>
-        </div>
+            <div class="gateway-eyebrow"><span class="gateway-eyebrow__line"></span>MISSION CONTROL / 01</div>
+            <h1 class="home-hero__title">
+              Turn orbital noise<br />
+              <span class="luxury-gradient-text">into a clear next move.</span>
+            </h1>
+            <p class="home-hero__lead">
+              Nebulon connects live telemetry, physics, and human judgment so your team can move from an unknown signal
+              to a verified spacecraft with confidence.
+            </p>
 
-        <!-- Super Luxury Hero Title with Chromatic Laser Glow -->
-        <h1 class="home-hero__title">
-          Find the spacecraft.<br />
-          <span class="luxury-gradient-text">Ask the sky the right next question.</span>
-        </h1>
-
-        <!-- Crisp Aerospace Lead Subtitle -->
-        <p class="home-hero__lead">
-          Nebulon fuses scattered multi-agency orbital feeds into an explainable Bayesian investigation graph that
-          converges on verified spacecraft identity.
-        </p>
-
-        <!-- $130,000 Ultra-Luxury Action Buttons -->
-        <div class="home-hero__actions">
-
-          <!-- Primary Super-Premium Action Button -->
-          <a href="investigate.html" class="btn-luxury-primary" id="btn-enter-workspace"
-            aria-label="Enter Live Mission Workspace">
-            <div class="btn-luxury-primary__glow"></div>
-            <div class="btn-luxury-primary__scanline"></div>
-            <div class="btn-luxury-primary__inner">
-              <span class="btn-luxury-micro">MISSION WORKSPACE // NORAD VERIFICATION</span>
-              <div class="btn-luxury-main">
-                <span class="btn-luxury-text">Enter Live Mission Workspace</span>
-                <span class="btn-luxury-arrow">◈ ⏵</span>
+            <div class="gateway-route" aria-label="Nebulon investigation route">
+              <div class="gateway-route__step gateway-route__step--active">
+                <span class="gateway-route__index">01</span><span class="gateway-route__label">OBSERVE</span>
+                <span class="gateway-route__state">LIVE FEEDS</span>
+              </div>
+              <span class="gateway-route__connector"></span>
+              <div class="gateway-route__step">
+                <span class="gateway-route__index">02</span><span class="gateway-route__label">IDENTIFY</span>
+                <span class="gateway-route__state">BAYESIAN GRAPH</span>
+              </div>
+              <span class="gateway-route__connector"></span>
+              <div class="gateway-route__step">
+                <span class="gateway-route__index">03</span><span class="gateway-route__label">ACT</span>
+                <span class="gateway-route__state">NEXT SENSOR</span>
               </div>
             </div>
-          </a>
 
-          <!-- Secondary Super-Premium Action Button -->
-          <a href="about.html" class="btn-luxury-secondary" id="btn-explore-loop"
-            aria-label="Explore Investigation Loop Protocol">
-            <div class="btn-luxury-secondary__glow"></div>
-            <div class="btn-luxury-secondary__inner">
-              <span class="btn-luxury-micro">AUTONOMOUS PROTOCOL // SYSTEM OVERVIEW</span>
-              <div class="btn-luxury-main">
-                <span class="btn-luxury-text">Explore Investigation Loop</span>
-                <span class="btn-luxury-arrow">⟲</span>
-              </div>
+            <div class="home-hero__actions gateway-actions">
+              <a href="investigate.html" class="btn-luxury-primary" id="btn-enter-workspace"
+                aria-label="Enter Live Mission Workspace">
+                <div class="btn-luxury-primary__glow"></div>
+                <div class="btn-luxury-primary__scanline"></div>
+                <div class="btn-luxury-primary__inner">
+                  <span class="btn-luxury-micro">RECOMMENDED // START WITH LIVE DATA</span>
+                  <div class="btn-luxury-main"><span class="btn-luxury-text">Open Mission Workspace</span><span
+                      class="btn-luxury-arrow">↗</span></div>
+                </div>
+              </a>
+              <a href="about.html" class="btn-luxury-secondary" id="btn-explore-loop"
+                aria-label="Explore the Nebulon protocol">
+                <div class="btn-luxury-secondary__glow"></div>
+                <div class="btn-luxury-secondary__inner">
+                  <span class="btn-luxury-micro">HOW IT WORKS // 90 SEC BRIEF</span>
+                  <div class="btn-luxury-main"><span class="btn-luxury-text">Explore the Protocol</span><span
+                      class="btn-luxury-arrow">→</span></div>
+                </div>
+              </a>
             </div>
-          </a>
+          </div>
 
+          <aside class="gateway-mission-card" aria-label="Current mission status">
+            <div class="gateway-mission-card__topline"><span class="gateway-card-kicker">CURRENT OPERATION</span><span
+                class="gateway-card-id">NBLN-042</span></div>
+            <div class="gateway-mission-card__signal"><span class="gateway-signal-orbit"></span><span><strong>UNRESOLVED
+                  OBJECT</strong><small>Low Earth orbit / pass in progress</small></span></div>
+            <div class="gateway-confidence">
+              <div><span>IDENTITY CONFIDENCE</span><strong>99.8%</strong></div>
+              <div class="gateway-confidence__track"><span></span></div>
+            </div>
+            <div class="gateway-mission-grid">
+              <div><span>LAST CONTACT</span><strong>00:42 AGO</strong></div>
+              <div><span>NEXT PASS</span><strong>T+04:18:22</strong></div>
+              <div><span>BEST STATION</span><strong>GS-142 / SVALBARD</strong></div>
+              <div><span>VECTOR HEALTH</span><strong class="gateway-good">NOMINAL</strong></div>
+            </div>
+            <div class="gateway-queue">
+              <div class="gateway-queue__header"><span>MISSION QUEUE</span><span>03 READY</span></div><button
+                type="button" class="gateway-queue__item is-selected" data-gateway-focus="investigate"><span
+                  class="gateway-queue__dot"></span><span><strong>Resolve spacecraft identity</strong><small>4 sources
+                    synchronized</small></span><span>›</span></button><button type="button" class="gateway-queue__item"
+                data-gateway-focus="observe"><span
+                  class="gateway-queue__dot gateway-queue__dot--violet"></span><span><strong>Review next sensor
+                    pass</strong><small>+3.42 bits expected gain</small></span><span>›</span></button>
+            </div>
+            <div class="gateway-card-footer"><span class="n-live-dot"></span> ALL SYSTEMS NOMINAL <span>UTC
+                18:39:00</span></div>
+          </aside>
         </div>
 
-        <!-- Live Synchronized Jarvis Telemetry Matrix Strip -->
-        <div class="home-pulse-strip">
-
-          <!-- Pod 1: Telemetry Pipeline -->
+        <div class="home-pulse-strip gateway-pulse-strip">
           <div class="home-pulse-card">
-            <div class="home-pulse-card__header">
-              <span class="home-pulse-card__label">TELEMETRY PIPELINE</span>
-              <span class="jarvis-micro-badge">TIER A–D</span>
-            </div>
-            <div class="home-pulse-card__value">
-              <span class="n-live-dot"></span>
-              <span id="home-source-sync">4 Feeds Synchronized</span>
-            </div>
+            <div class="home-pulse-card__header"><span class="home-pulse-card__label">TELEMETRY PIPELINE</span><span
+                class="jarvis-micro-badge">TIER A–D</span></div>
+            <div class="home-pulse-card__value"><span class="n-live-dot"></span><span id="home-source-sync">4 Feeds
+                Synchronized</span></div>
             <div class="home-pulse-card__sub">NASA OEM · Space-Track · CelesTrak · SatNOGS</div>
           </div>
-
-          <!-- Pod 2: Physics Residual Arbiter -->
           <div class="home-pulse-card">
-            <div class="home-pulse-card__header">
-              <span class="home-pulse-card__label">PHYSICS RESIDUAL ARBITER</span>
-              <span class="jarvis-micro-badge" style="border-color: var(--n-cyan); color: var(--n-cyan);">ACTIVE</span>
-            </div>
-            <div class="home-pulse-card__value" style="color: var(--n-cyan);">
-              SGP4 / SDP4 Matched
-            </div>
+            <div class="home-pulse-card__header"><span class="home-pulse-card__label">PHYSICS ARBITER</span><span
+                class="jarvis-micro-badge">ACTIVE</span></div>
+            <div class="home-pulse-card__value" style="color: var(--n-cyan);">SGP4 / SDP4 Matched</div>
             <div class="home-pulse-card__sub">Doppler residual Δf: +38 Hz nominal</div>
           </div>
-
-          <!-- Pod 3: Identity Convergence -->
           <div class="home-pulse-card">
-            <div class="home-pulse-card__header">
-              <span class="home-pulse-card__label">IDENTITY CONVERGENCE</span>
-              <span class="jarvis-micro-badge" style="border-color: var(--n-green); color: var(--n-green);">99.8%</span>
+            <div class="home-pulse-card__header"><span class="home-pulse-card__label">IDENTITY CONVERGENCE</span><span
+                class="jarvis-micro-badge" style="border-color: var(--n-green); color: var(--n-green);">99.8%</span>
             </div>
-            <div class="home-pulse-card__value" style="color: var(--n-green);">
-              Human-in-the-Loop
-            </div>
+            <div class="home-pulse-card__value" style="color: var(--n-green);">Human-in-the-Loop</div>
             <div class="home-pulse-card__sub">Bayesian multi-sensor disambiguation</div>
           </div>
-
-          <!-- Pod 4: Next-Best Sensor Pass -->
           <div class="home-pulse-card">
-            <div class="home-pulse-card__header">
-              <span class="home-pulse-card__label">NEXT SENSOR PASS</span>
-              <span class="jarvis-micro-badge" style="border-color: var(--n-violet); color: var(--n-violet);">+3.42
-                BITS</span>
-            </div>
-            <div class="home-pulse-card__value" style="color: var(--n-violet);">
-              GS-142 Svalbard
-            </div>
+            <div class="home-pulse-card__header"><span class="home-pulse-card__label">NEXT SENSOR PASS</span><span
+                class="jarvis-micro-badge" style="border-color: var(--n-violet); color: var(--n-violet);">+3.42
+                BITS</span></div>
+            <div class="home-pulse-card__value" style="color: var(--n-violet);">GS-142 Svalbard</div>
             <div class="home-pulse-card__sub">Pass window: T+04:18:22 · Max 78.4°</div>
           </div>
-
         </div>
-
       </div>
     </section>
   </main>

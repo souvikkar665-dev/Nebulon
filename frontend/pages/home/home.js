@@ -13,8 +13,22 @@
     initJarvisHeroHolographicMatrix();
     startLiveTelemetryStream();
     setupInteractiveMouseParallax();
+    setupGatewayControls();
   }
 
+  // Gateway queue keeps the command deck actionable without replacing the cinematic backdrop.
+  function setupGatewayControls() {
+    const items = document.querySelectorAll('[data-gateway-focus]');
+    items.forEach(function (item) {
+      item.addEventListener('click', function () {
+        items.forEach(function (entry) { entry.classList.remove('is-selected'); });
+        item.classList.add('is-selected');
+        const target = item.getAttribute('data-gateway-focus');
+        const announcer = document.getElementById('live-announcer');
+        if (announcer) announcer.textContent = target === 'observe' ? 'Next sensor pass selected.' : 'Spacecraft identity investigation selected.';
+      });
+    });
+  }
   // 1. Mouse Parallax & Target Tracking Reticle
   function setupInteractiveMouseParallax() {
     window.addEventListener('mousemove', function (e) {

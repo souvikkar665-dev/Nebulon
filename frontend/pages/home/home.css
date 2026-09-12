@@ -717,3 +717,691 @@
     justify-content: center;
   }
 }
+
+/* GATEWAY COMMAND DECK REFRESH ------------------------------------------------ */
+.gateway-command-layout {
+  width: min(1180px, 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.gateway-command-main {
+  min-width: 0;
+}
+
+.gateway-status-pill {
+  justify-content: flex-start;
+  margin-bottom: 1.6rem;
+}
+
+.gateway-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  color: var(--n-cyan);
+  font: 700 .67rem/1 var(--n-font-mono);
+  letter-spacing: .22em;
+  margin-bottom: 1rem;
+}
+
+.gateway-eyebrow__line {
+  width: 34px;
+  height: 1px;
+  background: var(--n-cyan);
+  box-shadow: 0 0 14px var(--n-cyan);
+}
+
+.gateway-route {
+  display: flex;
+  align-items: center;
+  max-width: 660px;
+  margin: 1.8rem 0 1.7rem;
+}
+
+.gateway-route__step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: .5rem;
+  min-width: 112px;
+  opacity: .58;
+}
+
+.gateway-route__step--active {
+  opacity: 1;
+}
+
+.gateway-route__index {
+  grid-row: span 2;
+  color: var(--n-cyan);
+  font: 700 .73rem/1 var(--n-font-mono);
+  padding-top: .08rem;
+}
+
+.gateway-route__label {
+  color: #fff;
+  font: 700 .71rem/1 var(--n-font-mono);
+  letter-spacing: .12em;
+}
+
+.gateway-route__state {
+  color: var(--n-text-soft);
+  font: .56rem/1.4 var(--n-font-mono);
+  letter-spacing: .08em;
+}
+
+.gateway-route__connector {
+  height: 1px;
+  flex: 1;
+  min-width: 18px;
+  margin: 0 .75rem;
+  background: linear-gradient(90deg, var(--n-cyan), rgba(0, 240, 255, .14));
+}
+
+.gateway-mission-card {
+  position: relative;
+  padding: 1.35rem;
+  background: linear-gradient(150deg, rgba(7, 18, 43, .88), rgba(4, 8, 22, .78));
+  border: 1px solid rgba(0, 240, 255, .42);
+  border-radius: 18px;
+  box-shadow: 0 22px 80px rgba(0, 0, 0, .68), inset 0 0 35px rgba(0, 240, 255, .05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  overflow: hidden;
+}
+
+.gateway-mission-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, var(--n-cyan), var(--n-violet), transparent);
+}
+
+.gateway-mission-card__topline,
+.gateway-queue__header,
+.gateway-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font: 700 .6rem/1 var(--n-font-mono);
+  letter-spacing: .12em;
+}
+
+.gateway-card-kicker {
+  color: var(--n-cyan);
+}
+
+.gateway-card-id {
+  color: var(--n-text-soft);
+}
+
+.gateway-mission-card__signal {
+  display: flex;
+  gap: .8rem;
+  align-items: center;
+  margin: 1.4rem 0;
+  color: #fff;
+  font: 700 .83rem/1.3 var(--n-font-mono);
+  letter-spacing: .05em;
+}
+
+.gateway-mission-card__signal small {
+  display: block;
+  color: var(--n-text-soft);
+  font: .65rem/1.6 var(--n-font-mono);
+  letter-spacing: 0;
+}
+
+.gateway-signal-orbit {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--n-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 22px rgba(0, 240, 255, .32), inset 0 0 12px rgba(0, 240, 255, .22);
+  position: relative;
+}
+
+.gateway-signal-orbit::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  left: 15px;
+  top: 15px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 14px var(--n-cyan);
+}
+
+.gateway-confidence {
+  padding: .85rem 0 1rem;
+  border-top: 1px solid rgba(255, 255, 255, .1);
+}
+
+.gateway-confidence>div:first-child {
+  display: flex;
+  justify-content: space-between;
+  color: var(--n-text-soft);
+  font: .59rem var(--n-font-mono);
+  letter-spacing: .1em;
+}
+
+.gateway-confidence strong {
+  color: var(--n-green);
+  font-size: .85rem;
+}
+
+.gateway-confidence__track {
+  height: 4px;
+  margin-top: .55rem;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, .1);
+  overflow: hidden;
+}
+
+.gateway-confidence__track span {
+  display: block;
+  width: 99.8%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--n-cyan), var(--n-green));
+  box-shadow: 0 0 12px var(--n-green);
+}
+
+.gateway-mission-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .8rem;
+  padding: .95rem 0;
+  border-block: 1px solid rgba(255, 255, 255, .1);
+}
+
+.gateway-mission-grid span,
+.gateway-queue__item small {
+  display: block;
+  color: var(--n-text-soft);
+  font: .54rem/1.5 var(--n-font-mono);
+  letter-spacing: .06em;
+}
+
+.gateway-mission-grid strong {
+  display: block;
+  margin-top: .15rem;
+  color: #fff;
+  font: 700 .65rem/1.4 var(--n-font-mono);
+}
+
+.gateway-good {
+  color: var(--n-green) !important;
+}
+
+.gateway-queue {
+  padding-top: 1rem;
+}
+
+.gateway-queue__header {
+  color: var(--n-text-soft);
+  margin-bottom: .55rem;
+}
+
+.gateway-queue__item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: .65rem;
+  padding: .62rem .2rem;
+  color: #fff;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  cursor: pointer;
+}
+
+.gateway-queue__item:hover,
+.gateway-queue__item.is-selected {
+  color: var(--n-cyan);
+}
+
+.gateway-queue__item strong {
+  font: 700 .66rem var(--n-font-mono);
+}
+
+.gateway-queue__item>span:last-child {
+  color: var(--n-cyan);
+  font-size: 1.1rem;
+}
+
+.gateway-queue__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--n-cyan);
+  box-shadow: 0 0 10px var(--n-cyan);
+}
+
+.gateway-queue__dot--violet {
+  background: var(--n-violet);
+  box-shadow: 0 0 10px var(--n-violet);
+}
+
+.gateway-card-footer {
+  color: var(--n-green);
+  margin-top: 1rem;
+  font-size: .54rem;
+}
+
+.gateway-card-footer>span:last-child {
+  color: var(--n-text-soft);
+}
+
+.gateway-pulse-strip {
+  max-width: 1180px;
+  margin-top: 1.6rem;
+}
+
+@media (max-width: 1080px) {
+  .gateway-command-layout {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+
+  .gateway-mission-card {
+    max-width: 620px;
+    margin-inline: auto;
+  }
+
+  .gateway-command-main {
+    text-align: center;
+  }
+
+  .gateway-eyebrow,
+  .gateway-route {
+    justify-content: center;
+    margin-inline: auto;
+  }
+
+  .gateway-actions {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .gateway-route {
+    display: none;
+  }
+
+  .gateway-status-pill {
+    justify-content: center;
+  }
+
+  .gateway-mission-card {
+    padding: 1rem;
+  }
+
+  .gateway-pulse-strip {
+    margin-top: 1rem;
+  }
+}
+
+/* GATEWAY BOX ALIGNMENT / VIEWPORT-SAFE COMPOSITION -------------------------
+   Keeps the existing visual treatment while giving every panel one shared frame.
+*/
+.home-hero {
+  height: calc(100svh - 64px);
+  min-height: 0;
+  padding: clamp(1rem, 2.4vh, 2rem) clamp(1rem, 3vw, 2.5rem);
+}
+
+.home-hero__content {
+  width: min(1280px, 100%);
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: clamp(.8rem, 2vh, 1.5rem);
+  align-content: center;
+}
+
+.gateway-command-layout {
+  width: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: clamp(2rem, 4vw, 4.5rem);
+  align-items: center;
+}
+
+.gateway-command-main {
+  min-width: 0;
+  width: min(700px, 100%);
+  justify-self: center;
+}
+
+.gateway-mission-card {
+  width: 100%;
+  box-sizing: border-box;
+  align-self: center;
+}
+
+.gateway-pulse-strip {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin-top: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(.65rem, 1.4vw, 1.25rem);
+}
+
+.home-pulse-card {
+  min-width: 0;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.home-pulse-card__value,
+.home-pulse-card__sub {
+  min-width: 0;
+}
+
+.home-pulse-card__value>span:last-child,
+.home-pulse-card__sub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jarvis-side-hud {
+  width: 220px;
+  top: 50%;
+  z-index: 4;
+}
+
+.jarvis-side-hud--left {
+  left: max(1.25rem, calc(50% - 900px));
+}
+
+.jarvis-side-hud--right {
+  right: max(1.25rem, calc(50% - 900px));
+}
+
+.jarvis-hud-card {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Short landscape windows: compress spacing before changing the composition. */
+@media (max-height: 800px) and (min-width: 1081px) {
+  .home-hero__content {
+    gap: .7rem;
+  }
+
+  .gateway-status-pill {
+    margin-bottom: .7rem;
+  }
+
+  .home-hero__title {
+    font-size: clamp(2.25rem, 4.4vw, 4rem);
+    line-height: .98;
+  }
+
+  .home-hero__lead {
+    margin-block: .7rem;
+  }
+
+  .gateway-route {
+    margin-block: 1rem;
+  }
+
+  .gateway-mission-card {
+    padding: 1rem;
+  }
+
+  .gateway-mission-card__signal {
+    margin-block: .9rem;
+  }
+
+  .gateway-confidence {
+    padding-block: .6rem .7rem;
+  }
+
+  .gateway-mission-grid {
+    padding-block: .65rem;
+    gap: .55rem;
+  }
+
+  .gateway-queue {
+    padding-top: .7rem;
+  }
+
+  .gateway-queue__item {
+    padding-block: .45rem;
+  }
+
+  .gateway-card-footer {
+    margin-top: .7rem;
+  }
+
+  .home-pulse-card {
+    padding: .8rem .9rem;
+  }
+}
+
+/* Tablet / minimized window: remove the floating side columns and stack one
+   deliberate central frame instead of letting panels collide. */
+@media (max-width: 1180px) {
+  .jarvis-side-hud {
+    display: none;
+  }
+
+  .home-hero__content {
+    width: min(900px, 100%);
+  }
+
+  .gateway-command-layout {
+    gap: 1.5rem;
+  }
+
+  .gateway-pulse-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .home-hero {
+    height: auto;
+    min-height: calc(100svh - 64px);
+    overflow-y: auto;
+  }
+
+  .home-hero__content {
+    height: auto;
+    grid-template-rows: auto auto;
+    padding-block: 1rem;
+  }
+
+  .gateway-command-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .gateway-command-main {
+    width: 100%;
+  }
+
+  .gateway-mission-card {
+    max-width: none;
+  }
+
+  .gateway-pulse-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .home-hero__content {
+    padding-inline: .25rem;
+  }
+
+  .gateway-mission-grid {
+    gap: .55rem;
+  }
+
+  .gateway-mission-grid strong {
+    font-size: .57rem;
+  }
+}
+
+/* ZOOM-SAFE GATEWAY CONTROLS -----------------------------------------------
+   Buttons are allowed to wrap and shrink within their own grid cells. No
+   fixed-width control can force another panel underneath it when browser zoom
+   changes the available CSS viewport.
+*/
+.home-hero {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.home-hero__content {
+  align-content: start;
+  min-height: max-content;
+}
+
+.gateway-command-layout,
+.gateway-command-main,
+.gateway-mission-card,
+.gateway-pulse-strip {
+  min-width: 0;
+}
+
+.gateway-command-main {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.gateway-actions {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  justify-content: stretch;
+  gap: clamp(.75rem, 1.5vw, 1.25rem);
+  margin: 0;
+}
+
+.gateway-actions>.btn-luxury-primary,
+.gateway-actions>.btn-luxury-secondary {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+.gateway-actions .btn-luxury-primary__inner,
+.gateway-actions .btn-luxury-secondary__inner {
+  width: 100%;
+  min-width: 0;
+  min-height: 86px;
+  box-sizing: border-box;
+  justify-content: center;
+  padding-inline: clamp(.85rem, 2vw, 1.65rem);
+}
+
+.gateway-actions .btn-luxury-micro,
+.gateway-actions .btn-luxury-text {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.gateway-actions .btn-luxury-main {
+  width: 100%;
+  min-width: 0;
+  flex-wrap: wrap;
+  row-gap: .2rem;
+}
+
+.gateway-actions .btn-luxury-text {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.gateway-actions .btn-luxury-arrow {
+  flex: 0 0 auto;
+}
+
+.gateway-mission-card {
+  overflow-wrap: anywhere;
+}
+
+.gateway-mission-card__topline,
+.gateway-card-footer,
+.gateway-queue__header {
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+
+.gateway-card-footer>span:last-child {
+  margin-left: auto;
+}
+
+.gateway-pulse-strip {
+  align-items: stretch;
+}
+
+/* At zoom levels where the CSS viewport becomes tablet-sized, stack the two
+   actions and then the information card. This is intentional: vertical flow
+   is preferable to controls touching or covering one another. */
+@media (max-width: 900px) {
+  .home-hero__content {
+    height: auto;
+    grid-template-rows: auto auto;
+    align-content: start;
+  }
+
+  .gateway-command-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .gateway-command-main {
+    width: 100%;
+  }
+
+  .gateway-mission-card {
+    width: min(100%, 620px);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 620px) {
+  .gateway-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .gateway-actions .btn-luxury-primary__inner,
+  .gateway-actions .btn-luxury-secondary__inner {
+    min-height: 76px;
+  }
+
+  .gateway-pulse-strip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Extra-short zoomed windows get a little breathing room and scroll instead
+   of clipping the bottom of a control or telemetry card. */
+@media (max-height: 680px) {
+  .home-hero {
+    height: auto;
+    min-height: calc(100svh - 64px);
+  }
+
+  .home-hero__content {
+    padding-block: 1rem 1.5rem;
+  }
+
+  .gateway-route {
+    margin-block: .8rem 1rem;
+  }
+}
