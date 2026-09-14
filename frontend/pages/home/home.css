@@ -431,164 +431,488 @@
   z-index: 5;
 }
 
-/* 1. Primary Luxury Action Button: Mission Workspace */
-.btn-luxury-primary {
+/* ==========================================================================
+   HIGH-TECH MILITARY-GRADE AEROSPACE HUD BUTTONS ($500,000 SPEC)
+   Chamfered Sci-Fi Geometry · Corner Reticles · Animated Gyro & Telemetry
+   ========================================================================== */
+
+.tech-btn {
   position: relative;
-  display: inline-block;
-  text-decoration: none;
-  background: linear-gradient(135deg, rgba(0, 240, 255, 0.22) 0%, rgba(14, 28, 64, 0.85) 50%, rgba(168, 85, 247, 0.22) 100%);
-  border: 1px solid rgba(0, 240, 255, 0.6);
-  border-radius: var(--n-radius-md);
-  padding: 2px;
-  cursor: pointer;
-  overflow: hidden;
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.35), inset 0 0 15px rgba(0, 240, 255, 0.2);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  transform: translateY(0);
-}
-
-.btn-luxury-primary__glow {
-  position: absolute;
-  inset: -10px;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.45) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-
-/* Light beam sweep ray animation */
-.btn-luxury-primary::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -60%;
-  width: 40%;
-  height: 200%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-  transform: rotate(35deg);
-  animation: lightSweep 4s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes lightSweep {
-  0% {
-    left: -60%;
-  }
-
-  35% {
-    left: 140%;
-  }
-
-  100% {
-    left: 140%;
-  }
-}
-
-.btn-luxury-primary__inner {
-  position: relative;
-  background: rgba(6, 12, 34, 0.88);
-  padding: 1rem 2rem;
-  border-radius: calc(var(--n-radius-md) - 2px);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 1.5px;
+  /* Cyber chamfered geometry: top-left & bottom-right cut corners */
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.7) 0%, rgba(14, 28, 64, 0.9) 50%, rgba(0, 240, 255, 0.3) 100%);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 240, 255, 0.25);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(0);
+  isolation: isolate;
+}
+
+.tech-btn--primary {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.85) 0%, rgba(9, 24, 58, 0.95) 45%, rgba(0, 240, 255, 0.4) 100%);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.35);
+}
+
+.tech-btn--secondary {
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.75) 0%, rgba(18, 12, 44, 0.95) 50%, rgba(0, 240, 255, 0.3) 100%);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(168, 85, 247, 0.3);
+}
+
+/* Inner Holographic HUD Container */
+.tech-btn__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, rgba(6, 14, 34, 0.94) 0%, rgba(3, 7, 20, 0.98) 100%);
+  clip-path: polygon(11px 0, 100% 0, 100% calc(100% - 11px), calc(100% - 11px) 100%, 0 100%, 0 11px);
+  padding: 0.9rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-.btn-luxury-micro {
+.tech-btn--secondary .tech-btn__inner {
+  clip-path: polygon(0 0, calc(100% - 11px) 0, 100% 11px, 100% 100%, 11px 100%, 0 calc(100% - 11px));
+}
+
+/* Cyber Scanning Grid Background Pattern */
+.tech-btn__scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 240, 255, 0.03) 3px, rgba(0, 240, 255, 0.03) 4px);
+  opacity: 0.7;
+  z-index: 1;
+}
+
+/* Radiant Hover Glow Aura */
+.tech-btn__glow {
+  position: absolute;
+  inset: -15px;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.4) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tech-btn--secondary .tech-btn__glow {
+  background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.4) 0%, transparent 70%);
+}
+
+/* High-Speed Perimeter Laser Sweep */
+.tech-btn::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: -80%;
+  width: 50%;
+  height: 300%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+  transform: rotate(30deg);
+  animation: techLaserSweep 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes techLaserSweep {
+  0% { left: -80%; }
+  30% { left: 160%; }
+  100% { left: 160%; }
+}
+
+/* Corner Reticle HUD Brackets */
+.tech-btn__corner {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.85;
+  transition: all 0.3s ease;
+}
+
+.tech-btn__corner--tl {
+  top: 1px;
+  left: 1px;
+  border-top: 2px solid #00f0ff;
+  border-left: 2px solid #00f0ff;
+}
+
+.tech-btn__corner--tr {
+  top: 1px;
+  right: 1px;
+  border-top: 2px solid #00f0ff;
+  border-right: 2px solid #00f0ff;
+}
+
+.tech-btn__corner--bl {
+  bottom: 1px;
+  left: 1px;
+  border-bottom: 2px solid #00f0ff;
+  border-left: 2px solid #00f0ff;
+}
+
+.tech-btn__corner--br {
+  bottom: 1px;
+  right: 1px;
+  border-bottom: 2px solid #00f0ff;
+  border-right: 2px solid #00f0ff;
+}
+
+.tech-btn--secondary .tech-btn__corner--tl,
+.tech-btn--secondary .tech-btn__corner--tr,
+.tech-btn--secondary .tech-btn__corner--bl,
+.tech-btn--secondary .tech-btn__corner--br {
+  border-color: #a855f7;
+}
+
+/* Top Meta Row */
+.tech-btn__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.tech-btn__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-family: var(--n-font-mono);
-  font-size: 0.64rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.14em;
   color: var(--n-cyan);
-  text-transform: uppercase;
 }
 
-.btn-luxury-main {
+.tech-btn__tag--secondary {
+  color: #c084fc;
+}
+
+.tech-btn__pulse-beacon {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00f0ff;
+  box-shadow: 0 0 8px #00f0ff;
+  position: relative;
+}
+
+.tech-btn__pulse-beacon::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1px solid #00f0ff;
+  animation: beaconPulse 2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.tech-btn__pulse-beacon--violet {
+  background: #c084fc;
+  box-shadow: 0 0 8px #c084fc;
+}
+
+.tech-btn__pulse-beacon--violet::after {
+  border-color: #c084fc;
+}
+
+@keyframes beaconPulse {
+  0% { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.tech-btn__chip {
+  font-family: var(--n-font-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  color: #00f0ff;
+}
+
+.tech-btn__chip--violet {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.35);
+  color: #c084fc;
+}
+
+/* Main Body Row */
+.tech-btn__body {
   display: flex;
   align-items: center;
   gap: 12px;
+  position: relative;
+  z-index: 2;
 }
 
-.btn-luxury-text {
+/* Futuristic 3D Spinning Gyroscope Icon */
+.tech-btn__icon-gyro {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gyro-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 240, 255, 0.6);
+}
+
+.gyro-ring--1 {
+  border-left-color: #00f0ff;
+  border-right-color: transparent;
+  animation: gyroSpin1 3s linear infinite;
+}
+
+.gyro-ring--2 {
+  inset: 3px;
+  border-top-color: #3b82f6;
+  border-bottom-color: transparent;
+  animation: gyroSpin2 2.2s linear infinite reverse;
+}
+
+.gyro-core {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+}
+
+@keyframes gyroSpin1 {
+  0% { transform: rotate(0deg) scaleX(0.7); }
+  50% { transform: rotate(180deg) scaleX(1); }
+  100% { transform: rotate(360deg) scaleX(0.7); }
+}
+
+@keyframes gyroSpin2 {
+  0% { transform: rotate(0deg) scaleY(0.7); }
+  50% { transform: rotate(180deg) scaleY(1); }
+  100% { transform: rotate(360deg) scaleY(0.7); }
+}
+
+/* Futuristic Constellation Node Icon */
+.tech-btn__icon-node {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.node-point {
+  position: absolute;
+  border-radius: 50%;
+  background: #c084fc;
+  box-shadow: 0 0 8px #c084fc;
+}
+
+.node-point--c {
+  width: 8px;
+  height: 8px;
+  top: 9px;
+  left: 9px;
+  background: #ffffff;
+  box-shadow: 0 0 10px #00f0ff;
+}
+
+.node-point--1 {
+  width: 5px;
+  height: 5px;
+  top: 3px;
+  right: 3px;
+}
+
+.node-point--2 {
+  width: 5px;
+  height: 5px;
+  bottom: 3px;
+  left: 2px;
+}
+
+.node-link {
+  position: absolute;
+  background: rgba(168, 85, 247, 0.4);
+  transform-origin: 0 0;
+}
+
+.node-link--1 {
+  width: 12px;
+  height: 1px;
+  top: 13px;
+  left: 13px;
+  transform: rotate(-45deg);
+}
+
+.node-link--2 {
+  width: 11px;
+  height: 1px;
+  top: 13px;
+  left: 13px;
+  transform: rotate(135deg);
+}
+
+.tech-btn__title-wrap {
+  flex: 1;
+}
+
+.tech-btn__title {
   font-family: var(--n-font-display);
   font-size: 1.15rem;
   font-weight: 700;
   color: #ffffff;
   letter-spacing: -0.01em;
+  line-height: 1.2;
+  transition: all 0.25s ease;
+  display: block;
 }
 
-.btn-luxury-arrow {
-  color: var(--n-cyan);
-  font-size: 1rem;
+/* Action Chevron Pill */
+.tech-btn__action-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--n-font-mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #00f0ff;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.btn-luxury-primary:hover {
-  transform: translateY(-3px) scale(1.02);
-  border-color: #00f0ff;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 50px rgba(0, 240, 255, 0.75), inset 0 0 25px rgba(0, 240, 255, 0.4);
+.tech-btn__action-pill--secondary {
+  color: #c084fc;
 }
 
-.btn-luxury-primary:hover .btn-luxury-primary__glow {
+.tech-btn__bracket {
+  opacity: 0.6;
+  font-size: 0.85rem;
+  transition: opacity 0.2s ease;
+}
+
+.tech-btn__arrow {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Footer Sub-Telemetry */
+.tech-btn__footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.45rem;
+  margin-top: 0.1rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* Equalizer Bars */
+.tech-btn__equalizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 10px;
+}
+
+.tech-btn__equalizer span {
+  width: 2px;
+  background: #00f0ff;
+  border-radius: 1px;
+  animation: techEq 1s ease-in-out infinite alternate;
+}
+
+.tech-btn__equalizer span:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+.tech-btn__equalizer span:nth-child(2) { height: 80%; animation-delay: 0.3s; }
+.tech-btn__equalizer span:nth-child(3) { height: 50%; animation-delay: 0.15s; }
+.tech-btn__equalizer span:nth-child(4) { height: 100%; animation-delay: 0.4s; }
+.tech-btn__equalizer span:nth-child(5) { height: 60%; animation-delay: 0.25s; }
+
+@keyframes techEq {
+  0% { transform: scaleY(0.4); }
+  100% { transform: scaleY(1.1); }
+}
+
+.tech-btn__radar-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c084fc;
+  box-shadow: 0 0 6px #c084fc;
+}
+
+.tech-btn__subtext {
+  font-family: var(--n-font-mono);
+  font-size: 0.58rem;
+  color: var(--n-text-soft);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------------------------------
+   HIGH-TECH BUTTON HOVER & ACTIVE STATES
+   -------------------------------------------------------------------------- */
+.tech-btn:hover {
+  transform: translateY(-3px) scale(1.015);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.9), 0 0 45px rgba(0, 240, 255, 0.6), inset 0 0 20px rgba(0, 240, 255, 0.3);
+}
+
+.tech-btn--secondary:hover {
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.9), 0 0 45px rgba(168, 85, 247, 0.55), inset 0 0 20px rgba(168, 85, 247, 0.3);
+}
+
+.tech-btn:hover .tech-btn__glow {
   opacity: 1;
 }
 
-.btn-luxury-primary:hover .btn-luxury-arrow {
-  transform: translateX(6px);
+.tech-btn:hover .tech-btn__title {
   color: #ffffff;
-  text-shadow: 0 0 10px var(--n-cyan);
+  text-shadow: 0 0 16px rgba(0, 240, 255, 0.8);
 }
 
-/* 2. Secondary Luxury Action Button: Investigation Loop */
-.btn-luxury-secondary {
-  position: relative;
-  display: inline-block;
-  text-decoration: none;
-  background: rgba(10, 16, 38, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--n-radius-md);
-  padding: 2px;
-  cursor: pointer;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  transform: translateY(0);
+.tech-btn--secondary:hover .tech-btn__title {
+  text-shadow: 0 0 16px rgba(168, 85, 247, 0.8);
 }
 
-.btn-luxury-secondary__inner {
-  position: relative;
-  background: rgba(8, 14, 32, 0.85);
-  padding: 1rem 1.85rem;
-  border-radius: calc(var(--n-radius-md) - 2px);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+.tech-btn:hover .tech-btn__corner {
+  transform: scale(1.3);
+  opacity: 1;
+  box-shadow: 0 0 8px #00f0ff;
 }
 
-.btn-luxury-secondary .btn-luxury-micro {
-  color: #a8b8d8;
+.tech-btn--secondary:hover .tech-btn__corner {
+  box-shadow: 0 0 8px #a855f7;
 }
 
-.btn-luxury-secondary .btn-luxury-arrow {
-  color: var(--n-violet);
-  transition: transform 0.4s ease;
+.tech-btn:hover .tech-btn__action-pill {
+  transform: translateX(4px);
 }
 
-.btn-luxury-secondary:hover {
-  transform: translateY(-3px) scale(1.02);
-  border-color: var(--n-violet);
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8), 0 0 35px rgba(168, 85, 247, 0.5);
+.tech-btn:hover .tech-btn__arrow {
+  transform: scale(1.2);
+  text-shadow: 0 0 10px currentColor;
 }
 
-.btn-luxury-secondary:hover .btn-luxury-arrow {
-  transform: rotate(180deg);
-  color: #ffffff;
+.tech-btn:active {
+  transform: translateY(-1px) scale(0.99);
 }
 
 /* --------------------------------------------------------------------------
@@ -701,16 +1025,16 @@
     width: 100%;
   }
 
+  .tech-btn,
   .btn-luxury-primary,
   .btn-luxury-secondary {
     width: 100%;
   }
 
+  .tech-btn__inner,
   .btn-luxury-primary__inner,
   .btn-luxury-secondary__inner {
     width: 100%;
-    align-items: center;
-    text-align: center;
   }
 
   .btn-luxury-main {
@@ -1291,6 +1615,7 @@
   margin: 0;
 }
 
+.gateway-actions>.tech-btn,
 .gateway-actions>.btn-luxury-primary,
 .gateway-actions>.btn-luxury-secondary {
   width: 100%;
@@ -1299,11 +1624,12 @@
   box-sizing: border-box;
 }
 
+.gateway-actions .tech-btn__inner,
 .gateway-actions .btn-luxury-primary__inner,
 .gateway-actions .btn-luxury-secondary__inner {
   width: 100%;
   min-width: 0;
-  min-height: 86px;
+  min-height: 90px;
   box-sizing: border-box;
   justify-content: center;
   padding-inline: clamp(.85rem, 2vw, 1.65rem);
