@@ -33,3 +33,27 @@ CREATE TABLE IF NOT EXISTS session_tokens (
     expires_at TIMESTAMP NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS planet (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    planet_type VARCHAR(50),
+    mass DOUBLE PRECISION,
+    radius DOUBLE PRECISION,
+    distance_from_star DOUBLE PRECISION,
+    orbital_period DOUBLE PRECISION,
+    created_at TIMESTAMP DEFAULT 
+CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS simulation (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    status VARCHAR(50) DEFAULT 'saved',
+    parameters TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
