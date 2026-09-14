@@ -2042,7 +2042,7 @@
     ctx.stroke();
 
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px "Space Grotesk", sans-serif';
+    ctx.font = 'bold 22px "Corpta", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(text, 128, 32);

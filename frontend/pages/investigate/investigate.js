@@ -1167,7 +1167,7 @@
           <!-- Top Compass Axis & Zenith Indicator -->
           <line x1="260" y1="28" x2="580" y2="28" stroke="rgba(0, 240, 255, 0.35)" stroke-width="1" />
           <polygon points="416,21 424,21 420,27" fill="#00f0ff" />
-          <g font-family="'DM Mono', monospace" font-size="8.5" fill="#00f0ff" opacity="0.75" text-anchor="middle">
+          <g font-family="'Corpta', monospace" font-size="8.5" fill="#00f0ff" opacity="0.75" text-anchor="middle">
             <line x1="275" y1="25" x2="275" y2="31" stroke="#00f0ff" stroke-width="1" />
             <text x="275" y="21">300</text>
             <line x1="310" y1="25" x2="310" y2="31" stroke="#00f0ff" stroke-width="1" />
@@ -1188,24 +1188,24 @@
           </g>
 
           <!-- Top-Left Title Label -->
-          <text x="36" y="32" font-family="'DM Mono', monospace" font-size="11" font-weight="700" fill="#00f0ff" letter-spacing="0.5">Sun-Synchronous</text>
-          <text x="36" y="46" font-family="'DM Mono', monospace" font-size="8.5" fill="#7482a0" letter-spacing="0.3">CubeSat Orbits</text>
+          <text x="36" y="32" font-family="'Corpta', monospace" font-size="11" font-weight="700" fill="#00f0ff" letter-spacing="0.5">Sun-Synchronous</text>
+          <text x="36" y="46" font-family="'Corpta', monospace" font-size="8.5" fill="#7482a0" letter-spacing="0.3">CubeSat Orbits</text>
 
           <!-- Top-Right Readout -->
-          <text x="804" y="32" text-anchor="end" font-family="'DM Mono', monospace" font-size="8.5" fill="#7482a0" letter-spacing="0.3">Orbital inclination</text>
-          <text x="804" y="46" text-anchor="end" font-family="'DM Mono', monospace" font-size="11" font-weight="700" fill="#00f0ff">${liveIncl}°</text>
+          <text x="804" y="32" text-anchor="end" font-family="'Corpta', monospace" font-size="8.5" fill="#7482a0" letter-spacing="0.3">Orbital inclination</text>
+          <text x="804" y="46" text-anchor="end" font-family="'Corpta', monospace" font-size="11" font-weight="700" fill="#00f0ff">${liveIncl}°</text>
 
           <!-- Left Pitch Caliper & Telemetry -->
           <line x1="26" y1="140" x2="26" y2="380" stroke="rgba(0, 240, 255, 0.3)" stroke-width="1" />
           <line x1="20" y1="160" x2="30" y2="160" stroke="#00f0ff" stroke-width="1" />
-          <text x="34" y="163" font-family="'DM Mono', monospace" font-size="8.5" fill="#7482a0">-26.5°</text>
+          <text x="34" y="163" font-family="'Corpta', monospace" font-size="8.5" fill="#7482a0">-26.5°</text>
           <line x1="18" y1="260" x2="32" y2="260" stroke="#00f0ff" stroke-width="1.5" />
-          <text x="36" y="263" font-family="'DM Mono', monospace" font-size="8.5" fill="#00f0ff">0°</text>
+          <text x="36" y="263" font-family="'Corpta', monospace" font-size="8.5" fill="#00f0ff">0°</text>
           <line x1="20" y1="360" x2="30" y2="360" stroke="#00f0ff" stroke-width="1" />
-          <text x="34" y="363" font-family="'DM Mono', monospace" font-size="8.5" fill="#7482a0">-57.45°</text>
+          <text x="34" y="363" font-family="'Corpta', monospace" font-size="8.5" fill="#7482a0">-57.45°</text>
 
           <!-- Left Telemetry Readout Stack -->
-          <g font-family="'DM Mono', monospace" font-size="8.5" fill="#99aac7">
+          <g font-family="'Corpta', monospace" font-size="8.5" fill="#99aac7">
             <text x="34" y="418">Altitude: <tspan fill="#00f0ff" font-weight="700">${liveAlt} km</tspan></text>
             <text x="34" y="432">Velocity: <tspan fill="#00f0ff" font-weight="700">${liveVel} km/s</tspan></text>
             <text x="34" y="446">Period: <tspan fill="#eef8ff">${livePeriod} min</tspan></text>
@@ -1215,14 +1215,14 @@
           <!-- Right Pitch Caliper & Status -->
           <line x1="814" y1="140" x2="814" y2="380" stroke="rgba(0, 240, 255, 0.3)" stroke-width="1" />
           <line x1="810" y1="160" x2="820" y2="160" stroke="#00f0ff" stroke-width="1" />
-          <text x="806" y="163" text-anchor="end" font-family="'DM Mono', monospace" font-size="8.5" fill="#7482a0">+265°</text>
+          <text x="806" y="163" text-anchor="end" font-family="'Corpta', monospace" font-size="8.5" fill="#7482a0">+265°</text>
           <line x1="808" y1="260" x2="822" y2="260" stroke="#00f0ff" stroke-width="1.5" />
-          <text x="804" y="263" text-anchor="end" font-family="'DM Mono', monospace" font-size="8.5" fill="#00f0ff">0°</text>
+          <text x="804" y="263" text-anchor="end" font-family="'Corpta', monospace" font-size="8.5" fill="#00f0ff">0°</text>
           <line x1="810" y1="360" x2="820" y2="360" stroke="#00f0ff" stroke-width="1" />
-          <text x="806" y="363" text-anchor="end" font-family="'DM Mono', monospace" font-size="8.5" fill="#7482a0">-97.45°</text>
+          <text x="806" y="363" text-anchor="end" font-family="'Corpta', monospace" font-size="8.5" fill="#7482a0">-97.45°</text>
 
           <!-- Right Telemetry Readout Stack -->
-          <g font-family="'DM Mono', monospace" font-size="8.5" fill="#99aac7" text-anchor="end">
+          <g font-family="'Corpta', monospace" font-size="8.5" fill="#99aac7" text-anchor="end">
             <text x="806" y="418">Data: <tspan fill="#00f0ff" font-weight="700">396°</tspan></text>
             <text x="806" y="432">Doppler Pass: <tspan fill="#10b981" font-weight="700">LOCKED</tspan></text>
             <text x="806" y="446">FFT Sync: <tspan fill="#00f0ff">Active</tspan></text>
@@ -1232,22 +1232,22 @@
           <!-- Bottom Center Status Pill -->
           <g transform="translate(325, 480)">
             <rect x="0" y="0" width="190" height="24" rx="4" fill="rgba(2, 8, 22, 0.9)" stroke="rgba(0, 240, 255, 0.45)" stroke-width="1.2" />
-            <text x="95" y="16" text-anchor="middle" font-family="'DM Mono', monospace" font-size="10.5" font-weight="700" fill="#00f0ff" letter-spacing="1.2">SVALBARD GS-142</text>
+            <text x="95" y="16" text-anchor="middle" font-family="'Corpta', monospace" font-size="10.5" font-weight="700" fill="#00f0ff" letter-spacing="1.2">SVALBARD GS-142</text>
           </g>
 
           <!-- Interactive HUD Stage Camera Controls -->
           <g class="hud-camera-controls" transform="translate(732, 478)">
             <g id="hud-btn-zoom-in" class="tactical-node" cursor="pointer">
               <rect x="0" y="0" width="22" height="22" rx="3" fill="rgba(2, 8, 22, 0.92)" stroke="rgba(0, 240, 255, 0.6)" stroke-width="1" />
-              <text x="11" y="16" text-anchor="middle" font-family="'DM Mono', monospace" font-size="14" font-weight="700" fill="#00f0ff">+</text>
+              <text x="11" y="16" text-anchor="middle" font-family="'Corpta', monospace" font-size="14" font-weight="700" fill="#00f0ff">+</text>
             </g>
             <g id="hud-btn-zoom-out" class="tactical-node" cursor="pointer" transform="translate(27, 0)">
               <rect x="0" y="0" width="22" height="22" rx="3" fill="rgba(2, 8, 22, 0.92)" stroke="rgba(0, 240, 255, 0.6)" stroke-width="1" />
-              <text x="11" y="15" text-anchor="middle" font-family="'DM Mono', monospace" font-size="14" font-weight="700" fill="#00f0ff">−</text>
+              <text x="11" y="15" text-anchor="middle" font-family="'Corpta', monospace" font-size="14" font-weight="700" fill="#00f0ff">−</text>
             </g>
             <g id="hud-btn-reset" class="tactical-node" cursor="pointer" transform="translate(54, 0)">
               <rect x="0" y="0" width="22" height="22" rx="3" fill="rgba(2, 8, 22, 0.92)" stroke="rgba(0, 240, 255, 0.6)" stroke-width="1" />
-              <text x="11" y="15" text-anchor="middle" font-family="'DM Mono', monospace" font-size="11" font-weight="700" fill="#00f0ff">⟲</text>
+              <text x="11" y="15" text-anchor="middle" font-family="'Corpta', monospace" font-size="11" font-weight="700" fill="#00f0ff">⟲</text>
             </g>
           </g>
         </g>
@@ -1289,7 +1289,7 @@
           `}
           <circle cx="580" cy="345" r="5" fill="#ffffff" filter="url(#hud-glow-cyan)" />
           <circle cx="580" cy="345" r="11" fill="none" stroke="#00f0ff" stroke-width="1.5" />
-          <text x="580" y="372" text-anchor="middle" font-family="'DM Mono', monospace" font-size="9" font-weight="700" fill="#00f0ff" letter-spacing="0.5">SVALBARD GS-142</text>
+          <text x="580" y="372" text-anchor="middle" font-family="'Corpta', monospace" font-size="9" font-weight="700" fill="#00f0ff" letter-spacing="0.5">SVALBARD GS-142</text>
         </g>
 
         <!-- 4. TACTICAL HUD TARGETING RETICLES (3D-TRACKED) -->
@@ -1323,10 +1323,10 @@
 
           <!-- HUD Telemetry Card -->
           <rect x="652" y="70" width="140" height="54" rx="4" fill="url(#hud-card-grad)" stroke="#00f0ff" stroke-width="${isAuroraSelected ? '2' : '1.2'}" filter="url(#hud-glow-cyan)" />
-          <text x="662" y="86" font-family="'DM Mono', monospace" font-size="11" font-weight="700" fill="#00f0ff">AURORA-1</text>
-          <text x="662" y="99" font-family="'DM Mono', monospace" font-size="8.5" fill="#7482a0">Satellite // Primary Target</text>
-          <text x="662" y="114" font-family="'DM Mono', monospace" font-size="9" fill="#eef8ff">Alt: <tspan fill="#00f0ff" font-weight="700">${liveAlt} km</tspan></text>
-          <text x="735" y="114" font-family="'DM Mono', monospace" font-size="9" fill="#eef8ff">Vel: <tspan fill="#00f0ff" font-weight="700">${liveVel} km/s</tspan></text>
+          <text x="662" y="86" font-family="'Corpta', monospace" font-size="11" font-weight="700" fill="#00f0ff">AURORA-1</text>
+          <text x="662" y="99" font-family="'Corpta', monospace" font-size="8.5" fill="#7482a0">Satellite // Primary Target</text>
+          <text x="662" y="114" font-family="'Corpta', monospace" font-size="9" fill="#eef8ff">Alt: <tspan fill="#00f0ff" font-weight="700">${liveAlt} km</tspan></text>
+          <text x="735" y="114" font-family="'Corpta', monospace" font-size="9" fill="#eef8ff">Vel: <tspan fill="#00f0ff" font-weight="700">${liveVel} km/s</tspan></text>
         </g>
 
         <!-- Target Reticle 2: NORAD 56987 (Candidate Lead / Object C) -->
@@ -1349,8 +1349,8 @@
 
           <!-- Red HUD Telemetry Box -->
           <rect x="696" y="222" width="126" height="42" rx="4" fill="url(#hud-card-red-grad)" stroke="#f43f5e" stroke-width="${isNoradSelected ? '2' : '1.2'}" filter="url(#hud-glow-red)" />
-          <text x="705" y="238" font-family="'DM Mono', monospace" font-size="10.5" font-weight="700" fill="#f43f5e">NORAD 56987</text>
-          <text x="705" y="252" font-family="'DM Mono', monospace" font-size="8.5" fill="#fecdd3">87.4% Match // Obj C</text>
+          <text x="705" y="238" font-family="'Corpta', monospace" font-size="10.5" font-weight="700" fill="#f43f5e">NORAD 56987</text>
+          <text x="705" y="252" font-family="'Corpta', monospace" font-size="8.5" fill="#fecdd3">87.4% Match // Obj C</text>
         </g>
 
         <!-- Target Reticle 3: NORAD 56983 (Candidate Obj A) -->
@@ -1366,7 +1366,7 @@
           <g transform="translate(258, 324)">
             <rect x="0" y="0" width="138" height="24" rx="12" fill="rgba(3, 10, 24, 0.88)" stroke="#f59e0b" stroke-width="1" />
             <circle cx="10" cy="12" r="3" fill="#f59e0b" />
-            <text x="18" y="15.5" font-family="'DM Mono', monospace" font-size="8.5" fill="#fcd34d">NORAD 56983 (Obj A) · 41%</text>
+            <text x="18" y="15.5" font-family="'Corpta', monospace" font-size="8.5" fill="#fcd34d">NORAD 56983 (Obj A) · 41%</text>
           </g>
         </g>
 
@@ -1383,7 +1383,7 @@
           <g transform="translate(100, 222)">
             <rect x="0" y="0" width="144" height="24" rx="12" fill="rgba(3, 10, 24, 0.88)" stroke="#a855f7" stroke-width="1" />
             <circle cx="10" cy="12" r="3" fill="#a855f7" />
-            <text x="18" y="15.5" font-family="'DM Mono', monospace" font-size="8.5" fill="#d8b4fe">NORAD 56991 (Obj G) · 18%</text>
+            <text x="18" y="15.5" font-family="'Corpta', monospace" font-size="8.5" fill="#d8b4fe">NORAD 56991 (Obj G) · 18%</text>
           </g>
         </g>
 
@@ -1394,7 +1394,7 @@
           <g transform="translate(-15, -28)">
             <rect x="0" y="0" width="140" height="22" rx="11" fill="rgba(3, 10, 24, 0.88)" stroke="#10b981" stroke-width="1" />
             <circle cx="10" cy="11" r="2.5" fill="#10b981" />
-            <text x="18" y="14.5" font-family="'DM Mono', monospace" font-size="8.5" fill="#6ee7b7">OBS-204 (SatNOGS RF)</text>
+            <text x="18" y="14.5" font-family="'Corpta', monospace" font-size="8.5" fill="#6ee7b7">OBS-204 (SatNOGS RF)</text>
           </g>
         </g>
 
@@ -1404,7 +1404,7 @@
           <g transform="translate(-50, -28)">
             <rect x="0" y="0" width="148" height="22" rx="11" fill="rgba(3, 10, 24, 0.88)" stroke="#10b981" stroke-width="1" />
             <circle cx="10" cy="11" r="2.5" fill="#10b981" />
-            <text x="18" y="14.5" font-family="'DM Mono', monospace" font-size="8.5" fill="#6ee7b7">OBS-229 (Doppler Track)</text>
+            <text x="18" y="14.5" font-family="'Corpta', monospace" font-size="8.5" fill="#6ee7b7">OBS-229 (Doppler Track)</text>
           </g>
         </g>
       </svg>

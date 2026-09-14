@@ -1350,7 +1350,7 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
       }
 
       // Range Scale Labels
-      ctx.font = '7px "DM Mono", monospace';
+      ctx.font = '7px "Corpta", monospace';
       ctx.fillStyle = 'rgba(192, 132, 252, 0.6)';
       ctx.fillText('100K', cx + (maxR / 3) + 2, cy - 2);
       ctx.fillText('250K', cx + (maxR * 2 / 3) + 2, cy - 2);
@@ -1366,7 +1366,7 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
       ctx.stroke();
 
       // Cardinal Markers
-      ctx.font = '8px "DM Mono", monospace';
+      ctx.font = '8px "Corpta", monospace';
       ctx.fillStyle = '#c084fc';
       ctx.fillText('N', cx - 3, cy - maxR + 9);
       ctx.fillText('S', cx - 3, cy + maxR - 2);
@@ -1432,10 +1432,10 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
         }
 
         // Target text labels
-        ctx.font = '7.5px "DM Mono", monospace';
+        ctx.font = '7.5px "Corpta", monospace';
         ctx.fillStyle = b.color;
         ctx.fillText(b.label, bx + 6, by - 2);
-        ctx.font = '6px "DM Mono", monospace';
+        ctx.font = '6px "Corpta", monospace';
         ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
         ctx.fillText(b.sub, bx + 6, by + 6);
         ctx.globalAlpha = 1.0;

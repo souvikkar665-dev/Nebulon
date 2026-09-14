@@ -942,7 +942,7 @@ body[data-page="investigate"] .video-slot.video-slot--investigate .video-slot__m
 .orbital-deck-head h3 {
   margin-top: .2rem;
   color: #eef8ff;
-  font-family: var(--n-font-display, "Space Grotesk", system-ui, sans-serif);
+  font-family: var(--n-font-display, "Corpta", system-ui, sans-serif);
   font-size: 1.18rem;
   letter-spacing: -.04em;
 }
@@ -1474,7 +1474,7 @@ body[data-page="investigate"] .video-slot.video-slot--investigate .video-slot__m
 .orbital-deck-target>strong {
   overflow: hidden;
   color: #eef8ff;
-  font: .95rem var(--n-font-display, "Space Grotesk", system-ui, sans-serif);
+  font: .95rem var(--n-font-display, "Corpta", system-ui, sans-serif);
   text-overflow: ellipsis;
   white-space: nowrap;
 }

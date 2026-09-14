@@ -162,8 +162,8 @@
   --orbit-lime: #d8ff69;
   --orbit-amber: #ffc26f;
   --orbit-red: #ff6e90;
-  --orbit-mono: var(--n-font-mono, "DM Mono", monospace);
-  --orbit-display: var(--n-font-display, "Space Grotesk", system-ui, sans-serif);
+  --orbit-mono: var(--n-font-mono, "Corpta", monospace);
+  --orbit-display: var(--n-font-display, "Corpta", system-ui, sans-serif);
 }
 
 body[data-page="orbit"] {

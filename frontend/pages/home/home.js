@@ -277,7 +277,7 @@
       // Real-time Telemetry Tag adjacent to cursor
       ctx.restore();
       ctx.save();
-      ctx.font = '9px "DM Mono", monospace';
+      ctx.font = '9px "Corpta", monospace';
       ctx.fillStyle = 'rgba(0, 240, 255, 0.85)';
       const degReading = ((cursorAngle * 180 / Math.PI + 360) % 360).toFixed(1);
       const distKm = (distToCursor * 0.95).toFixed(0);
@@ -413,7 +413,7 @@
           ctx.save();
           ctx.translate(tx2, ty2);
           ctx.rotate(tAngle + Math.PI / 2);
-          ctx.font = '7px "DM Mono", monospace';
+          ctx.font = '7px "Corpta", monospace';
           ctx.fillStyle = 'rgba(0, 240, 255, 0.6)';
           ctx.fillText(`0x${(i * 7).toString(16).toUpperCase()}`, -10, -4);
           ctx.restore();
@@ -483,7 +483,7 @@
           const deg = (c * 15).toString().padStart(3, '0');
           ctx.translate(cx2 * 1.12, cy2 * 1.12);
           ctx.rotate(cAngle + Math.PI / 2);
-          ctx.font = '8px "DM Mono", monospace';
+          ctx.font = '8px "Corpta", monospace';
           ctx.fillStyle = '#00f0ff';
           ctx.textAlign = 'center';
           ctx.fillText(`${deg}°`, 0, 0);

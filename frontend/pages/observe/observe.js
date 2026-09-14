@@ -367,7 +367,7 @@
         const textR = rBezel + 9.5;
         const tx = cx + Math.cos(rad) * textR;
         const ty = cy + Math.sin(rad) * textR;
-        radarCtx.font = '7.5px "DM Mono", monospace';
+        radarCtx.font = '7.5px "Corpta", monospace';
         radarCtx.fillStyle = 'rgba(0, 240, 255, 0.72)';
         radarCtx.textAlign = 'center';
         radarCtx.textBaseline = 'middle';
@@ -376,19 +376,19 @@
     }
 
     // Cardinal Points (N, E, S, W)
-    radarCtx.font = 'bold 11px "DM Mono", monospace';
+    radarCtx.font = 'bold 11px "Corpta", monospace';
     radarCtx.textAlign = 'center';
     radarCtx.textBaseline = 'middle';
 
     // North
     radarCtx.fillStyle = '#ffffff';
     radarCtx.fillText('N', cx, cy - (rBezel + 10));
-    radarCtx.font = '7px "DM Mono", monospace';
+    radarCtx.font = '7px "Corpta", monospace';
     radarCtx.fillStyle = 'rgba(0, 240, 255, 0.75)';
     radarCtx.fillText('360', cx, cy - (rBezel + 18));
 
     // East
-    radarCtx.font = 'bold 10.5px "DM Mono", monospace';
+    radarCtx.font = 'bold 10.5px "Corpta", monospace';
     radarCtx.fillStyle = '#00f0ff';
     radarCtx.fillText('E', cx + (rBezel + 11), cy);
 
@@ -421,7 +421,7 @@
       radarCtx.stroke();
 
       // Range Percentage Labels [25%], [50%], [75%], [100%]
-      radarCtx.font = '7px "DM Mono", monospace';
+      radarCtx.font = '7px "Corpta", monospace';
       radarCtx.fillStyle = 'rgba(0, 240, 255, 0.65)';
       radarCtx.textAlign = 'center';
       radarCtx.textBaseline = 'bottom';
@@ -644,7 +644,7 @@
 
         // Badge Container Box
         const text = `[${v.axis.label}: ${v.axis.display}]`;
-        radarCtx.font = 'bold 8px "DM Mono", monospace';
+        radarCtx.font = 'bold 8px "Corpta", monospace';
         const textW = radarCtx.measureText(text).width + 10;
         const boxH = 17;
         const boxX = bx - textW / 2;
@@ -672,7 +672,7 @@
       radarCtx.setLineDash([]);
 
       radarCtx.fillStyle = '#10b981';
-      radarCtx.font = 'bold 8.5px "DM Mono", monospace';
+      radarCtx.font = 'bold 8.5px "Corpta", monospace';
       radarCtx.textAlign = 'center';
       radarCtx.fillText(`POLAR ZENITH PASS ARC · ${opp.window}`, cx, cy + radius * 0.72);
     }

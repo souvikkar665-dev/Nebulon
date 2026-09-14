@@ -43,9 +43,9 @@
   --as-text-dim: #6d5b97;
 
   /* Fonts */
-  --as-font-display: 'Orbitron', 'Space Grotesk', system-ui, sans-serif;
-  --as-font-body: 'Rajdhani', 'Outfit', system-ui, sans-serif;
-  --as-font-mono: 'DM Mono', 'JetBrains Mono', monospace;
+  --as-font-display: 'Corpta', system-ui, sans-serif;
+  --as-font-body: 'Corpta', system-ui, sans-serif;
+  --as-font-mono: 'Corpta', monospace;
 
   /* Radii & Easing */
   --as-radius-sm: 6px;

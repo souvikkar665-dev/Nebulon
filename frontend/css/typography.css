@@ -3,6 +3,14 @@
    Modern Aerospace Display + Precise Scientific Monospace Data Hierarchy
    ========================================================================== */
 
+@font-face {
+  font-family: 'Corpta';
+  src: url('../assets/fonts/Corpta.otf') format('opentype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 /* Headings */
