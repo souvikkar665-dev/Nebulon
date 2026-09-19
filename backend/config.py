@@ -24,6 +24,9 @@ class Settings:
     STEP1_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("STEP1_TOKEN_EXPIRE_MINUTES", "240"))  # 4 hours
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "480")) # 8 hours
 
+    # Gemini AI Assistant Server Key
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+
     # CORS Settings
     CORS_ORIGINS: list[str] = [
         "http://localhost",

@@ -5,11 +5,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
+from sqlalchemy.orm import Session
+
 from backend.config import settings
+from backend.database.connection import get_db, init_db
+from backend.repositories import get_auth_repository, get_mission_repository
 from backend.repositories.base_repository import BaseAuthRepository
-from backend.repositories.mock_auth_repository import get_auth_repository
 from backend.repositories.base_mission_repository import BaseMissionRepository
-from backend.repositories.mock_mission_repository import get_mission_repository
 from backend.services.auth_service import AuthService
 from backend.services.mission_service import MissionService
 from backend.services.stream_service import StreamService, get_stream_service
@@ -38,6 +40,11 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc"
 )
+
+@app.on_event("startup")
+def startup_event():
+    """Auto-initialize database tables & seed initial data on application startup."""
+    init_db()
 
 # Configure CORS Middleware for development
 app.add_middleware(

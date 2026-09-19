@@ -7,7 +7,7 @@ from passlib.context import CryptContext
 
 from backend.config import settings
 from backend.repositories.base_repository import BaseAuthRepository
-from backend.repositories.mock_auth_repository import get_auth_repository
+from backend.repositories import get_auth_repository
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 security = HTTPBearer(auto_error=False)

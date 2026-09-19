@@ -45,7 +45,8 @@ class AssistantService:
         candidate_models = [primary_model, fallback_model]
 
         # Check if API Key is configured
-        if not self.api_key or len(self.api_key.strip()) < 10:
+        active_key = (self.api_key or os.getenv("GEMINI_API_KEY") or getattr(settings, "GEMINI_API_KEY", "")).strip()
+        if not active_key or len(active_key) < 10:
             return self._generate_simulated_fallback(prompt_text, "gemini-3.7-flash (Local Engine)", start_time)
 
         # Build Gemini contents payload
@@ -75,7 +76,7 @@ class AssistantService:
 
         last_error = None
         for model in candidate_models:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={self.api_key.strip()}"
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={active_key}"
             try:
                 async with httpx.AsyncClient(timeout=15.0) as http_client:
                     res = await http_client.post(url, json=gemini_payload)
