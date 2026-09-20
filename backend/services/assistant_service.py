@@ -1,6 +1,8 @@
 import os
 import re
 import time
+import ast
+import operator
 import httpx
 from typing import List, Dict, Any, Optional
 from fastapi import HTTPException, status
@@ -9,6 +11,62 @@ from backend.config import settings
 from backend.schemas.assistant_schemas import (
     AssistantQueryRequest, AssistantQueryResponse, ChatMessage
 )
+
+SAFE_OPERATORS = {
+    ast.Add: operator.add,
+    ast.Sub: operator.sub,
+    ast.Mult: operator.mul,
+    ast.Div: operator.truediv,
+    ast.FloorDiv: operator.floordiv,
+    ast.Mod: operator.mod,
+    ast.Pow: operator.pow,
+    ast.USub: operator.neg,
+    ast.UAdd: operator.pos,
+}
+
+def safe_eval_arithmetic(prompt_text: str) -> Optional[tuple[str, int | float]]:
+    """
+    Safely parse and evaluate basic arithmetic expressions using Python AST without using eval().
+    Supports +, -, *, /, %, **, parentheses, integer, and float operands.
+    Returns (cleaned_expression_string, calculated_result) or None.
+    """
+    if not prompt_text:
+        return None
+
+    clean = re.sub(r'^(?:what\s+is|calculate|compute|solve|\=)\s*', '', prompt_text.strip(), flags=re.IGNORECASE).strip()
+    clean = clean.rstrip('?=').strip()
+
+    # Must contain at least one arithmetic operator
+    if not re.search(r'[\+\-\*\/\%]', clean):
+        return None
+
+    # Must contain only allowed mathematical characters
+    if re.search(r'[^0-9\.\s\+\-\*\/\%\(\)]', clean):
+        return None
+
+    try:
+        parsed_ast = ast.parse(clean, mode='eval')
+
+        def _evaluate(node):
+            if isinstance(node, ast.Expression):
+                return _evaluate(node.body)
+            elif isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
+                return node.value
+            elif isinstance(node, ast.UnaryOp) and type(node.op) in SAFE_OPERATORS:
+                return SAFE_OPERATORS[type(node.op)](_evaluate(node.operand))
+            elif isinstance(node, ast.BinOp) and type(node.op) in SAFE_OPERATORS:
+                left = _evaluate(node.left)
+                right = _evaluate(node.right)
+                return SAFE_OPERATORS[type(node.op)](left, right)
+            else:
+                raise ValueError("Disallowed AST node")
+
+        result = _evaluate(parsed_ast)
+        if isinstance(result, float) and result.is_integer():
+            result = int(result)
+        return clean, result
+    except Exception:
+        return None
 
 SYSTEM_INSTRUCTION = """You are NEBULON A.I. (Orbital Identity // NASA 2070 Standard), an elite, ultra-advanced Deep Space Intelligence Core.
 You possess authoritative mastery across aerospace engineering, celestial mechanics, orbital dynamics, satellite anomaly diagnostics, space missions, planetary science, and cosmology.
@@ -162,6 +220,30 @@ class AssistantService:
         latency = int((time.time() - start_time) * 1000) or 42
         clean_prompt = prompt_text.strip()
         lower_prompt = clean_prompt.lower()
+
+        # Check for safe arithmetic evaluation first
+        math_eval = safe_eval_arithmetic(clean_prompt)
+        if math_eval:
+            expr_str, calc_res = math_eval
+            reply = (
+                f"**NEBULON Primary Computational Core // Arithmetic Verification**\n\n"
+                f"**Expression Evaluated**: `{expr_str}`\n"
+                f"**Calculated Result**: **`{calc_res}`**\n\n"
+                f"• **Computation Unit**: ALU-01 (64-bit Floating Point Vector Core)\n"
+                f"• **Diagnostic Verification**: Mathematical identity confirmed nominal."
+            )
+            suggestions = [
+                "Perform SGP4 orbital velocity calculation.",
+                "Explain Doppler residual derivative formula.",
+                "Show active mission status report."
+            ]
+            clean_text, suggestions = self._parse_response_and_suggestions(reply + "\n\nFOLLOW_UP_SUGGESTIONS: " + " | ".join(suggestions))
+            return AssistantQueryResponse(
+                response=clean_text,
+                model_used=model_used,
+                latency_ms=latency,
+                suggestions=suggestions
+            )
 
         # Dynamic contextually relevant response generator matching NEBULON persona
         if any(w in lower_prompt for w in ["mission status", "status", "current status", "operational status"]):
