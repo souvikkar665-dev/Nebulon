@@ -225,7 +225,20 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
       let replyText = '';
       let fallbackSuggestions = [];
 
-      if (lowerPrompt.includes('mission status') || lowerPrompt.includes('status')) {
+      const mathResult = this._safeEvalArithmetic(cleanPrompt);
+      if (mathResult) {
+        replyText =
+          `**NEBULON Primary Computational Core // Arithmetic Verification**\n\n` +
+          `**Expression Evaluated**: \`${mathResult.expr}\`\n` +
+          `**Calculated Result**: **\`${mathResult.val}\`**\n\n` +
+          `• **Computation Unit**: ALU-01 (64-bit Floating Point Vector Core)\n` +
+          `• **Diagnostic Verification**: Mathematical identity confirmed nominal.`;
+        fallbackSuggestions = [
+          'Perform SGP4 orbital velocity calculation.',
+          'Explain Doppler residual derivative formula.',
+          'Show active mission status report.'
+        ];
+      } else if (lowerPrompt.includes('mission status') || lowerPrompt.includes('status')) {
         replyText =
           `**NEBULON Orbital Core — Mission Status Report**\n\n` +
           `**Active Workspace**: \`Transporter-8 Ambiguity Resolution (NASA-2070-B)\`\n` +
@@ -284,6 +297,20 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
         latencyMs: latencyMs,
         modelUsed: state.activeModelUsed
       };
+    }
+
+    _safeEvalArithmetic(promptText) {
+      if (!promptText) return null;
+      let clean = promptText.trim().replace(/^(?:what\s+is|calculate|compute|solve|\=)\s*/i, '').replace(/[\?=]+$/, '').trim();
+      if (!/[\+\-\*\/\%]/.test(clean)) return null;
+      if (/[^0-9\.\s\+\-\*\/\%\(\)]/.test(clean)) return null;
+      try {
+        const result = Function('"use strict"; return (' + clean + ')')();
+        if (typeof result === 'number' && !isNaN(result) && isFinite(result)) {
+          return { expr: clean, val: Number.isInteger(result) ? result : parseFloat(result.toFixed(4)) };
+        }
+      } catch (e) {}
+      return null;
     }
   }
 
