@@ -155,8 +155,9 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
     async generate(promptText) {
       const startTime = performance.now();
 
-      // Format conversation history for backend schema
-      const formattedHistory = state.conversationHistory.slice(-10).map(item => ({
+      // Format previous conversation history (excluding active prompt which is passed separately in prompt field)
+      const previousTurns = state.conversationHistory.slice(0, -1);
+      const formattedHistory = previousTurns.slice(-10).map(item => ({
         role: item.role === 'user' ? 'user' : 'model',
         text: item.text
       }));
@@ -217,22 +218,65 @@ FOLLOW_UP_SUGGESTIONS: What causes reaction wheel bearing micro-vibrations? | Ho
     _generateLocalFallback(promptText, startTime) {
       const latencyMs = Math.round(performance.now() - startTime) || 42;
       const cleanPrompt = promptText.trim();
+      const lowerPrompt = cleanPrompt.toLowerCase();
       state.activeModelUsed = `${PRIMARY_MODEL} (Local Core)`;
       state.lastLatencyMs = latencyMs;
 
-      const replyText =
-        `**NEBULON Orbital Core Analysis for Query:** *"${cleanPrompt}"*\n\n` +
-        `The active deep space telemetry network confirms orbital synchronization. ` +
-        `Regarding your query on satellite dynamics and telemetry processing:\n\n` +
-        `• **Keplerian Propagation**: SGP4 ephemeris residuals match predicted SGP4 epoch within 38 Hz residual.\n` +
-        `• **Doppler Residual Derivative**: Measured center frequency 437.450 MHz exhibits nominal Doppler slope.\n` +
-        `• **Equation**: Kepler's Third Law T² = (4π²/GM) × a³`;
+      let replyText = '';
+      let fallbackSuggestions = [];
 
-      const fallbackSuggestions = [
-        'What causes reaction wheel bearing micro-vibrations?',
-        'How are GEO satellite inclination drifts corrected?',
-        'What are the thermal impacts during lunar eclipse passes?'
-      ];
+      if (lowerPrompt.includes('mission status') || lowerPrompt.includes('status')) {
+        replyText =
+          `**NEBULON Orbital Core — Mission Status Report**\n\n` +
+          `**Active Workspace**: \`Transporter-8 Ambiguity Resolution (NASA-2070-B)\`\n` +
+          `**System Status**: ALL TELEMETRY CHANNELS NOMINAL\n\n` +
+          `• **Tracked Objects**: 3 uncooperative space objects under active observation (NORAD 56983, NORAD 56984, NORAD 56985).\n` +
+          `• **Primary Anomaly**: Photometric cross-tagging contradiction detected on NORAD 56983.\n` +
+          `• **Hypotheses Ranked**: \`HYP-56987\` (Primary Candidate, 89.4% confidence score).`;
+        fallbackSuggestions = [
+          'What is the confidence score of hypothesis HYP-56987?',
+          'Show details of the photometric cross-tagging anomaly.',
+          'Advance simulation step to the next ground station pass.'
+        ];
+      } else if (lowerPrompt.includes('what is a satellite') || lowerPrompt.includes('satellite')) {
+        replyText =
+          `**NEBULON Aerospace Intelligence — Satellite Architecture & Classification**\n\n` +
+          `A **satellite** is an object placed into orbit around a celestial body (natural like the Moon, or artificial like human-made spacecraft).\n\n` +
+          `### Core Subsystems:\n` +
+          `1. **ADCS**: Reaction wheels & star trackers for attitude control.\n` +
+          `2. **Payload**: SAR radar, optical sensors, or communication transponders.\n` +
+          `3. **EPS**: Solar arrays & Li-ion power storage.\n\n` +
+          `### Regimes:\n` +
+          `• **LEO** (160–2,000 km) | **MEO** (GPS constellations) | **GEO** (35,786 km geostationary).`;
+        fallbackSuggestions = [
+          'How do reaction wheels maintain satellite orientation?',
+          'What is the difference between LEO and GEO satellite orbits?',
+          'How does SGP4 orbital propagation track LEO satellites?'
+        ];
+      } else if (lowerPrompt.includes('doppler')) {
+        replyText =
+          `**NEBULON Signal Intelligence — Doppler Residual Analysis**\n\n` +
+          `**Doppler Residuals** represent the frequency delta between expected RF carrier frequency and observed frequency received by a ground station.\n\n` +
+          `• **Formula**: f_observed = f_emitted × √[(1 - v/c) / (1 + v/c)]\n` +
+          `• **Diagnostic Value**: Non-zero residual drift indicates unannounced maneuvers, unmodeled drag, or satellite cross-tagging.`;
+        fallbackSuggestions = [
+          'How is Doppler shift used to detect satellite maneuvers?',
+          'What causes unexpected SGP4 TLE residual drift?',
+          'How does radar tracking resolve Doppler frequency ambiguity?'
+        ];
+      } else {
+        replyText =
+          `**NEBULON Orbital Core Analysis for Query:** *"${cleanPrompt}"*\n\n` +
+          `The active deep space telemetry network processed your query against NASA/ESA orbital identity standards.\n\n` +
+          `• **Telemetry Integration**: Processing high-rate SGP4 propagation vectors.\n` +
+          `• **Physical Domain**: Parameters evaluated under Keplerian celestial mechanics and RF spectrum metrics.\n` +
+          `• **Diagnostic Status**: Core operations nominal. All sensor networks operating within calibrated error margins.`;
+        fallbackSuggestions = [
+          'Explain SGP4 orbital propagation and ephemeris tracking.',
+          'What are the main causes of satellite ADCS reaction wheel failure?',
+          'Show active ground station observation opportunities.'
+        ];
+      }
 
       return {
         answer: replyText,

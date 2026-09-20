@@ -190,3 +190,37 @@ def test_assistant_gemini_timeout_fallback():
             assert "suggestions" in data
     finally:
         app.dependency_overrides.clear()
+
+def test_assistant_distinct_responses_for_different_questions():
+    """Regression test proving that different user questions produce distinct contextually relevant responses."""
+    token = get_auth_token()
+    questions = [
+        "What is the current mission status?",
+        "What is a satellite?",
+        "Explain Doppler residuals in simple terms.",
+        "Why is evidence important in orbital identity resolution?",
+        "What is the difference between a planet and a satellite?"
+    ]
+
+    responses = []
+    for q in questions:
+        res = client.post(
+            "/api/v1/assistant/query",
+            headers={"Authorization": f"Bearer {token}"},
+            json={"prompt": q}
+        )
+        assert res.status_code == 200
+        data = res.json()
+        responses.append(data["response"])
+
+    # Ensure all responses are non-empty and completely distinct from each other
+    assert len(responses) == 5
+    assert len(set(responses)) == 5, "Responses for different questions must be distinct!"
+
+    # Verify topic-specific content presence
+    assert "Mission Status Report" in responses[0] or "Transporter-8" in responses[0]
+    assert "Satellite Architecture" in responses[1] or "orbit around a celestial body" in responses[1]
+    assert "Doppler Residuals" in responses[2] or "frequency" in responses[2]
+    assert "Orbital Identity" in responses[3] or "Disambiguation" in responses[3]
+    assert "Planet vs. Satellite" in responses[4] or "Primary Parent" in responses[4]
+
