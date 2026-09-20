@@ -604,14 +604,14 @@
     });
 
     // Form Submission: Complete Verification & Launch Nebulon
-    function proceedToApp() {
+    async function proceedToApp() {
       const memberId = (uidInput.value || 'souvik').trim();
       const pass = (pwdInput.value || 'souvik@2070').trim();
 
       sessionStorage.setItem('nebulon_step1_cleared', 'true');
       sessionStorage.setItem('nebulon_member_verified', 'true');
       if (window.NebulonAuth) {
-        window.NebulonAuth.verifyStep2(memberId, pass);
+        await window.NebulonAuth.verifyStep2(memberId, pass);
       }
 
       window.location.href = 'index.html';

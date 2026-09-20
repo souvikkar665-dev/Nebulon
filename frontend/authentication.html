@@ -168,7 +168,7 @@
     }
 
     // Direct and reliable step transition
-    function proceedToStep2() {
+    async function proceedToStep2() {
       const uid = (document.getElementById('neb-uid').value || 'nebulon').trim();
       const pwd = (document.getElementById('neb-pwd').value || 'nebulon@2070').trim();
 
@@ -176,6 +176,9 @@
       sessionStorage.setItem('nebulon_step1_time', new Date().toISOString());
       sessionStorage.setItem('nebulon_preferred_uid', uid);
       sessionStorage.setItem('nebulon_preferred_pwd', pwd);
+      if (window.NebulonAuth) {
+        await window.NebulonAuth.verifyStep1(uid, pwd);
+      }
 
       window.location.href = 'member_login.html';
     }
