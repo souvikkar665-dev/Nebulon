@@ -43,10 +43,10 @@ class AssistantService:
         primary_model = request.model or "gemini-3.7-flash"
         candidate_models = [
             primary_model,
+            "gemini-3.6-flash",
             "gemini-2.5-flash",
             "gemini-2.0-flash",
-            "gemini-1.5-flash",
-            "gemini-1.5-pro"
+            "gemini-1.5-flash"
         ]
 
         # Check if API Key is configured
