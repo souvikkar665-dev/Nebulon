@@ -4,6 +4,12 @@
 !.env.example
 !example.env
 
+# Databases & local state
+nebulon.db
+*.db
+*.sqlite
+*.sqlite3
+
 # Python bytecode & cache
 __pycache__/
 *.py[cod]

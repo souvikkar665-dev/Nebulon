@@ -389,3 +389,12 @@ async def assistant_query(
 @app.get("/health", tags=["Health"])
 async def root_health_check():
     return {"status": "ok", "project": settings.PROJECT_NAME, "version": settings.VERSION}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    import os
+    port = int(os.getenv("PORT", getattr(settings, "PORT", 8000)))
+    host = os.getenv("HOST", getattr(settings, "HOST", "0.0.0.0"))
+    uvicorn.run("backend.app:app", host=host, port=port, reload=False)
+

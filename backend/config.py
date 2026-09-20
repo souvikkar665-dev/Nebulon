@@ -27,6 +27,10 @@ class Settings:
     # Gemini AI Assistant Server Key
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
 
+    # Server Host & Port Config
+    HOST: str = os.getenv("HOST", "0.0.0.0")
+    PORT: int = int(os.getenv("PORT", "8000"))
+
     # CORS Settings
     CORS_ORIGINS: list[str] = [
         "http://localhost",
