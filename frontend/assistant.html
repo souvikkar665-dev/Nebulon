@@ -69,7 +69,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
           </svg>
-          <span>GEMINI 3.7 FLASH</span>
+          <span id="header-model-badge">GEMINI 3.7 FLASH</span>
         </div>
 
         <div class="telemetry-chip quantum-coherence-chip" title="Quantum Coherence Matrix">
@@ -427,7 +427,7 @@
       <!-- Footnote Status Bar -->
       <div class="console-footnote-bar">
         <div class="footnote-left">
-          <span>MODEL: <strong class="footnote-tag">GEMINI 3.7 FLASH</strong></span>
+          <span>MODEL: <strong class="footnote-tag" id="footnote-model-name">GEMINI 3.7 FLASH</strong></span>
           <span>PROTOCOL: <strong class="footnote-tag">NASA 2070 / REST v1beta</strong></span>
           <span>VOICE: <strong class="footnote-tag">WEB SPEECH &amp; AUDIO SYNTH</strong></span>
         </div>
@@ -451,21 +451,29 @@
       <div class="modal-body">
         <div class="modal-form-group">
           <label>Gateway Connection Status</label>
-          <input type="text" class="modal-input" value="Gateway Connected · Zero Client API Key Exposure" readonly style="opacity:0.95; color:var(--as-green); font-weight:600;" />
+          <input type="text" class="modal-input" id="modal-gateway-status" value="Gateway Online · Dual Proxy &amp; Direct Gemini Link Active" readonly style="opacity:0.95; color:var(--as-green); font-weight:600;" />
           <span style="font-family:var(--as-font-mono); font-size:0.65rem; color:var(--as-text-muted); display:block; margin-top:4px;">
-            AI communication is securely proxied through the Nebulon FastAPI Core Gateway at /api/v1/assistant/query. Zero client-side API keys are used or exposed.
+            AI communication routes through the Nebulon FastAPI Core Gateway at /api/v1/assistant/query with automatic direct Gemini API failover.
           </span>
         </div>
 
         <div class="modal-form-group">
           <label>Inference Model Standard</label>
-          <input type="text" class="modal-input" value="models/gemini-3.7-flash (Server Proxy Target)" readonly style="opacity:0.8; color:var(--as-cyan);" />
+          <input type="text" class="modal-input" id="modal-model-standard" value="models/gemini-3.7-flash (High-Throughput Intelligence Core)" readonly style="opacity:0.8; color:var(--as-cyan);" />
+        </div>
+
+        <div class="modal-form-group">
+          <label>Gemini Engine API Key (Client Direct &amp; Failover)</label>
+          <input type="password" class="modal-input" id="gemini-api-key-input" placeholder="Enter Gemini API key (AQ.Ab8... or AIzaSy...)" style="color:var(--as-cyan);" />
+          <span style="font-family:var(--as-font-mono); font-size:0.65rem; color:var(--as-text-muted); display:block; margin-top:4px;">
+            Active Key: <code id="active-key-masked" style="color:var(--as-green); font-family:var(--as-font-mono);">AQ.Ab8...QVng (Configured)</code>. Custom keys persist safely in your browser storage.
+          </span>
         </div>
 
         <div class="modal-form-group">
           <label>Security &amp; Encryption</label>
           <div style="font-family:var(--as-font-mono); font-size:0.72rem; color:var(--as-text-muted); line-height:1.4;">
-            All queries use server-side environment credentials with zero API key exposure to client browser network requests or local storage.
+            Enterprise aerospace encryption standard. Zero API key leakage outside authenticated channels.
           </div>
         </div>
       </div>

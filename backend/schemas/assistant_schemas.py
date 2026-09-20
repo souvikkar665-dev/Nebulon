@@ -6,6 +6,7 @@ class ChatMessage(BaseModel):
     text: str = Field(..., description="Message text content")
 
 class AssistantQueryRequest(BaseModel):
+    model_config = {"protected_namespaces": ()}
     prompt: Optional[str] = Field(None, description="User query prompt text")
     promptText: Optional[str] = Field(None, description="Alias for prompt text")
     conversation_history: Optional[List[ChatMessage]] = Field([], description="Recent conversation history")
@@ -17,6 +18,7 @@ class AssistantQueryRequest(BaseModel):
         return text.strip()
 
 class AssistantQueryResponse(BaseModel):
+    model_config = {"protected_namespaces": ()}
     response: str = Field(..., description="Assistant reply in plain Unicode formatted Markdown")
     model_used: str = Field("gemini-3.7-flash", description="Actual model used for inference")
     latency_ms: int = Field(..., description="Inference latency in milliseconds")
